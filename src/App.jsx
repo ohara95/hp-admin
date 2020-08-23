@@ -10,7 +10,7 @@ import SignIn from "./admin/components/SignIn";
 import Management from "./admin/pages/Management";
 import Edit from "./admin/pages/Edit";
 import "./App.css";
-// import "./tailwind.css";
+// import "./tailwind.ss";
 
 const App = () => {
   return (
