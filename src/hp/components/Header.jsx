@@ -25,7 +25,7 @@ const Header = () => {
           <Link to="/information">店舗情報</Link>
         </li>
         <li>
-          <Link to="/signin">管理</Link>
+          <Link to="/signinup">管理</Link>
         </li>
       </ul>
     </div>
