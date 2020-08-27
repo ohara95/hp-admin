@@ -19,13 +19,10 @@ const Header = () => {
           <a href="http://blog.sukemasa.net/">ブログ</a>
         </li>
         <li>
-          <Link to="/recruit">求人</Link>
-        </li>
-        <li>
           <Link to="/information">店舗情報</Link>
         </li>
         <li>
-          <Link to="/signinup">管理</Link>
+          <Link to="/login">管理</Link>
         </li>
       </ul>
     </div>

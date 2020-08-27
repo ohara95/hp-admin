@@ -1,68 +1,53 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import { auth } from "../../config/firebese";
 
-const SignUp = () => {
-  const { register, handleSubmit, errors } = useForm();
-  const onSubmit = () => {
-    if (password !== confirmPassword) {
+const SignUp = ({ history }) => {
+  const useInput = (initialValue) => {
+    const [value, set] = useState(initialValue);
+    return { value: value, onChange: (e) => set(e.target.value) };
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (password.value !== confirmPassword.value) {
       alert("パスワード不一致");
       return;
     }
     auth
-      .createUserWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(email.value, password.value)
       .then(() => {
         alert("登録できました！");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
+        history.push("/management");
+        email.value("");
+        password.value("");
+        confirmPassword.value("");
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const email = useInput("");
+  const password = useInput("");
+  const confirmPassword = useInput("");
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={onSubmit}>
       <label>メールアドレス</label>
-      <input
-        type="email"
-        name="email"
-        value={email}
-        ref={register({
-          required: "※必須です",
-        })}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      {/* errors.nameにする */}
-      {errors.email && <span>{errors.email.message}</span>}
+      <input type="email" value={email.value} onChange={email.onChange} />
       <label>パスワード</label>
       <input
         type="password"
-        name="password"
-        value={password}
-        ref={register({
-          required: "※必須です",
-        })}
-        onChange={(e) => setPassword(e.target.value)}
+        value={password.value}
+        onChange={password.onChange}
       />
-      {errors.password && <span>{errors.password.message}</span>}
 
       <label>パスワード確認用</label>
       <input
         type="password"
-        name="confirmPassword"
-        value={confirmPassword}
-        ref={register({
-          required: "※必須です",
-        })}
-        onChange={(e) => setConfirmPassword(e.target.value)}
+        value={confirmPassword.value}
+        onChange={confirmPassword.onChange}
       />
-      {errors.confirmPassword && <span>{errors.confirmPassword.message}</span>}
 
       <button type="submit">登録</button>
     </form>

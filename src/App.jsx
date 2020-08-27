@@ -4,12 +4,12 @@ import { AuthProvider } from "./AuthProvider";
 import MainPage from "./hp/pages/MainPage";
 import Menu from "./hp/pages/Menu";
 import Notice from "./hp/pages/Notice";
-import Recruit from "./hp/pages/Recruit";
-import Information from "./hp/pages/Information";
+import Information from "./hp/components/Information";
 import Header from "./hp/components/Header";
 import SignInUp from "./admin/pages/SignIn_SignUp";
 import Management from "./admin/pages/Management";
 import Edit from "./admin/pages/Edit";
+import LoggedInRoute from "./LoggedInRoute";
 import "./App.css";
 // import "./tailwind.ss";
 
@@ -19,22 +19,14 @@ const App = () => {
     <>
       <AuthProvider>
         <BrowserRouter>
-          {user && <Header />}
           <Switch>
-            <Route exact path="/" component={MainPage} />
-            <Route exact path="/menu" component={Menu} />
-            <Route exact path="/recruit" component={Recruit} />
-            <Route exact path="/notice" component={Notice} />
-            <Route exact path="/information" component={Information} />
-            <Route
-              exact
-              path="/signinup"
-              render={() =>
-                user ? <Redirect to={"/management"} /> : <SignInUp />
-              }
-            />
-            <Route exact path="/management" component={Management} />
-            <Route exact path="/edit" component={Edit} />
+            <Route exact path="/" component={MainPage} className="back" />
+            <Route path="/menu" component={Menu} />
+            <Route path="/notice" component={Notice} />
+            <Route path="/information" component={Information} />
+            <LoggedInRoute path="/management" component={Management} />
+            <Route path="/edit" component={Edit} />
+            <Route path="/login" component={SignInUp} />
           </Switch>
         </BrowserRouter>
       </AuthProvider>

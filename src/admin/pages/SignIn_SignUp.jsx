@@ -2,13 +2,13 @@ import React from "react";
 import SignIn from "../components/SignIn";
 import SignUp from "../components/SignUp";
 
-const SignIn_up = () => {
+const SignIn_up = ({ history }) => {
   return (
     <>
       <div>ログイン</div>
-      <SignIn />
+      <SignIn history={history} />
       <div>新規登録</div>
-      <SignUp />
+      <SignUp history={history} />
     </>
   );
 };

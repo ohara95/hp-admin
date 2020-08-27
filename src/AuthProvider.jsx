@@ -7,6 +7,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    // 現在ログインしているユーザーを取得
+    // ユーザーの切替を監視
     auth.onAuthStateChanged((user) => {
       setUser(user);
     });

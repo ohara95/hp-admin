@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Redirect } from "react-router-dom";
 import { auth } from "../../config/firebese";
+import { AuthContext } from "../../AuthProvider";
+import { Redirect } from "react-router-dom";
 
-const SignIn = () => {
+const SignIn = ({ history }) => {
+  const user = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -11,14 +13,25 @@ const SignIn = () => {
   const onSubmit = () => {
     auth
       .signInWithEmailAndPassword(email, password)
-      .then(<Redirect to="/management" />);
+      .then(() => {
+        history.push("/management");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  if (user) {
+    return <Redirect to="/management" />;
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>メールアドレス</label>
       <input
         type="email"
         name="email"
+        autoComplete="on"
         value={email}
         ref={register({
           required: "※必須です",
@@ -31,6 +44,7 @@ const SignIn = () => {
       <input
         type="password"
         name="password"
+        autoComplete="on"
         value={password}
         ref={register({
           required: "※必須です",
