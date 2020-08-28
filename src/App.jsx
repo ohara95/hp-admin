@@ -11,7 +11,6 @@ import Management from "./admin/pages/Management";
 import Edit from "./admin/pages/Edit";
 import LoggedInRoute from "./LoggedInRoute";
 import "./App.css";
-// import "./tailwind.ss";
 
 const App = () => {
   const user = useContext(AuthProvider);
