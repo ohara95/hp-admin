@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { db } from "../../config/firebese";
 import {
   setHoliday,
   addHoliday,
@@ -9,21 +10,70 @@ import {
 
 const NoticeEdit = () => {
   const dispatch = useDispatch();
-  const holiday = useSelector((state) => state.recruit.holiday);
-  const other = useSelector((state) => state.recruit.other);
+  const holiday = useSelector((state) => state.notice.holiday);
+  const other = useSelector((state) => state.notice.other);
 
-  const editHoliday = useSelector((state) => state.recruit.editHoliday);
-  const editOther = useSelector((state) => state.recruit.editOther);
+  const editHoliday = useSelector((state) => state.notice.editHoliday);
+  const editOther = useSelector((state) => state.notice.editOther);
 
-  const [selected, setSelected] = useState("work");
+  const [selected, setSelected] = useState("holiday");
 
   const [decision, setDecision] = useState(true);
+
+  // クリック２回押さなきゃeditHolidayに表示されない
+  // 確認画面には表示される
+  const addDBNotice = (selectItem) => {
+    let key = "";
+    let value = "";
+
+    switch (selectItem) {
+      case "holiday":
+        key = "holiday";
+        value = editHoliday;
+        break;
+      case "other":
+        key = "other";
+        value = editOther;
+      default:
+    }
+
+    db.collection("notice")
+      .doc("f3068OjZY4BqCj3QiLjO")
+      .update({
+        [key]: value,
+      })
+      .then()
+      .catch((err) => {
+        console.log(err);
+      });
+    // if (selected === "holiday") {
+    //   db.collection("notice")
+    //     .doc("f3068OjZY4BqCj3QiLjO")
+    //     .update({
+    //       holiday: editHoliday,
+    //     })
+    //     .then()
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // } else {
+    //   db.collection("notice")
+    //     .doc("f3068OjZY4BqCj3QiLjO")
+    //     .update({
+    //       other: editOther,
+    //     })
+    //     .then()
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // }
+  };
 
   const handleChange = (e) => {
     setSelected(e.target.value);
   };
 
-  const checkBox = () => {
+  const chooseItem = () => {
     switch (selected) {
       case "holiday":
         return holiday;
@@ -57,8 +107,10 @@ const NoticeEdit = () => {
         dispatch(setOther(""));
         break;
       default:
-        return null;
+        alert("選択して下さい");
     }
+    console.log(editHoliday);
+    addDBNotice(selected);
   };
 
   const changePrev = () => {
@@ -88,7 +140,7 @@ const NoticeEdit = () => {
             type="text"
             class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
             rows="4"
-            value={checkBox()}
+            value={chooseItem()}
             onChange={(e) => {
               selectChange(e.target.value);
             }}

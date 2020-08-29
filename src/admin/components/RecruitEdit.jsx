@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { db } from "../../config/firebese";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setWork,
@@ -35,7 +36,42 @@ const RecruitEdit = () => {
     setSelected(e.target.value);
   };
 
-  const checkBox = () => {
+  const addDBRecruit = (selectItem) => {
+    let key = "";
+    let value = "";
+
+    switch (selectItem) {
+      case "work":
+        key = "work";
+        value = editWork;
+        break;
+      case "wont":
+        key = "wont";
+        value = editWont;
+      case "conditions":
+        key = "conditions";
+        value = editConditions;
+      case "time":
+        key = "time";
+        value = editTime;
+      case "welfare":
+        key = "welfare";
+        value = editWelfare;
+      default:
+    }
+
+    db.collection("recruit")
+      .doc("eTLykSLZuPvi6iJ48vNB")
+      .update({
+        [key]: value,
+      })
+      .then()
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const chooseItem = () => {
     switch (selected) {
       case "work":
         return work;
@@ -71,6 +107,7 @@ const RecruitEdit = () => {
 
   const onNoticeSubmit = (e) => {
     e.preventDefault();
+    addDBRecruit(selected);
     switch (selected) {
       case "work":
         dispatch(addWork(work));
@@ -133,7 +170,7 @@ const RecruitEdit = () => {
             type="text"
             class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
             rows="4"
-            value={checkBox()}
+            value={chooseItem()}
             onChange={(e) => {
               selectChange(e.target.value);
             }}
