@@ -28,12 +28,18 @@ const MenuEdit = () => {
     editAmount,
   } = useSelector((state) => state.menu);
   const { register, handleSubmit, errors } = useForm();
-  const { cuisineMenu } = useContext(AuthContext);
+  const {
+    dbMenu,
+    selectCuisine,
+    setSelectCuisine,
+    selectDrink,
+    setSelectDrink,
+    selectRecommend,
+    setSelectRecommend,
+    selectClassifying,
+    setSelectClassifying,
+  } = useContext(AuthContext);
 
-  const [selectClassifying, setSelectClassifying] = useState("");
-  const [selectCuisine, setSelectCuisine] = useState("");
-  const [selectDrink, setSelectDrink] = useState("");
-  const [selectRecommend, setSelectRecommend] = useState("");
   const [selectMethod, setSelectMethod] = useState("");
   const [decision, setDecision] = useState(true);
 
@@ -76,7 +82,7 @@ const MenuEdit = () => {
         .catch((err) => {
           console.log(err);
         });
-    } else {
+    } else if (selectMethod === "edit") {
       db.collection("menu")
         .doc("ya3NEbDICuOTwfUWcHQs")
         .collection("cuisine")
@@ -86,8 +92,30 @@ const MenuEdit = () => {
         .get()
         .then((res) => {
           res.docs.map((el) => {
-            el.ref.update({});
+            el.ref.update({
+              item,
+              amount,
+            });
           });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (selectMethod === "delete") {
+      db.collection("menu")
+        .doc("ya3NEbDICuOTwfUWcHQs")
+        .collection("cuisine")
+        .doc("HcRIBsb7BXCTB27kZ4Nz")
+        .collection(collectionName)
+        .where("item", "==", item)
+        .get()
+        .then((res) => {
+          res.docs.map((el) => {
+            el.ref.delete();
+          });
+        })
+        .then(() => {
+          console.log("seiko");
         })
         .catch((err) => {
           console.log(err);
@@ -139,6 +167,9 @@ const MenuEdit = () => {
   };
 
   const addDBRecommend = (item, amount) => {
+    if (!selectRecommend) {
+      return;
+    }
     let collectionName = "";
 
     switch (selectRecommend) {
@@ -154,7 +185,7 @@ const MenuEdit = () => {
     db.collection("menu")
       .doc("ya3NEbDICuOTwfUWcHQs")
       .collection("recommend")
-      .doc("wG9VgTatur5QEKTGmxYQ")
+      .doc("W0sxjPHcXrJ2iP3huqua")
       .collection(collectionName)
       .add({
         item,
@@ -222,6 +253,13 @@ const MenuEdit = () => {
     }
   };
 
+  /**追加か変更が押されてなかったら注意 */
+  const methodCheck = () => {
+    if (selectMethod === "") {
+      alert("追加or変更を選択して下さい");
+    }
+  };
+
   // 大分類に応じて中分類セレクトを出す
   const selected = () => {
     switch (selectClassifying) {
@@ -286,8 +324,8 @@ const MenuEdit = () => {
 
   /** 変更だったらメニュー名と金額をみれるようにする */
   const editOption = () => {
-    if (cuisineMenu) {
-      return cuisineMenu.map((el) => {
+    if (dbMenu) {
+      return dbMenu.map((el) => {
         return (
           <option>
             {el.item}¥{el.amount}
@@ -299,13 +337,6 @@ const MenuEdit = () => {
 
   return (
     <>
-      <button
-        onClick={() => {
-          console.log(editCuisine);
-        }}
-      >
-        push
-      </button>
       <div>
         <div
           onClick={(e) => {
@@ -325,9 +356,16 @@ const MenuEdit = () => {
           >
             変更
           </button>
+          <button
+            value="delete"
+            class="hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+          >
+            削除
+          </button>
         </div>
         <form onSubmit={onMenuSubmit}>
           <select
+            onClick={methodCheck}
             onChange={(e) => {
               setSelectClassifying(e.target.value);
             }}
@@ -339,7 +377,8 @@ const MenuEdit = () => {
             <option value="recommend">おすすめ</option>
           </select>
           {selected()}
-          {selectCuisine && selectMethod === "edit" && (
+          {((selectCuisine && selectMethod == "edit") ||
+            selectMethod == "delete") && (
             <div>
               <select class="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none">
                 {editOption()}
@@ -359,24 +398,37 @@ const MenuEdit = () => {
               }}
             />
           </div>
-          <div>
-            【金額】
-            <input
-              class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-              rows="4"
-              type="number"
-              value={amount}
-              onChange={(e) => {
-                dispatch(setAmount(e.target.value));
-              }}
-            />
-          </div>
-          <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-            type="submit"
-          >
-            送信
-          </button>
+          {selectMethod === "delete" ? (
+            <div style={{ color: "red" }}>※確認のため名目を記入して下さい</div>
+          ) : (
+            <div>
+              【金額】
+              <input
+                class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                rows="4"
+                type="number"
+                value={amount}
+                onChange={(e) => {
+                  dispatch(setAmount(e.target.value));
+                }}
+              />
+            </div>
+          )}
+          {selectMethod === "delete" ? (
+            <button
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
+              type="submit"
+            >
+              削除
+            </button>
+          ) : (
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+              type="submit"
+            >
+              送信
+            </button>
+          )}
         </form>
       </div>
     </>

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import RecruitEdit from "../components/RecruitEdit";
 import MenuEdit from "../components/MenuEdit";
 import NoticeEdit from "../components/NoticeEdit";
+import BanquetEdit from "../components/BanquetEdit";
 
 const Edit = ({ history }) => {
   const dispatch = useDispatch();
@@ -43,7 +44,10 @@ const Edit = ({ history }) => {
       </h1>
       <div>
         <h3>メニューページ</h3>
+        <h4>メニュー</h4>
         <MenuEdit />
+        <h4>宴会メニュー</h4>
+        <BanquetEdit />
       </div>
 
       <div>
