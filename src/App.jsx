@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import { AuthProvider } from "./AuthProvider";
+import { AuthProvider, AuthContext } from "./AuthProvider";
 import MainPage from "./hp/pages/MainPage";
 import Menu from "./hp/pages/Menu";
 import Notice from "./hp/pages/Notice";
@@ -13,7 +13,6 @@ import LoggedInRoute from "./LoggedInRoute";
 import "./App.css";
 
 const App = () => {
-  const user = useContext(AuthProvider);
   return (
     <>
       <AuthProvider>

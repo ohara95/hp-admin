@@ -27,44 +27,30 @@ const Notice = () => {
     });
   }, []);
 
-  const holiday = () => {
+  const displayItem = (item) => {
     if (notice) {
-      return notice.map((el) => el.holiday);
+      switch (item) {
+        case "holiday":
+          return notice.map((el) => el.holiday);
+        case "other":
+          return notice.map((el) => el.other);
+        default:
+      }
     }
-  };
-
-  const other = () => {
-    if (notice) {
-      return notice.map((el) => el.other);
-    }
-  };
-
-  const work = () => {
     if (recruit) {
-      return recruit.map((el) => el.work);
-    }
-  };
-
-  const wont = () => {
-    if (recruit) {
-      return recruit.map((el) => el.wont);
-    }
-  };
-
-  const conditions = () => {
-    if (recruit) {
-      return recruit.map((el) => el.conditions);
-    }
-  };
-
-  const time = () => {
-    if (recruit) {
-      return recruit.map((el) => el.time);
-    }
-  };
-  const welfare = () => {
-    if (recruit) {
-      return recruit.map((el) => el.welfare);
+      switch (item) {
+        case "work":
+          return recruit.map((el) => el.work);
+        case "wont":
+          return recruit.map((el) => el.wont);
+        case "conditions":
+          return recruit.map((el) => el.conditions);
+        case "time":
+          return recruit.map((el) => el.time);
+        case "welfare":
+          return recruit.map((el) => el.welfare);
+        default:
+      }
     }
   };
 
@@ -73,22 +59,22 @@ const Notice = () => {
       <h1>お知らせ</h1>
       <div>
         <h2>今月のお休み</h2>
-        <p>{holiday()}</p>
+        <p>{displayItem("holiday")}</p>
         <h2>その他お知らせ</h2>
-        <p>{other()}</p>
+        <p>{displayItem("other")}</p>
       </div>
       <div>
         <h2>採用情報</h2>
         <h3>仕事内容</h3>
-        <p>{work()}</p>
+        <p>{displayItem("work")}</p>
         <h3>求める人材</h3>
-        <p>{wont()}</p>
+        <p>{displayItem("wont")}</p>
         <h3>応募資格</h3>
-        <p>{conditions()}</p>
+        <p>{displayItem("conditions")}</p>
         <h3>勤務時間・休日</h3>
-        <p>{time()}</p>
+        <p>{displayItem("time")}</p>
         <h3>福利厚生</h3>
-        <p>{welfare()}</p>
+        <p>{displayItem("welfare")}</p>
       </div>
     </>
   );

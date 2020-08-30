@@ -10,14 +10,11 @@ import {
 
 const NoticeEdit = () => {
   const dispatch = useDispatch();
-  const holiday = useSelector((state) => state.notice.holiday);
-  const other = useSelector((state) => state.notice.other);
-
-  const editHoliday = useSelector((state) => state.notice.editHoliday);
-  const editOther = useSelector((state) => state.notice.editOther);
+  const { holiday, other, editHoliday, editOther } = useSelector(
+    (state) => state.notice
+  );
 
   const [selected, setSelected] = useState("holiday");
-
   const [decision, setDecision] = useState(true);
 
   // クリック２回押さなきゃeditHolidayに表示されない
@@ -46,27 +43,6 @@ const NoticeEdit = () => {
       .catch((err) => {
         console.log(err);
       });
-    // if (selected === "holiday") {
-    //   db.collection("notice")
-    //     .doc("f3068OjZY4BqCj3QiLjO")
-    //     .update({
-    //       holiday: editHoliday,
-    //     })
-    //     .then()
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // } else {
-    //   db.collection("notice")
-    //     .doc("f3068OjZY4BqCj3QiLjO")
-    //     .update({
-    //       other: editOther,
-    //     })
-    //     .then()
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // }
   };
 
   const handleChange = (e) => {
@@ -109,7 +85,6 @@ const NoticeEdit = () => {
       default:
         alert("選択して下さい");
     }
-    console.log(editHoliday);
     addDBNotice(selected);
   };
 

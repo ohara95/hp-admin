@@ -16,20 +16,20 @@ import {
 
 const RecruitEdit = () => {
   const dispatch = useDispatch();
-  const work = useSelector((state) => state.recruit.work);
-  const wont = useSelector((state) => state.recruit.wont);
-  const conditions = useSelector((state) => state.recruit.conditions);
-  const time = useSelector((state) => state.recruit.time);
-  const welfare = useSelector((state) => state.recruit.welfare);
-
-  const editWork = useSelector((state) => state.recruit.editWork);
-  const editWont = useSelector((state) => state.recruit.editWont);
-  const editConditions = useSelector((state) => state.recruit.editConditions);
-  const editTime = useSelector((state) => state.recruit.editTime);
-  const editWelfare = useSelector((state) => state.recruit.editWelfare);
+  const {
+    work,
+    wont,
+    conditions,
+    time,
+    welfare,
+    editWork,
+    editWont,
+    editConditions,
+    editTime,
+    editWelfare,
+  } = useSelector((state) => state.recruit);
 
   const [selected, setSelected] = useState("work");
-
   const [decision, setDecision] = useState(true);
 
   const handleChange = (e) => {

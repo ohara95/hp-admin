@@ -5,7 +5,7 @@ import { AuthContext } from "../../AuthProvider";
 import { Redirect } from "react-router-dom";
 
 const SignIn = ({ history }) => {
-  const user = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import { AuthContext } from "./AuthProvider";
 
 const LoggedInRoute = ({ component: Component, ...other }) => {
-  const user = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   return (
     <Route
       {...other}

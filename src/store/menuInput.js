@@ -7,10 +7,12 @@ const initialState = {
   editDrink: "",
   recommend: "",
   editRecommend: "",
+  amount: "",
+  editAmount: "",
 };
 
 const slice = createSlice({
-  name: "recruit",
+  name: "menu",
   initialState,
   reducers: {
     setCuisine: (state, action) => {
@@ -18,6 +20,12 @@ const slice = createSlice({
     },
     addCuisine: (state, action) => {
       return { ...state, editCuisine: action.payload };
+    },
+    setAmount: (state, action) => {
+      return { ...state, amount: action.payload };
+    },
+    addAmount: (state, action) => {
+      return { ...state, editAmount: action.payload };
     },
     setDrink: (state, action) => {
       return { ...state, drink: action.payload };
@@ -42,4 +50,6 @@ export const {
   addDrink,
   setRecommend,
   addRecommend,
+  setAmount,
+  addAmount,
 } = slice.actions;

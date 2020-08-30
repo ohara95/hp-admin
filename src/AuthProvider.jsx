@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { auth } from "./config/firebese";
+import { auth, db } from "./config/firebese";
 
 export const AuthContext = React.createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [cuisineMenu, setCuisineMenu] = useState([]);
 
   useEffect(() => {
     // 現在ログインしているユーザーを取得
@@ -14,5 +15,24 @@ export const AuthProvider = ({ children }) => {
     });
   }, []);
 
-  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+  /** メニュー取得*/
+  useEffect(() => {
+    db.collection("menu")
+      .doc("ya3NEbDICuOTwfUWcHQs")
+      .collection("cuisine")
+      .doc("HcRIBsb7BXCTB27kZ4Nz")
+      .collection("fried")
+      .onSnapshot((snap) => {
+        const menu = snap.docs.map((doc) => {
+          return doc.data();
+        });
+        setCuisineMenu(menu);
+      });
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, cuisineMenu }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
