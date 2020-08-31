@@ -1,93 +1,37 @@
-import React, { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../../AuthProvider";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebese";
 import { useForm } from "react-hook-form";
-import {
-  setCuisine,
-  addCuisine,
-  setDrink,
-  addDrink,
-  setRecommend,
-  addRecommend,
-  setAmount,
-  addAmount,
-} from "../../store/menuInput";
 
 const MenuEdit = () => {
-  const dispatch = useDispatch();
-
-  const {
-    cuisine,
-    drink,
-    recommend,
-    editCuisine,
-    editDrink,
-    editRecommend,
-    amount,
-    editAmount,
-  } = useSelector((state) => state.menu);
-  const { register, handleSubmit, errors } = useForm();
-  const {
-    dbMenu,
-    selectCuisine,
-    setSelectCuisine,
-    selectDrink,
-    setSelectDrink,
-    selectRecommend,
-    setSelectRecommend,
-    selectClassifying,
-    setSelectClassifying,
-  } = useContext(AuthContext);
-
+  const [cuisine, setCuisine] = useState("");
+  const [drink, setDrink] = useState("");
+  const [recommend, setRecommend] = useState("");
+  const [amount, setAmount] = useState("");
   const [selectMethod, setSelectMethod] = useState("");
-  const [decision, setDecision] = useState(true);
 
-  // 1回目空白で追加されちゃう
+  const { register, handleSubmit, errors } = useForm();
+
+  const [dbMenu, setDbMenu] = useState([]);
+  const [selectCuisine, setSelectCuisine] = useState("snack");
+  const [selectDrink, setSelectDrink] = useState("beer");
+  const [selectRecommend, setSelectRecommend] = useState("cuisine");
+  const [selectClassifying, setSelectClassifying] = useState("cuisine");
+
+  /** データベースに変更を保存 */
   const addDBCuisine = (item, amount) => {
-    let collectionName = "";
-    switch (selectCuisine) {
-      case "snack":
-        collectionName = "snack";
-        break;
-      case "salad":
-        collectionName = "salad";
-        break;
-      case "grill":
-        collectionName = "grill";
-        break;
-      case "fried":
-        collectionName = "fried";
-        break;
-      case "main":
-        collectionName = "main";
-        break;
-      case "dessert":
-        collectionName = "dessert";
-        break;
-      default:
-    }
+    const cuisineRef = db
+      .collection("menu")
+      .doc("ya3NEbDICuOTwfUWcHQs")
+      .collection("cuisine");
 
     if (selectMethod === "add") {
-      db.collection("menu")
-        .doc("ya3NEbDICuOTwfUWcHQs")
-        .collection("cuisine")
-        .doc("HcRIBsb7BXCTB27kZ4Nz")
-        .collection(collectionName)
-        .add({
-          item,
-          amount,
-        })
-        .then()
-        .catch((err) => {
-          console.log(err);
-        });
+      cuisineRef.add({
+        item,
+        amount,
+        category: selectCuisine,
+      });
     } else if (selectMethod === "edit") {
-      db.collection("menu")
-        .doc("ya3NEbDICuOTwfUWcHQs")
-        .collection("cuisine")
-        .doc("HcRIBsb7BXCTB27kZ4Nz")
-        .collection(collectionName)
+      cuisineRef
         .where("item", "==", item)
         .get()
         .then((res) => {
@@ -95,70 +39,31 @@ const MenuEdit = () => {
             el.ref.update({
               item,
               amount,
+              category: selectCuisine,
             });
           });
-        })
-        .catch((err) => {
-          console.log(err);
         });
     } else if (selectMethod === "delete") {
-      db.collection("menu")
-        .doc("ya3NEbDICuOTwfUWcHQs")
-        .collection("cuisine")
-        .doc("HcRIBsb7BXCTB27kZ4Nz")
-        .collection(collectionName)
+      cuisineRef
         .where("item", "==", item)
         .get()
         .then((res) => {
           res.docs.map((el) => {
             el.ref.delete();
           });
-        })
-        .then(() => {
-          console.log("seiko");
-        })
-        .catch((err) => {
-          console.log(err);
         });
     }
   };
 
+  /** DBにドリンクデータ追加 */
   const addDBDrink = (item, amount) => {
-    let collectionName = "";
-
-    switch (selectDrink) {
-      case "beer":
-        collectionName = "beer";
-        break;
-      case "sour":
-        collectionName = "sour";
-        break;
-      case "whisky":
-        collectionName = "whisky";
-        break;
-      case "shochu":
-        collectionName = "shochu";
-        break;
-      case "cocktail":
-        collectionName = "cocktail";
-        break;
-      case "wine":
-        collectionName = "wine";
-        break;
-      case "non-al":
-        collectionName = "non-al";
-        break;
-      default:
-    }
-
     db.collection("menu")
       .doc("ya3NEbDICuOTwfUWcHQs")
       .collection("drink")
-      .doc("nI1ZsGE1mZEDquwrXRew")
-      .collection(collectionName)
       .add({
         item,
         amount,
+        category: selectDrink,
       })
       .then()
       .catch((err) => {
@@ -166,30 +71,19 @@ const MenuEdit = () => {
       });
   };
 
+  /** DBにおすすめデータ追加 */
   const addDBRecommend = (item, amount) => {
     if (!selectRecommend) {
       return;
-    }
-    let collectionName = "";
-
-    switch (selectRecommend) {
-      case "cuisine":
-        collectionName = "cuisine";
-        break;
-      case "drink":
-        collectionName = "drink";
-        break;
-      default:
     }
 
     db.collection("menu")
       .doc("ya3NEbDICuOTwfUWcHQs")
       .collection("recommend")
-      .doc("W0sxjPHcXrJ2iP3huqua")
-      .collection(collectionName)
       .add({
         item,
         amount,
+        category: selectRecommend,
       })
       .then()
       .catch((err) => {
@@ -197,6 +91,35 @@ const MenuEdit = () => {
       });
   };
 
+  /** DBからデータ取得*/
+  useEffect(() => {
+    let category = "";
+
+    switch (selectClassifying) {
+      case "cuisine":
+        category = "cuisine";
+        break;
+      case "drink":
+        category = "drink";
+        break;
+      case "recommend":
+        category = "recommend";
+        break;
+      default:
+    }
+
+    db.collection("menu")
+      .doc("ya3NEbDICuOTwfUWcHQs")
+      .collection(category)
+      .onSnapshot((snap) => {
+        const menu = snap.docs.map((doc) => {
+          return doc.data();
+        });
+        setDbMenu(menu);
+      });
+  }, [selectClassifying]);
+
+  /** 値セット&DBに追加関数発火 */
   const onMenuSubmit = (e) => {
     e.preventDefault();
     if (
@@ -206,40 +129,49 @@ const MenuEdit = () => {
       alert("選択して下さい");
     }
 
-    dispatch(addAmount(amount));
-    dispatch(setAmount(""));
+    if (
+      (!cuisine && !amount) ||
+      (!drink && !amount) ||
+      (!recommend && !amount)
+    ) {
+      alert("入力漏れがあります");
+      return;
+    }
+
     switch (selectClassifying) {
       case "cuisine":
-        dispatch(addCuisine(cuisine));
-        dispatch(setCuisine(""));
-        addDBCuisine(editCuisine, editAmount);
+        setCuisine("");
+        setAmount("");
+        addDBCuisine(cuisine, amount);
         break;
       case "drink":
-        dispatch(addDrink(drink));
-        dispatch(setDrink(""));
-        addDBDrink(editDrink, editAmount);
+        setDrink("");
+        setAmount("");
+        addDBDrink(drink, amount);
         break;
       case "recommend":
-        dispatch(addRecommend(recommend));
-        dispatch(setRecommend(""));
-        addDBRecommend(editRecommend, editAmount);
+        setRecommend("");
+        setAmount("");
+        addDBRecommend(recommend, amount);
         break;
       default:
     }
   };
 
+  /** 大分類の値を制御 */
   const controlChange = (value) => {
     switch (selectClassifying) {
       case "cuisine":
-        return dispatch(setCuisine(value));
+        return setCuisine(value);
       case "drink":
-        return dispatch(setDrink(value));
+        return setDrink(value);
       case "recommend":
-        return dispatch(setRecommend(value));
+        return setRecommend(value);
       default:
     }
   };
 
+  /** 大分類のstateを選択 */
   const toggleChange = () => {
     switch (selectClassifying) {
       case "cuisine":
@@ -256,7 +188,7 @@ const MenuEdit = () => {
   /**追加か変更が押されてなかったら注意 */
   const methodCheck = () => {
     if (selectMethod === "") {
-      alert("追加or変更を選択して下さい");
+      alert("追加or変更or削除を選択して下さい");
     }
   };
 
@@ -324,8 +256,23 @@ const MenuEdit = () => {
 
   /** 変更だったらメニュー名と金額をみれるようにする */
   const editOption = () => {
+    let item = "";
+    switch (selectClassifying) {
+      case "cuisine":
+        item = selectCuisine;
+        break;
+      case "drink":
+        item = selectDrink;
+        break;
+      case "recommend":
+        item = selectRecommend;
+        break;
+      default:
+    }
+
     if (dbMenu) {
-      return dbMenu.map((el) => {
+      const category = dbMenu.filter((el) => el.category === item);
+      return category.map((el) => {
         return (
           <option>
             {el.item}¥{el.amount}
@@ -363,7 +310,7 @@ const MenuEdit = () => {
             削除
           </button>
         </div>
-        <form onSubmit={onMenuSubmit}>
+        <form>
           <select
             onClick={methodCheck}
             onChange={(e) => {
@@ -409,7 +356,7 @@ const MenuEdit = () => {
                 type="number"
                 value={amount}
                 onChange={(e) => {
-                  dispatch(setAmount(e.target.value));
+                  setAmount(e.target.value);
                 }}
               />
             </div>
@@ -417,14 +364,14 @@ const MenuEdit = () => {
           {selectMethod === "delete" ? (
             <button
               class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
-              type="submit"
+              onClick={onMenuSubmit}
             >
               削除
             </button>
           ) : (
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-              type="submit"
+              onClick={onMenuSubmit}
             >
               送信
             </button>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../../AuthProvider";
 import { db } from "../../config/firebese";
 
 //画像
@@ -10,104 +9,78 @@ import beel from "../../assets/img/beel.jpeg";
 import sarada from "../../assets/img/images.jpeg";
 
 const Menu = ({ history }) => {
-  const [menu, setMenu] = useState([]);
-  // const { dbMenu } = useContext(AuthContext);
-  // const snack = () => {
-  //   return dbMenu.map((cuisine) => {
-  //     return <p>{cuisine.item}</p>;
-  //   });
-  // };
-  let category = "";
-  let categoryId = "";
-  let collectionName = "";
-  const choose = (item, itemDetail) => {
-    switch (item) {
-      case "cuisine":
-        category = "cuisine";
-        categoryId = "HcRIBsb7BXCTB27kZ4Nz";
-        switch (itemDetail) {
-          case "snack":
-            collectionName = "snack";
-            break;
-          case "salad":
-            collectionName = "salad";
-            break;
-          case "grill":
-            collectionName = "grill";
-            break;
-          case "fried":
-            collectionName = "fried";
-            break;
-          case "main":
-            collectionName = "main";
-            break;
-          case "dessert":
-            collectionName = "dessert";
-          default:
-        }
-        break;
-      case "drink":
-        category = "drink";
-        categoryId = "nI1ZsGE1mZEDquwrXRew";
-        switch (itemDetail) {
-          case "beer":
-            collectionName = "beer";
-            break;
-          case "sour":
-            collectionName = "sour";
-            break;
-          case "whisky":
-            collectionName = "whisky";
-            break;
-          case "shochu":
-            collectionName = "shochu";
-            break;
-          case "cocktail":
-            collectionName = "cocktail";
-            break;
-          case "wine":
-            collectionName = "wine";
-            break;
-          case "non-al":
-            collectionName = "non-al";
-            break;
-          default:
-        }
-        break;
-      case "recommend":
-        category = "recommend";
-        categoryId = "W0sxjPHcXrJ2iP3huqua";
-        switch (itemDetail) {
-          case "cuisine":
-            collectionName = "cuisine";
-            break;
-          case "drink":
-            collectionName = "drink";
-            break;
-          default:
-        }
-        break;
-      default:
-    }
-  };
+  const [cuisine, setCuisine] = useState([]);
+  const [drink, setDrink] = useState([]);
+  const [recommend, setRecommend] = useState([]);
 
   useEffect(() => {
-    console.log(category);
     db.collection("menu")
       .doc("ya3NEbDICuOTwfUWcHQs")
-      .collection(category)
-      .doc(categoryId)
-      .collection(collectionName)
+      .collection("cuisine")
       .onSnapshot((snap) => {
         const menu = snap.docs.map((doc) => {
           return doc.data();
         });
-        setMenu(menu);
+        setCuisine(menu);
       });
   }, []);
 
-  choose("drink", "beer");
-  console.log(menu);
+  useEffect(() => {
+    db.collection("menu")
+      .doc("ya3NEbDICuOTwfUWcHQs")
+      .collection("drink")
+      .onSnapshot((snap) => {
+        const menu = snap.docs.map((doc) => {
+          return doc.data();
+        });
+        setDrink(menu);
+      });
+  }, []);
+
+  useEffect(() => {
+    db.collection("menu")
+      .doc("ya3NEbDICuOTwfUWcHQs")
+      .collection("recommend")
+      .onSnapshot((snap) => {
+        const menu = snap.docs.map((doc) => {
+          return doc.data();
+        });
+        setRecommend(menu);
+      });
+  }, []);
+
+  const cuisineMenu = (item) => {
+    const category = cuisine.filter((el) => el.category === item);
+    return category.map((el) => {
+      return (
+        <option>
+          {el.item}¥{el.amount}
+        </option>
+      );
+    });
+  };
+
+  const drinkMenu = (item) => {
+    const category = drink.filter((el) => el.category === item);
+    return category.map((el) => {
+      return (
+        <option>
+          {el.item}¥{el.amount}
+        </option>
+      );
+    });
+  };
+
+  const recommendMenu = (item) => {
+    const category = recommend.filter((el) => el.category === item);
+    return category.map((el) => {
+      return (
+        <option>
+          {el.item}¥{el.amount}
+        </option>
+      );
+    });
+  };
 
   return (
     <>
@@ -123,11 +96,44 @@ const Menu = ({ history }) => {
         ホームへ
       </button>
       <h1>メニュー</h1>
-      <h2>グランドメニュー</h2>
-      <h3>おつまみ</h3>
+      <h2>！！！！本日のおすすめ！！！！</h2>
+      <h3>food</h3>
+      <h4>{recommendMenu("cuisine")}</h4>
+      <h3>drink</h3>
+      <h4>{recommendMenu("drink")}</h4>
+
+      <h2>food</h2>
       <img src={takokara} />
       <img src={sarada} />
-      <h2>ドリンク</h2>
+
+      <h3>おつまみ</h3>
+      {cuisineMenu("snack")}
+      <h3>サラダ</h3>
+      {cuisineMenu("salad")}
+      <h3>揚げ物</h3>
+      {cuisineMenu("fried")}
+      <h3>焼き物</h3>
+      {cuisineMenu("grill")}
+      <h3>〆</h3>
+      {cuisineMenu("main")}
+      <h3>デザート</h3>
+      {cuisineMenu("dessert")}
+
+      <h2>drink</h2>
+      <h3>ビール</h3>
+      {drinkMenu("beer")}
+      <h3>サワー</h3>
+      {drinkMenu("sour")}
+      <h3>ウィスキー</h3>
+      {drinkMenu("whisky")}
+      <h3>焼酎</h3>
+      {drinkMenu("shochu")}
+      <h3>カクテル</h3>
+      {drinkMenu("cocktail")}
+      <h3>ワイン</h3>
+      {drinkMenu("wine")}
+      <h3>ノンアル</h3>
+      {drinkMenu("non-al")}
       <img src={beel} />
       <h2>宴会コース</h2>
     </>

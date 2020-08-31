@@ -1,24 +1,12 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { db } from "../../config/firebese";
-import {
-  setHoliday,
-  addHoliday,
-  setOther,
-  addOther,
-} from "../../store/noticeInput";
 
 const NoticeEdit = () => {
-  const dispatch = useDispatch();
-  const { holiday, other, editHoliday, editOther } = useSelector(
-    (state) => state.notice
-  );
-
+  const [holiday, setHoliday] = useState("");
+  const [other, setOther] = useState("");
   const [selected, setSelected] = useState("holiday");
-  const [decision, setDecision] = useState(true);
+  const [decision, setDecision] = useState(false);
 
-  // クリック２回押さなきゃeditHolidayに表示されない
-  // 確認画面には表示される
   const addDBNotice = (selectItem) => {
     let key = "";
     let value = "";
@@ -26,11 +14,11 @@ const NoticeEdit = () => {
     switch (selectItem) {
       case "holiday":
         key = "holiday";
-        value = editHoliday;
+        value = holiday;
         break;
       case "other":
         key = "other";
-        value = editOther;
+        value = other;
       default:
     }
 
@@ -38,10 +26,6 @@ const NoticeEdit = () => {
       .doc("f3068OjZY4BqCj3QiLjO")
       .update({
         [key]: value,
-      })
-      .then()
-      .catch((err) => {
-        console.log(err);
       });
   };
 
@@ -56,18 +40,16 @@ const NoticeEdit = () => {
       case "other":
         return other;
       default:
-        return null;
     }
   };
 
   const selectChange = (value) => {
     switch (selected) {
       case "holiday":
-        return dispatch(setHoliday(value));
+        return setHoliday(value);
       case "other":
-        return dispatch(setOther(value));
+        return setOther(value);
       default:
-        return null;
     }
   };
 
@@ -75,25 +57,29 @@ const NoticeEdit = () => {
     e.preventDefault();
     switch (selected) {
       case "holiday":
-        dispatch(addHoliday(holiday));
-        dispatch(setHoliday(""));
+        setHoliday("");
         break;
       case "other":
-        dispatch(addOther(other));
-        dispatch(setOther(""));
+        setOther("");
         break;
       default:
         alert("選択して下さい");
     }
     addDBNotice(selected);
+    setDecision(false);
   };
 
-  const changePrev = () => {
+  const changePrev = (e) => {
+    e.preventDefault();
+    setDecision(true);
+  };
+
+  const displayPrev = () => {
     switch (selected) {
       case "holiday":
-        return <>{editHoliday}</>;
+        return <>{holiday}</>;
       case "other":
-        return <>{editOther}</>;
+        return <>{other}</>;
       default:
         return null;
     }
@@ -102,7 +88,7 @@ const NoticeEdit = () => {
   return (
     <>
       <div class="inline-block relative w-64">
-        <form onSubmit={onNoticeSubmit}>
+        <form>
           <select
             onChange={handleChange}
             class="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
@@ -120,21 +106,21 @@ const NoticeEdit = () => {
               selectChange(e.target.value);
             }}
           />
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+          <button
+            onClick={onNoticeSubmit}
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          >
             送信
+          </button>
+          <button
+            onClick={changePrev}
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          >
+            プレビュー
           </button>
         </form>
       </div>
-      <div>
-        {decision && changePrev()}
-        <button
-          onClick={() => {
-            setDecision(false);
-          }}
-        >
-          確認OK
-        </button>
-      </div>
+      <div>{decision && displayPrev()}</div>
     </>
   );
 };
