@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import shortid from "shortid";
-import { auth } from "../../config/firebese";
+import { auth, db } from "../../config/firebese";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -10,103 +9,187 @@ import {
   Tooltip,
   Area,
 } from "recharts";
+import { useEffect } from "react";
 
 const Management = ({ history }) => {
-  // 初期値とname一緒じゃなきゃダメ
-  const [sales, setSales] = useState({
-    date: "",
-    sales: "",
-    id: shortid.generate(),
-  });
-  const [buys, setBuys] = useState({
-    date: "",
-    buys: "",
-    detail: "",
-    id: shortid.generate(),
-  });
-  const [salesData, setSalesData] = useState([]);
-  const [buysData, setBuysData] = useState([]);
+  const [salesDate, setSalesDate] = useState(null);
+  const [buysDate, setBuysDate] = useState(null);
+  const [salesPrice, setSalesPrice] = useState("");
+  const [buysPrice, setBuysPrice] = useState("");
+  const [buysDetail, setBuysDetail] = useState("");
+  const [fixedDate, setFixedDate] = useState(null);
+  const [fixedItem, setFixedItem] = useState("");
+  const [fixedPrice, setFixedPrice] = useState("");
+
   const [salesOpen, setSalesOpen] = useState(false);
   const [buysOpen, setBuysOpen] = useState(false);
 
+  const [dbSales, setDbSales] = useState([]);
+  const [dbBuys, setDbBuys] = useState([]);
+
   const plusSubmit = (e) => {
     e.preventDefault();
-    setSales({ date: "", sales: "" });
-    setSalesData([...salesData, sales]);
+    setSalesPrice("");
+    setSalesDate("");
+    salesDB(salesDate, salesPrice, "sales");
+  };
+
+  /** 売上をDBに登録 */
+  const salesDB = (date, price, type) => {
+    db.collection("management")
+      .doc("NcmaRejmRabdytHQfbKU")
+      .collection("sales")
+      .doc()
+      .set({
+        date,
+        salesPrice: price,
+        type,
+      })
+      .then()
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const minusSubmit = (e) => {
     e.preventDefault();
-    setBuys({ date: "", buys: "", detail: "" });
-    setBuysData([...buysData, buys]);
+    setBuysPrice("");
+    setBuysDate("");
+    setBuysDetail("");
+    buysDB(buysDate, buysPrice, buysDetail, "buys");
   };
 
-  const plusChange = (e) => {
-    setSales({ ...sales, [e.target.name]: e.target.value });
-  };
-  const minusChange = (e) => {
-    setBuys({ ...buys, [e.target.name]: e.target.value });
+  const buysDB = (date, price, detail, type) => {
+    db.collection("management")
+      .doc("NcmaRejmRabdytHQfbKU")
+      .collection("buys")
+      .doc()
+      .set({
+        date,
+        buysPrice: price,
+        detail,
+        type,
+      })
+      .then()
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const totalSales = () => {
-    const total = salesData.reduce(
-      (cumulative, current) => cumulative + parseInt(current.sales),
+    const total = dbSales.reduce(
+      (cumulative, current) => cumulative + parseInt(current.salesPrice),
       0
     );
     return total;
   };
 
   const totalBuys = () => {
-    const total = buysData.reduce(
-      (cumulative, current) => cumulative + parseInt(current.buys),
+    const total = dbBuys.reduce(
+      (cumulative, current) => cumulative + parseInt(current.buysPrice),
       0
     );
     return total;
   };
 
+  /** salesData取得 */
+  useEffect(() => {
+    db.collection("management")
+      .doc("NcmaRejmRabdytHQfbKU")
+      .collection("sales")
+      .onSnapshot((snap) => {
+        const data = snap.docs.map((doc) => {
+          return {
+            ...doc.data(),
+            id: doc.id,
+          };
+        });
+        setDbSales(data);
+      });
+  }, []);
+
+  /** buysData取得 */
+  useEffect(() => {
+    db.collection("management")
+      .doc("NcmaRejmRabdytHQfbKU")
+      .collection("buys")
+      .onSnapshot((snap) => {
+        const data = snap.docs.map((doc) => {
+          return {
+            ...doc.data(),
+            id: doc.id,
+          };
+        });
+        setDbBuys(data);
+      });
+  }, []);
+
+  /** 売上一覧 */
   const salesHistory = () => {
-    return salesData.map((data) => {
+    return dbSales.map((db) => {
       return (
-        <div key={data.id}>
-          <div>
-            {data.date} / {data.sales} 円
-            <button
-              onClick={() => {
-                deleteSales(data.id);
-              }}
-            >
-              削除
-            </button>
-          </div>
+        <div>
+          {db.date}/{db.salesPrice}円
+          <button class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded">
+            編集
+          </button>
+          <button
+            onClick={() => {
+              deleteSales(db.id);
+            }}
+            class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded"
+          >
+            削除
+          </button>
         </div>
       );
     });
   };
 
-  const buysHistory = () => {
-    return buysData.map((data) => {
-      return (
-        <div key={data.id}>
-          <div>
-            {data.date} / {data.buys} 円 / {data.detail}
-            <button
-              onClick={() => {
-                deleteBuys(data.id);
-              }}
-            >
-              削除
-            </button>
-          </div>
-        </div>
-      );
-    });
-  };
-
+  /** 売上削除 */
   const deleteSales = (id) => {
-    setSalesData(salesData.filter((data) => data.id !== id));
+    db.collection("management")
+      .doc("NcmaRejmRabdytHQfbKU")
+      .collection("sales")
+      .doc(id)
+      .get()
+      .then((res) => {
+        res.ref.delete();
+      });
   };
+
+  /** 経費一覧 */
+  const buysHistory = () => {
+    return dbBuys.map((db) => {
+      return (
+        <div>
+          {db.date}/{db.buysPrice}円:{db.detail}
+          <button class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded">
+            編集
+          </button>
+          <button
+            onClick={() => {
+              deleteBuys(db.id);
+            }}
+            class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded"
+          >
+            削除
+          </button>
+        </div>
+      );
+    });
+  };
+
+  /** 経費削除 */
   const deleteBuys = (id) => {
-    setBuysData(buysData.filter((data) => data.id !== id));
+    db.collection("management")
+      .doc("NcmaRejmRabdytHQfbKU")
+      .collection("buys")
+      .doc(id)
+      .get()
+      .then((res) => {
+        res.ref.delete();
+      });
   };
 
   const salesOpenBtn = () => {
@@ -116,13 +199,15 @@ const Management = ({ history }) => {
     setBuysOpen(!buysOpen);
   };
 
+  /** 差額表示 */
   const difference = totalSales() - totalBuys();
 
+  // 表
   const salesChart = () => {
     return (
       <div style={{ width: 100, height: 100, marginLeft: 50 }}>
         <ResponsiveContainer>
-          <AreaChart width={500} height={300} data={salesData}>
+          <AreaChart width={500} height={300}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" interval={0} />
             <YAxis
@@ -137,6 +222,26 @@ const Management = ({ history }) => {
     );
   };
 
+  const onFixedSubmit = (e) => {
+    e.preventDefault();
+    setFixedDate("");
+    setFixedItem("");
+    setFixedPrice("");
+    fixedDB(fixedDate, fixedItem, fixedPrice);
+  };
+
+  const fixedDB = (date, item, price) => {
+    db.collection("management")
+      .doc("NcmaRejmRabdytHQfbKU")
+      .collection("fixed")
+      .doc()
+      .set({
+        date,
+        item,
+        price,
+      });
+  };
+
   return (
     <>
       <h1>管理画面</h1>
@@ -147,64 +252,142 @@ const Management = ({ history }) => {
       >
         ホームページ編集
       </button>
+
+      <div>{salesChart()}</div>
+
       <div>
-        {salesChart()}
         <form onSubmit={plusSubmit}>
-          <label>売上</label>
-          <input
-            type="date"
-            name="date"
-            value={sales.date}
-            onChange={plusChange}
-          />
-          ¥
-          <input
-            type="number"
-            name="sales"
-            value={sales.sales}
-            onChange={plusChange}
-          />
-          <button>計上</button>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+              売上
+            </label>
+            <input
+              class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+              type="text"
+              type="date"
+              name="date"
+              value={salesDate}
+              onChange={(e) => setSalesDate(e.target.value)}
+            />
+            ¥
+            <input
+              class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+              type="number"
+              name="sales"
+              value={salesPrice}
+              onChange={(e) => setSalesPrice(e.target.value)}
+            />
+            <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded">
+              計上
+            </button>
+          </div>
+        </form>
+        <form onSubmit={minusSubmit}>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+              経費
+            </label>
+            <input
+              class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+              type="date"
+              name="date"
+              value={buysDate}
+              onChange={(e) => setBuysDate(e.target.value)}
+            />
+            ¥
+            <input
+              class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+              type="number"
+              name="buys"
+              value={buysPrice}
+              onChange={(e) => setBuysPrice(e.target.value)}
+            />
+            <input
+              class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+              type="text"
+              name="detail"
+              value={buysDetail}
+              onChange={(e) => setBuysDetail(e.target.value)}
+            />
+            <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded">
+              計上
+            </button>
+          </div>
         </form>
       </div>
-      <div>
-        <form onSubmit={minusSubmit}>
-          <label>経費</label>
+
+      {/* <div>
+        <h3>固定費登録</h3>
+        <form onSubmit={onFixedSubmit}>
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            支払日
+          </label>
           <input
             type="date"
-            name="date"
-            value={buys.date}
-            onChange={minusChange}
+            value={fixedDate}
+            onChange={(e) => {
+              setFixedDate(e.target.value);
+            }}
+            class="appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none "
           />
-          ¥
-          <input
-            type="number"
-            name="buys"
-            value={buys.buys}
-            onChange={minusChange}
-          />
+          <label class="block text-gray-700 text-sm font-bold mb-2">項目</label>
           <input
             type="text"
-            name="detail"
-            value={buys.detail}
-            onChange={minusChange}
+            value={fixedItem}
+            onChange={(e) => {
+              setFixedItem(e.target.value);
+            }}
+            class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
           />
-          <button>計上</button>
+          <label class="block text-gray-700 text-sm font-bold mb-2">金額</label>
+          <input
+            type="number"
+            value={fixedPrice}
+            onChange={(e) => {
+              setFixedPrice(e.target.value);
+            }}
+            class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+          />
+          <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded">
+            登録
+          </button>
         </form>
+      </div> */}
+
+      <div>
+        <h3>売上計</h3>
+        {totalSales() !== 0 && totalSales()}
+        {salesOpen === false ? (
+          <button onClick={salesOpenBtn}>一覧表示</button>
+        ) : (
+          <button onClick={salesOpenBtn}>一覧非表示</button>
+        )}
+        {salesOpen && salesHistory()}
       </div>
-      <h3>売上計</h3>
-      {totalSales() !== 0 && totalSales()}
-      <button onClick={salesOpenBtn}>一覧表示</button>
-      {salesOpen && salesHistory()}
-      <h3>経費計</h3>
-      {totalBuys() !== 0 && totalBuys()}
-      <button onClick={buysOpenBtn}>一覧表示</button>
-      {buysOpen && buysHistory()}
-      <h3>差額</h3>
-      <p className={difference < 0 && "minus"}>{difference}</p>
-      <button onClick={() => auth.signOut()}>ログアウト</button>
+
+      <div>
+        <h3>経費計</h3>
+        {totalBuys() !== 0 && totalBuys()}
+        {buysOpen === false ? (
+          <button onClick={buysOpenBtn}>一覧表示</button>
+        ) : (
+          <button onClick={buysOpenBtn}>一覧非表示</button>
+        )}
+        {buysOpen && buysHistory()}
+      </div>
+
+      <div>
+        <h3>差額</h3>
+        <p className={difference < 0 && "minus"}>{difference}</p>
+      </div>
+
+      <button
+        class="flex-shrink-0 bg-red-500 hover:bg-red-700 border-red-500 hover:border-red-700 text-sm border-4 text-white py-1 px-2 rounded"
+        onClick={() => auth.signOut()}
+      >
+        ログアウト
+      </button>
     </>
   );
 };
-
 export default Management;
