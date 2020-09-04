@@ -8,10 +8,11 @@ import takokara from "../../assets/img/takokara.jpeg";
 import beel from "../../assets/img/beel.jpeg";
 import sarada from "../../assets/img/images.jpeg";
 
-const Menu = ({ history }) => {
+const Menu = ({ history, selectItem }) => {
   const [cuisine, setCuisine] = useState([]);
   const [drink, setDrink] = useState([]);
   const [recommend, setRecommend] = useState([]);
+  const [banquetMenu, setBanquetMenu] = useState([]);
 
   useEffect(() => {
     db.collection("menu")
@@ -48,6 +49,31 @@ const Menu = ({ history }) => {
         setRecommend(menu);
       });
   }, []);
+
+  useEffect(() => {
+    db.collection("banquetMenu").onSnapshot((snap) => {
+      const data = snap.docs.map((doc) => {
+        return {
+          ...doc.data(),
+        };
+      });
+      setBanquetMenu(data);
+    });
+  }, []);
+
+  const banquet = () => {
+    return banquetMenu.map((menu) => {
+      return (
+        <>
+          <div>
+            <h3>・{menu.title}</h3>
+            <p>{menu.detail}</p>
+            <p>{menu.price}円</p>
+          </div>
+        </>
+      );
+    });
+  };
 
   const cuisineMenu = (item) => {
     const category = cuisine.filter((el) => el.category === item);
@@ -136,6 +162,7 @@ const Menu = ({ history }) => {
       {drinkMenu("non-al")}
       <img src={beel} />
       <h2>宴会コース</h2>
+      {banquet()}
     </>
   );
 };

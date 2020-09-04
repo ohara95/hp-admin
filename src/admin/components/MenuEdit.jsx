@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebese";
 import { useForm } from "react-hook-form";
+import { data } from "autoprefixer";
 
 const MenuEdit = () => {
   const [cuisine, setCuisine] = useState("");
@@ -270,6 +271,7 @@ const MenuEdit = () => {
       default:
     }
 
+    /** 分類に応じてメニュー名選べる関数 */
     if (dbMenu) {
       const category = dbMenu.filter((el) => el.category === item);
       return category.map((el) => {
@@ -284,99 +286,107 @@ const MenuEdit = () => {
 
   return (
     <>
-      <div>
-        <div
-          onClick={(e) => {
-            setSelectMethod(e.target.value);
-          }}
-          class="inline-flex"
-        >
-          <button
-            value="add"
-            class="hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
-          >
-            追加
-          </button>
-          <button
-            value="edit"
-            class="hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
-          >
-            変更
-          </button>
-          <button
-            value="delete"
-            class="hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
-          >
-            削除
-          </button>
-        </div>
-        <form>
-          <select
-            onClick={methodCheck}
-            onChange={(e) => {
-              setSelectClassifying(e.target.value);
+      <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 h-400">
+        <div class="w-70">
+          <h4>メニュー</h4>
+          <div
+            onClick={(e) => {
+              setSelectMethod(e.target.value);
             }}
-            class="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none"
+            class="flex justify-center items-center"
           >
-            <option value="none">選択して下さい</option>
-            <option value="cuisine">料理</option>
-            <option value="drink">ドリンク</option>
-            <option value="recommend">おすすめ</option>
-          </select>
-          {selected()}
-          {((selectCuisine && selectMethod == "edit") ||
-            selectMethod == "delete") && (
-            <div>
-              <select class="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none">
-                {editOption()}
-              </select>
-            </div>
-          )}
-
-          <div>
-            【名目】
-            <input
-              class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-              rows="4"
-              type="text"
-              value={toggleChange()}
-              onChange={(e) => {
-                controlChange(e.target.value);
-              }}
-            />
-          </div>
-          {selectMethod === "delete" ? (
-            <div style={{ color: "red" }}>※確認のため名目を記入して下さい</div>
-          ) : (
-            <div>
-              【金額】
-              <input
-                class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-                rows="4"
-                type="number"
-                value={amount}
-                onChange={(e) => {
-                  setAmount(e.target.value);
-                }}
-              />
-            </div>
-          )}
-          {selectMethod === "delete" ? (
             <button
-              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
-              onClick={onMenuSubmit}
+              value="add"
+              class="hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l "
+            >
+              追加
+            </button>
+            <button
+              value="edit"
+              class="hover:bg-gray-400 text-gray-800 font-bold py-2 px-4  "
+            >
+              変更
+            </button>
+            <button
+              value="delete"
+              class="hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
             >
               削除
             </button>
-          ) : (
-            <button
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-              onClick={onMenuSubmit}
-            >
-              送信
-            </button>
-          )}
-        </form>
+          </div>
+          <div class="flex justify-center items-center">
+            <div>
+              <select
+                onClick={methodCheck}
+                onChange={(e) => {
+                  setSelectClassifying(e.target.value);
+                }}
+                class="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none mt-5"
+              >
+                <option value="none">選択して下さい</option>
+                <option value="cuisine">料理</option>
+                <option value="drink">ドリンク</option>
+                <option value="recommend">おすすめ</option>
+              </select>
+              {selected()}
+              {((selectCuisine && selectMethod == "edit") ||
+                selectMethod == "delete") && (
+                <div>
+                  <select class="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none">
+                    {editOption()}
+                  </select>
+                </div>
+              )}
+            </div>
+          </div>
+          <form>
+            <div>
+              【名目】
+              <input
+                class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                rows="4"
+                type="text"
+                value={toggleChange()}
+                onChange={(e) => {
+                  controlChange(e.target.value);
+                }}
+              />
+            </div>
+            {selectMethod === "delete" ? (
+              <div style={{ color: "red" }}>
+                ※確認のため名目を記入して下さい
+              </div>
+            ) : (
+              <div>
+                【金額】
+                <input
+                  class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
+                  rows="4"
+                  type="number"
+                  value={amount}
+                  onChange={(e) => {
+                    setAmount(e.target.value);
+                  }}
+                />
+              </div>
+            )}
+            {selectMethod === "delete" ? (
+              <button
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
+                onClick={onMenuSubmit}
+              >
+                削除
+              </button>
+            ) : (
+              <button
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                onClick={onMenuSubmit}
+              >
+                送信
+              </button>
+            )}
+          </form>
+        </div>
       </div>
     </>
   );
