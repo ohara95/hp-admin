@@ -46,7 +46,7 @@ const Management = ({ history }) => {
       .doc()
       .set({
         date: new Date(date),
-        salesPrice: price,
+        salesPrice: parseInt(price),
         type,
       })
       .then()
@@ -71,7 +71,7 @@ const Management = ({ history }) => {
       .doc()
       .set({
         date: new Date(date),
-        buysPrice: price,
+        buysPrice: parseInt(price),
         detail,
         type,
       })
@@ -226,31 +226,70 @@ const Management = ({ history }) => {
   /** 差額表示 */
   const difference = totalSales() - totalBuys();
 
+  const setData = dbSales.concat(dbBuys);
+
+  /** 同じ日付の金額足し算 */
+  const res = [];
+  for (const key of setData) {
+    const item = res.find((item) => key.date.seconds === item.date.seconds);
+    if (item) {
+      if (key.detail) item.detail.push(key.detail);
+      if (key.buysPrice) item.buysPrice.push(key.buysPrice);
+      if (key.salesPrice) item.salesPrice.push(key.salesPrice);
+      continue;
+    }
+
+    res.push({
+      ...key,
+      buysPrice: [key.buysPrice],
+      salesPrice: [key.salesPrice],
+      detail: [key.detail],
+    });
+  }
+
+  const sumPrice = (price) => {
+    let sum = 0;
+    const noneUndefined = price.filter((d) => d !== undefined);
+    for (let i = 0; i < noneUndefined.length; i++) {
+      sum += noneUndefined[i];
+    }
+    return sum;
+  };
+
+  const pick = res.map((data) => {
+    return {
+      日付: format(data.date.toDate(), "MM/dd"),
+      売上: sumPrice(data.salesPrice),
+      経費: sumPrice(data.buysPrice),
+    };
+  });
+
   // 表
   const data = [
-    { month: "1月", 売上: 800, 経費: 1400 },
-    { month: "2月", 売上: 967, 経費: 1506 },
-    { month: "3月", 売上: 1098, 経費: 989 },
-    { month: "4月", 売上: 1200, 経費: 1228 },
-    { month: "5月", 売上: 1108, 経費: 1100 },
-    { month: "6月", 売上: 680, 経費: 1700 },
-    { month: "7月", 売上: 800, 経費: 1400 },
-    { month: "8月", 売上: 967, 経費: 1506 },
-    { month: "9月", 売上: 1098, 経費: 989 },
-    { month: "10月", 売上: 1200, 経費: 1228 },
-    { month: "11月", 売上: 1108, 経費: 1100 },
-    { month: "12月", 売上: 680, 経費: 2000 },
+    { month: "1月", 売上: 800, 経費: 1400, say: "hello" },
+    { month: "2月", 売上: 967, 経費: 1506, say: "hello" },
+    { month: "3月", 売上: 1098, 経費: 989, say: "hello" },
+    { month: "4月", 売上: 1200, 経費: 1228, say: "hello" },
+    { month: "5月", 売上: 1108, 経費: 1100, say: "hello" },
+    { month: "6月", 売上: 680, 経費: 1700, say: "hello" },
+    { month: "7月", 売上: 800, 経費: 1400, say: "hello" },
+    { month: "8月", 売上: 967, 経費: 1506, say: "hello" },
+    { month: "9月", 売上: 1098, 経費: 989, say: "hello" },
+    { month: "10月", 売上: 1200, 経費: 1228, say: "hello" },
+    { month: "11月", 売上: 1108, 経費: 1100, say: "hello" },
+    { month: "12月", 売上: 680, 経費: 2000, say: "hello" },
   ];
   const salesChart = () => {
     return (
       <ComposedChart //グラフ全体のサイズや位置、データを指定。場合によってmarginで上下左右の位置を指定する必要あり。
         width={600} //グラフ全体の幅を指定
         height={280} //グラフ全体の高さを指定
-        data={data} //ここにArray型のデータを指定
+        data={pick} //ここにArray型のデータを指定
         margin={{ top: 20, right: 60, bottom: 0, left: 0 }} //marginを指定
       >
         <XAxis
-          dataKey="month" //Array型のデータの、X軸に表示したい値のキーを指定
+          dataKey="日付" //Array型のデータの、X軸に表示したい値のキーを指定
+          interval={0}
         />
         <YAxis />
         <Tooltip />
@@ -296,57 +335,6 @@ const Management = ({ history }) => {
   //       price,
   //     });
   // };
-
-  // const res = [];
-  // for (const key of dbBuys) {
-  //   const item = res.find((item) => key.date === item.date);
-  //   if (res.find((item) => key.date === item.date)) {
-  //     item.price.push(key.price);
-  //     item.detail.push(key.detail);
-  //     continue;
-  //   }
-
-  //   res.push({
-  //     ...key,
-  //     price: [key.price],
-  //     detail: [key.detail],
-  //   });
-  // }
-  // console.log(res);
-
-  // const sample = [
-  //   { num: 1, price: 100 },
-  //   { num: 23, price: 140 },
-  //   { num: 1, price: 190 },
-  // ];
-
-  // const res = [];
-
-  // for (const fee of sample) {
-  //   const item = res.find((item) => fee.num === item.num);
-  //   console.log(item);
-  //   if (res.find((item) => fee.num === item.num)) {
-  //     item.price.push(fee.price);
-  //     continue;
-  //   }
-
-  //   res.push({
-  //     ...fee,
-  //     price: [fee.price],
-  //   });
-  // }
-
-  // console.log(res);
-
-  // const result = Object.entries(
-  //   sample.reduce((obj, data) => {
-  //     if (obj[data.date] == null) obj[data.date] = [];
-  //     obj[data.date].push(data.description);
-  //     return obj;
-  //   })
-  // ).map(([date, description]) => ({ date, description }));
-
-  // console.log(result);
 
   return (
     <>
