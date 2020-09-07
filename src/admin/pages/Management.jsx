@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { auth, db } from "../../config/firebese";
+import "./management.scss";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -484,8 +485,8 @@ const Management = ({ history }) => {
         </form>
       </div> */}
 
-      <div class="flex justify-around ">
-        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <div class="flex justify-around h-32 ">
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 overflow-auto ">
           <h3 class="block text-gray-700 text-sm font-bold mb-2">売上計</h3>
           {totalSales() !== 0 && `${totalSales()}円`}
           {salesOpen === false ? (
@@ -502,7 +503,7 @@ const Management = ({ history }) => {
           {salesOpen && salesHistory()}
         </div>
 
-        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 overflow-auto">
           <h3 class="block text-gray-700 text-sm font-bold mb-2">経費計</h3>
           {totalBuys() !== 0 && `${totalBuys()}円`}
           {buysOpen === false ? (
