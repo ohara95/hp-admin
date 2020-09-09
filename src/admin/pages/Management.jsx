@@ -25,6 +25,8 @@ const Management = ({ history }) => {
   const [fixedDate, setFixedDate] = useState(null);
   const [fixedItem, setFixedItem] = useState("");
   const [fixedPrice, setFixedPrice] = useState("");
+  const [edit, setEdit] = useState(false);
+  const [editSalesPrice, setEditSalesPrice] = useState("");
 
   const [salesOpen, setSalesOpen] = useState(false);
   const [buysOpen, setBuysOpen] = useState(false);
@@ -82,6 +84,7 @@ const Management = ({ history }) => {
       });
   };
 
+  /** 売上計算 */
   const totalSales = () => {
     const total = dbSales.reduce(
       (cumulative, current) => cumulative + parseInt(current.salesPrice),
@@ -89,7 +92,7 @@ const Management = ({ history }) => {
     );
     return total;
   };
-
+  /** 経費計算 */
   const totalBuys = () => {
     const total = dbBuys.reduce(
       (cumulative, current) => cumulative + parseInt(current.buysPrice),
@@ -104,7 +107,6 @@ const Management = ({ history }) => {
       .doc("NcmaRejmRabdytHQfbKU")
       .collection("sales")
       .orderBy("date")
-      .limit(3)
       .onSnapshot((snap) => {
         const data = snap.docs.map((doc) => {
           return {
@@ -122,7 +124,6 @@ const Management = ({ history }) => {
       .doc("NcmaRejmRabdytHQfbKU")
       .collection("buys")
       .orderBy("date")
-      .limit(3)
       .onSnapshot((snap) => {
         const data = snap.docs.map((doc) => {
           return {
@@ -144,8 +145,32 @@ const Management = ({ history }) => {
             &nbsp;
             <i class="fas fa-angle-down" />
           </p>
-          <p>{db.salesPrice}円</p>
-          <button class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded">
+          {edit ? (
+            <form
+              onSubmit={(e) => {
+                upDateSales(e, db.id);
+              }}
+            >
+              <input
+                type="number"
+                value={editSalesPrice}
+                onChange={(e) => {
+                  setEditSalesPrice(e.target.value);
+                }}
+                placeholder={db.salesPrice}
+              />
+              <button type="submit">決定</button>
+            </form>
+          ) : (
+            <p>{db.salesPrice}円</p>
+          )}
+
+          <button
+            id={db.id}
+            name={db.change}
+            onClick={inputPossible}
+            class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded"
+          >
             編集
           </button>
           <button
@@ -158,6 +183,31 @@ const Management = ({ history }) => {
           </button>
         </div>
       );
+    });
+  };
+
+  const upDateSales = (e, id) => {
+    e.preventDefault();
+    setEditSalesPrice("");
+    if (editSalesPrice) {
+      db.collection("management")
+        .doc("NcmaRejmRabdytHQfbKU")
+        .collection("sales")
+        .doc(id)
+        .get()
+        .then((res) => {
+          res.ref.update({
+            salesPrice: editSalesPrice,
+          });
+        });
+    }
+  };
+
+  const inputPossible = (e) => {
+    dbSales.map((db) => {
+      if (e.target.id === db.id) {
+        setEdit(!edit);
+      }
     });
   };
 
@@ -257,6 +307,15 @@ const Management = ({ history }) => {
     return sum;
   };
 
+  /** 日付順にソート */
+  res.sort((a, b) => {
+    if (a.date < b.date) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+
   const pick = res.map((data) => {
     return {
       日付: format(data.date.toDate(), "MM/dd"),
@@ -267,18 +326,8 @@ const Management = ({ history }) => {
 
   // 表
   const data = [
-    { month: "1月", 売上: 800, 経費: 1400, say: "hello" },
-    { month: "2月", 売上: 967, 経費: 1506, say: "hello" },
-    { month: "3月", 売上: 1098, 経費: 989, say: "hello" },
-    { month: "4月", 売上: 1200, 経費: 1228, say: "hello" },
-    { month: "5月", 売上: 1108, 経費: 1100, say: "hello" },
-    { month: "6月", 売上: 680, 経費: 1700, say: "hello" },
-    { month: "7月", 売上: 800, 経費: 1400, say: "hello" },
-    { month: "8月", 売上: 967, 経費: 1506, say: "hello" },
-    { month: "9月", 売上: 1098, 経費: 989, say: "hello" },
-    { month: "10月", 売上: 1200, 経費: 1228, say: "hello" },
-    { month: "11月", 売上: 1108, 経費: 1100, say: "hello" },
-    { month: "12月", 売上: 680, 経費: 2000, say: "hello" },
+    { month: "1月", 売上: 800, 経費: 1400 },
+    { month: "2月", 売上: 967, 経費: 1506 },
   ];
   const salesChart = () => {
     return (
@@ -488,7 +537,7 @@ const Management = ({ history }) => {
       <div class="flex justify-around h-32 ">
         <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 overflow-auto ">
           <h3 class="block text-gray-700 text-sm font-bold mb-2">売上計</h3>
-          {totalSales() !== 0 && `${totalSales()}円`}
+          {totalSales() !== 0 && `${totalSales().toLocaleString()}円`}
           {salesOpen === false ? (
             <button onClick={salesOpenBtn}>
               &nbsp;
@@ -505,7 +554,7 @@ const Management = ({ history }) => {
 
         <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 overflow-auto">
           <h3 class="block text-gray-700 text-sm font-bold mb-2">経費計</h3>
-          {totalBuys() !== 0 && `${totalBuys()}円`}
+          {totalBuys() !== 0 && `${totalBuys().toLocaleString()}円`}
           {buysOpen === false ? (
             <button onClick={buysOpenBtn}>
               &nbsp;
@@ -523,7 +572,9 @@ const Management = ({ history }) => {
 
         <div>
           <h3 class="block text-gray-700 text-sm font-bold mb-2">差額</h3>
-          <p className={difference < 0 && "minus"}>{difference}</p>
+          <p className={difference < 0 && "minus"}>
+            {difference.toLocaleString()}
+          </p>
         </div>
       </div>
 
