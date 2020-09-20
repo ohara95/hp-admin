@@ -79,19 +79,31 @@ const BanquetEdit = () => {
           >
             <button
               value="add"
-              class="hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
+              class={
+                operation === "add"
+                  ? "hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 "
+                  : "hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 "
+              }
             >
               追加
             </button>
             <button
               value="edit"
-              class="hover:bg-gray-400 text-gray-800 font-bold py-2 px-4  "
+              class={
+                operation === "edit"
+                  ? "hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 "
+                  : "hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 "
+              }
             >
               変更
             </button>
             <button
               value="delete"
-              class="hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+              class={
+                operation === "delete"
+                  ? "hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 "
+                  : "hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 "
+              }
             >
               削除
             </button>

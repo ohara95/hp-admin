@@ -6,10 +6,13 @@ import "./main.css";
 
 const MainPage = () => {
   return (
-    <div>
-      <img src={store} style={{ width: "100%", height: 400 }} />
+    <div className="background">
+      <img
+        src={store}
+        style={{ borderRadius: "50%", height: 600, width: 600 }}
+      />
       <Header />
-      <Information />
+      {/* <Information /> */}
     </div>
   );
 };

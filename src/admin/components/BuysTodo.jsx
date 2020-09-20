@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebese";
 import { CustomInput } from "../../atoms/CustomInput";
+import { set } from "date-fns";
 
 const BuysTodo = () => {
   const [todos, setTodos] = useState([]);
   const [content, setContent] = useState("");
-  const [isDone, setIsDone] = useState(false);
   return (
     <>
       <BuysListForm
@@ -13,23 +13,23 @@ const BuysTodo = () => {
         setTodos={setTodos}
         content={content}
         setContent={setContent}
-        isDone={isDone}
       />
-      <BuysTodoList todos={todos} isDone={isDone} setIsDone={setIsDone} />
+      <BuysTodoList todos={todos} />
     </>
   );
 };
 
-const BuysTodoList = ({ todos, isDone, setIsDone }) => {
+const BuysTodoList = ({ todos, setTodos }) => {
   return todos.map((todo) => {
     return (
       <>
         <ul key={todo.id}>
           <BuysTodoItem
             item={todo.content}
-            isDone={isDone}
-            setIsDone={setIsDone}
             id={todo.id}
+            isDone={todo.isDone}
+            todos={todos}
+            setTodos={setTodos}
           />
         </ul>
       </>
@@ -37,10 +37,13 @@ const BuysTodoList = ({ todos, isDone, setIsDone }) => {
   });
 };
 
-const BuysTodoItem = ({ item, id, isDone, setIsDone }) => {
+const BuysTodoItem = ({ item, id, isDone, setTodos, todos }) => {
   const checkedItem = (itemId) => {
-    setIsDone(!isDone);
     if (itemId === id) {
+      // const changeIsDone = todos.map((todo) => {
+      //   return { ...todo, isDone: !todo.isDone };
+      // });
+      // setTodos(changeIsDone);
       db.collection("todos").doc(id).update({
         isDone: !isDone,
       });
@@ -53,7 +56,7 @@ const BuysTodoItem = ({ item, id, isDone, setIsDone }) => {
           value={id}
           type="checkbox"
           checked={isDone}
-          onClick={(e) => checkedItem(e.target.id)}
+          onClick={(e) => checkedItem(e.target.value)}
         />
         {item}
       </li>
@@ -61,7 +64,7 @@ const BuysTodoItem = ({ item, id, isDone, setIsDone }) => {
   );
 };
 
-const BuysListForm = ({ todos, setTodos, content, setContent, isDone }) => {
+const BuysListForm = ({ todos, setTodos, content, setContent }) => {
   const addTodo = (e) => {
     e.preventDefault();
     if (content === "") {
@@ -70,7 +73,7 @@ const BuysListForm = ({ todos, setTodos, content, setContent, isDone }) => {
       setContent("");
       db.collection("todos").add({
         content,
-        isDone,
+        isDone: false,
       });
     }
   };
@@ -87,13 +90,31 @@ const BuysListForm = ({ todos, setTodos, content, setContent, isDone }) => {
     });
   }, []);
 
-  const deleteTodo = () => {};
+  const deleteTodo = (e) => {
+    e.preventDefault();
+    for (const key of todos) {
+      db.collection("todos")
+        .doc(key.id)
+        .onSnapshot((snap) => {
+          snap.ref.delete();
+        });
+    }
+  };
+
+  const allCheck = (e) => {
+    e.preventDefault();
+    const changeIsDone = todos.map((todo) => {
+      return { ...todo, isDone: !todo.isDone };
+    });
+    setTodos(changeIsDone);
+  };
   return (
     <>
       <form>
         <CustomInput state={content} setter={setContent} type={"text"} />
         <button onClick={addTodo}>追加</button>
         <button onClick={deleteTodo}>削除</button>
+        <button onClick={allCheck}>一括チェック</button>
       </form>
     </>
   );

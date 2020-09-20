@@ -36,8 +36,8 @@ const Management = ({ history }) => {
   const [toggleTable, setToggleTable] = useState("month");
   const [monthDataArr, setMonthDataArr] = useState([]);
 
-  const [salesOpen, setSalesOpen] = useState(false);
-  const [buysOpen, setBuysOpen] = useState(false);
+  const [salesEditOpen, setSalesEditOpen] = useState(false);
+  const [buysEditOpen, setBuysEditOpen] = useState(false);
 
   const [dbSales, setDbSales] = useState([]);
   const [dbBuys, setDbBuys] = useState([]);
@@ -155,6 +155,21 @@ const Management = ({ history }) => {
       return (
         <div>
           <div style={{ display: "flex" }}>
+            <button
+              id={db.id}
+              onClick={inputPossible}
+              class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded"
+            >
+              <i class="far fa-edit"></i>
+            </button>
+            <button
+              onClick={() => {
+                deleteSales(db.id);
+              }}
+              class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded"
+            >
+              <i class="far fa-trash-alt"></i>
+            </button>
             <p>
               {format(db.date.toDate(), "MM/dd")}
               &nbsp;
@@ -178,22 +193,6 @@ const Management = ({ history }) => {
             ) : (
               <p>{db.salesPrice}円</p>
             )}
-
-            <button
-              id={db.id}
-              onClick={inputPossible}
-              class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded"
-            >
-              編集
-            </button>
-            <button
-              onClick={() => {
-                deleteSales(db.id);
-              }}
-              class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded"
-            >
-              削除
-            </button>
           </div>
         </div>
       );
@@ -222,6 +221,7 @@ const Management = ({ history }) => {
   /** 押した編集ボタンのID取得(売上) */
   const inputPossible = (e) => {
     setEdit(!edit);
+    salesEditBtn();
     return dbSales.map((db) => {
       if (e.target.id === db.id) {
         setEditId(db.id);
@@ -247,6 +247,21 @@ const Management = ({ history }) => {
       return (
         <div>
           <div style={{ display: "flex" }}>
+            <button
+              id={db.id}
+              onClick={inputPossibleBuys}
+              class="text-teal-500 "
+            >
+              <i class="far fa-edit" />
+            </button>
+            <button
+              onClick={() => {
+                deleteBuys(db.id);
+              }}
+              class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded"
+            >
+              <i class="far fa-trash-alt"></i>
+            </button>
             <p>
               {format(db.date.toDate(), "MM/dd")}
               &nbsp;
@@ -283,21 +298,6 @@ const Management = ({ history }) => {
                 {db.detail}
               </p>
             )}
-            <button
-              id={db.id}
-              onClick={inputPossibleBuys}
-              class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded"
-            >
-              編集
-            </button>
-            <button
-              onClick={() => {
-                deleteBuys(db.id);
-              }}
-              class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded"
-            >
-              削除
-            </button>
           </div>
         </div>
       );
@@ -359,11 +359,11 @@ const Management = ({ history }) => {
       });
   };
 
-  const salesOpenBtn = () => {
-    setSalesOpen(!salesOpen);
+  const salesEditBtn = () => {
+    setSalesEditOpen(!salesEditOpen);
   };
-  const buysOpenBtn = () => {
-    setBuysOpen(!buysOpen);
+  const buysEditOpenBtn = () => {
+    setBuysEditOpen(!buysEditOpen);
   };
 
   /** 差額表示 */
@@ -372,23 +372,50 @@ const Management = ({ history }) => {
   const setData = dbSales.concat(dbBuys);
 
   /** 同じ日付の金額足し算 */
-  const res = [];
-  for (const key of setData) {
-    const item = res.find((item) => key.date.seconds === item.date.seconds);
-    if (item) {
-      if (key.detail) item.detail.push(key.detail);
-      if (key.buysPrice) item.buysPrice.push(key.buysPrice);
-      if (key.salesPrice) item.salesPrice.push(key.salesPrice);
-      continue;
-    }
+  const sumData = (selectData) => {
+    console.log(selectData);
+    const res = [];
+    for (const key of selectData) {
+      const item = res.find((item) => key.date.seconds === item.date.seconds);
+      if (item) {
+        item.detail.push(key.detail);
+        item.buysPrice.push(key.buysPrice);
+        item.salesPrice.push(key.salesPrice);
+        continue;
+      }
 
-    res.push({
-      ...key,
-      buysPrice: [key.buysPrice],
-      salesPrice: [key.salesPrice],
-      detail: [key.detail],
+      res.push({
+        ...key,
+        buysPrice: [key.buysPrice],
+        salesPrice: [key.salesPrice],
+        detail: [key.detail],
+      });
+    }
+    return res;
+  };
+
+  const sumMonthData = (selectData) => {};
+
+  /** 代案 */
+  const testSum = () => {
+    const set = new Set();
+    const newArr = [];
+    dbSales.forEach((sales) => {
+      if (set.has(sales)) {
+        newArr.forEach((data, i) => {
+          if (sales.date === data.date) {
+            newArr[i].salesPrice += data.salesPrice;
+          }
+        });
+      } else {
+        newArr.push(sales);
+      }
+      set.add(sales.date);
     });
-  }
+    return newArr;
+  };
+
+  console.log(testSum());
 
   /** undefinedを除去 */
   const sumPrice = (price) => {
@@ -401,7 +428,7 @@ const Management = ({ history }) => {
   };
 
   /** 日付順にソート */
-  res.sort((a, b) => {
+  sumData(setData).sort((a, b) => {
     if (a.date < b.date) {
       return -1;
     } else {
@@ -410,7 +437,7 @@ const Management = ({ history }) => {
   });
 
   /** 表用のデータ(今月) */
-  const pick = res.map((data) => {
+  const pick = sumData(setData).map((data) => {
     if (toggleTable === "month") {
       if (Number(format(data.date.toDate(), "MM")) === toMonth) {
         return {
@@ -423,26 +450,40 @@ const Management = ({ history }) => {
   });
 
   /** 表用のデータ(月計) */
+  // switch文で12ヶ月分分けたい
+  // 条件文が思い浮かばない...正規表現だめ？
+  // 正規表現のループできない
   const monthData = () => {
     let salesSum = 0;
     let buysSum = 0;
-    const monthDataCalc = res.map((data) => {
-      const monthCorrect = format(data.date.toDate(), "MM/dd");
-      const monthReg = /^((0)[9])\/./;
-      if (monthReg.test(monthCorrect)) {
-        const calcSalesPrice = sumPrice(data.salesPrice);
-        const calcBuysPrice = sumPrice(data.buysPrice);
-        salesSum += calcSalesPrice;
-        buysSum += calcBuysPrice;
-        return {
-          日付: "9月",
-          売上: salesSum,
-          経費: buysSum,
-        };
-      }
+    let arr = [];
+    const monthDataCalc = sumData(setData).map((key) => {
+      const monthCorrect = format(key.date.toDate(), "MM"); //日付
+      const calcSalesPrice = sumPrice(key.salesPrice);
+      const calcBuysPrice = sumPrice(key.buysPrice);
     });
-    return monthDataCalc[monthDataCalc.length - 1];
+    return sumMonthData(monthDataCalc);
   };
+  // const monthData = () => {
+  //   let salesSum = 0;
+  //   let buysSum = 0;
+  //   const monthDataCalc = res.map((data) => {
+  //     const monthCorrect = format(data.date.toDate(), "MM/dd");
+  //     const monthReg = /^((0)[9])\/./;
+  //     if (monthReg.test(monthCorrect)) {
+  //       const calcSalesPrice = sumPrice(data.salesPrice);
+  //       const calcBuysPrice = sumPrice(data.buysPrice);
+  //       salesSum += calcSalesPrice;
+  //       buysSum += calcBuysPrice;
+  //       return {
+  //         日付: "9月",
+  //         売上: salesSum,
+  //         経費: buysSum,
+  //       };
+  //     }
+  //   });
+  //   return monthDataCalc[monthDataCalc.length - 1];
+  // };
 
   // 表
   const data = [
@@ -667,36 +708,11 @@ const Management = ({ history }) => {
           <div class="px-8 pt-6 pb-8">
             <h3 class="block text-gray-700 text-sm font-bold mb-2">売上計</h3>
             {totalSales() !== 0 && `${totalSales().toLocaleString()}円`}
-            {salesOpen === false ? (
-              <button onClick={salesOpenBtn}>
-                &nbsp;
-                <i class="fas fa-plus-circle" />
-              </button>
-            ) : (
-              <button onClick={salesOpenBtn}>
-                &nbsp;
-                <i class="fas fa-minus-circle" />
-              </button>
-            )}
-            {salesOpen && salesHistory()}
           </div>
 
           <div class="px-8 pt-6 pb-8 mb-4">
             <h3 class="block text-gray-700 text-sm font-bold mb-2">経費計</h3>
             {totalBuys() !== 0 && `${totalBuys().toLocaleString()}円`}
-            {buysOpen === false ? (
-              <button onClick={buysOpenBtn}>
-                &nbsp;
-                <i class="fas fa-plus-circle" />
-              </button>
-            ) : (
-              <button onClick={buysOpenBtn}>
-                &nbsp;
-                <i class="fas fa-minus-circle" />
-              </button>
-            )}
-
-            {buysOpen && buysHistory()}
           </div>
 
           <div class="px-8 pt-6 pb-8 mb-4">
@@ -734,7 +750,7 @@ const Management = ({ history }) => {
           class="px-8 pt-6 pb-8 mb-4"
           style={{ height: 400, width: "30%", overflow: "scroll" }}
         >
-          todo
+          買い物リスト
           <BuysTodo />
         </div>
       </div>
