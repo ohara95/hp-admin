@@ -16,6 +16,7 @@ import {
 } from "recharts";
 import { useEffect } from "react";
 import { format } from "date-fns";
+import { FormProvider } from "react-hook-form";
 
 const Management = ({ history }) => {
   const [salesDate, setSalesDate] = useState(null);
@@ -33,7 +34,7 @@ const Management = ({ history }) => {
   const [buysEditId, setBuysEditId] = useState("");
   const [editBuysPrice, setEditBuysPrice] = useState("");
   const [editBuysDetail, setEditBuysDetail] = useState("");
-  const [toggleTable, setToggleTable] = useState("month");
+  const [toggleTable, setToggleTable] = useState("months");
   const [monthDataArr, setMonthDataArr] = useState([]);
 
   const [salesEditOpen, setSalesEditOpen] = useState(false);
@@ -41,8 +42,7 @@ const Management = ({ history }) => {
 
   const [dbSales, setDbSales] = useState([]);
   const [dbBuys, setDbBuys] = useState([]);
-
-  const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const setData = dbSales.concat(dbBuys);
 
   // const today = new Date().toISOString().slice(0, 10);
   const today = new Date();
@@ -101,7 +101,7 @@ const Management = ({ history }) => {
   /** 売上計算 */
   const totalSales = () => {
     const total = dbSales.reduce(
-      (cumulative, current) => cumulative + parseInt(current.salesPrice),
+      (cumulative, current) => cumulative + current.salesPrice,
       0
     );
     return total;
@@ -109,7 +109,7 @@ const Management = ({ history }) => {
   /** 経費計算 */
   const totalBuys = () => {
     const total = dbBuys.reduce(
-      (cumulative, current) => cumulative + parseInt(current.buysPrice),
+      (cumulative, current) => cumulative + current.buysPrice,
       0
     );
     return total;
@@ -157,19 +157,17 @@ const Management = ({ history }) => {
           <div style={{ display: "flex" }}>
             <button
               id={db.id}
-              onClick={inputPossible}
-              class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded"
-            >
-              <i class="far fa-edit"></i>
-            </button>
+              onClick={(e) => {
+                inputPossible(e.target.id);
+              }}
+              class="text-teal-500 py-1 px-2 rounded far fa-edit"
+            />
             <button
               onClick={() => {
                 deleteSales(db.id);
               }}
-              class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded"
-            >
-              <i class="far fa-trash-alt"></i>
-            </button>
+              class="text-teal-500 py-1 px-2 rounded far fa-trash-alt"
+            />
             <p>
               {format(db.date.toDate(), "MM/dd")}
               &nbsp;
@@ -219,11 +217,11 @@ const Management = ({ history }) => {
   };
 
   /** 押した編集ボタンのID取得(売上) */
-  const inputPossible = (e) => {
+  const inputPossible = (id) => {
     setEdit(!edit);
     salesEditBtn();
     return dbSales.map((db) => {
-      if (e.target.id === db.id) {
+      if (id === db.id) {
         setEditId(db.id);
       }
     });
@@ -250,18 +248,14 @@ const Management = ({ history }) => {
             <button
               id={db.id}
               onClick={inputPossibleBuys}
-              class="text-teal-500 "
-            >
-              <i class="far fa-edit" />
-            </button>
+              class="text-teal-500 far fa-edit"
+            />
             <button
               onClick={() => {
                 deleteBuys(db.id);
               }}
-              class="flex-shrink-0 bg-white text-sm text-teal-500 py-1 px-2 rounded"
-            >
-              <i class="far fa-trash-alt"></i>
-            </button>
+              class="text-teal-500 py-1 px-2 rounded far fa-trash-alt"
+            />
             <p>
               {format(db.date.toDate(), "MM/dd")}
               &nbsp;
@@ -366,66 +360,63 @@ const Management = ({ history }) => {
     setBuysEditOpen(!buysEditOpen);
   };
 
-  /** 差額表示 */
-  const difference = totalSales() - totalBuys();
-
-  const setData = dbSales.concat(dbBuys);
-
   /** 同じ日付の金額足し算 */
   const sumData = (selectData) => {
-    console.log(selectData);
     const res = [];
     for (const key of selectData) {
       const item = res.find((item) => key.date.seconds === item.date.seconds);
       if (item) {
-        item.detail.push(key.detail);
-        item.buysPrice.push(key.buysPrice);
-        item.salesPrice.push(key.salesPrice);
+        // resで作った配列にpush
+        if (item.detail && key.detail) {
+          item.detail.push(key.detail);
+        }
+        if (item.buysPrice && key.buysPrice) {
+          item.buysPrice.push(key.buysPrice);
+        }
+        if (item.salesPrice && key.salesPrice) {
+          item.salesPrice.push(key.salesPrice);
+        }
         continue;
       }
-
-      res.push({
-        ...key,
-        buysPrice: [key.buysPrice],
-        salesPrice: [key.salesPrice],
-        detail: [key.detail],
-      });
+      if (key.detail && key.buysPrice && key.salesPrice) {
+        res.push({
+          ...key,
+          buysPrice: [key.buysPrice],
+          salesPrice: [key.salesPrice],
+          detail: [key.detail],
+        });
+      } else if (key.salesPrice) {
+        res.push({
+          ...key,
+          buysPrice: [0],
+          salesPrice: [key.salesPrice],
+          detail: [],
+        });
+      } else if (key.buysPrice && key.detail) {
+        res.push({
+          ...key,
+          buysPrice: [key.buysPrice],
+          salesPrice: [0],
+          detail: [key.detail],
+        });
+      }
     }
     return res;
   };
 
   const sumMonthData = (selectData) => {};
 
-  /** 代案 */
-  const testSum = () => {
-    const set = new Set();
-    const newArr = [];
-    dbSales.forEach((sales) => {
-      if (set.has(sales)) {
-        newArr.forEach((data, i) => {
-          if (sales.date === data.date) {
-            newArr[i].salesPrice += data.salesPrice;
-          }
-        });
-      } else {
-        newArr.push(sales);
-      }
-      set.add(sales.date);
-    });
-    return newArr;
-  };
-
-  console.log(testSum());
-
-  /** undefinedを除去 */
+  /** 配列内の合算 */
   const sumPrice = (price) => {
     let sum = 0;
-    const noneUndefined = price.filter((d) => d !== undefined);
-    for (let i = 0; i < noneUndefined.length; i++) {
-      sum += noneUndefined[i];
+    for (let i = 0; i < price.length; i++) {
+      sum += price[i];
     }
     return sum;
   };
+
+  /** 差額表示 */
+  const difference = totalSales(dbSales) - totalBuys(dbBuys);
 
   /** 日付順にソート */
   sumData(setData).sort((a, b) => {
@@ -437,65 +428,67 @@ const Management = ({ history }) => {
   });
 
   /** 表用のデータ(今月) */
-  const pick = sumData(setData).map((data) => {
-    if (toggleTable === "month") {
-      if (Number(format(data.date.toDate(), "MM")) === toMonth) {
-        return {
-          日付: format(data.date.toDate(), "MM/dd"),
-          売上: sumPrice(data.salesPrice),
-          経費: sumPrice(data.buysPrice),
-        };
-      }
-    }
-  });
+  const graphData = sumData(setData)
+    .filter((data) => Number(format(data.date.toDate(), "MM")) === toMonth)
+    .map((data) => {
+      return {
+        日付: format(data.date.toDate(), "MM/dd"),
+        売上: sumPrice(data.salesPrice),
+        経費: sumPrice(data.buysPrice),
+      };
+    });
 
   /** 表用のデータ(月計) */
-  // switch文で12ヶ月分分けたい
-  // 条件文が思い浮かばない...正規表現だめ？
-  // 正規表現のループできない
   const monthData = () => {
-    let salesSum = 0;
-    let buysSum = 0;
     let arr = [];
-    const monthDataCalc = sumData(setData).map((key) => {
-      const monthCorrect = format(key.date.toDate(), "MM"); //日付
-      const calcSalesPrice = sumPrice(key.salesPrice);
-      const calcBuysPrice = sumPrice(key.buysPrice);
+    const totalData = sumData(setData);
+
+    for (const key of totalData) {
+      const item = arr.find(
+        (data) =>
+          format(data.date.toDate(), "MM") === format(key.date.toDate(), "MM")
+      );
+      if (item) {
+        if (item.salesPrice === 0) {
+          item.salesPrice += parseInt(key.salesPrice);
+        } else if (Array.isArray(item.salesPrice)) {
+          if (Array.isArray(key.salesPrice)) {
+            item.salesPrice.concat(key.salesPrice);
+          } else {
+            item.salesPrice.push(key.salesPrice);
+          }
+        }
+        if (item.buysPrice === 0) {
+          item.buysPrice += parseInt(key.buysPrice);
+        } else if (Array.isArray(item.buysPrice)) {
+          if (Array.isArray(key.buysPrice)) {
+            item.buysPrice.concat(key.buysPrice);
+          } else {
+            item.buysPrice.push(key.buysPrice);
+          }
+        }
+      }
+      arr.push({
+        ...key,
+      });
+    }
+    const newArr = arr.map((data) => {
+      return {
+        日付: `${format(data.date.toDate(), "MM")}月`,
+        売上: sumPrice(data.salesPrice),
+        経費: sumPrice(data.buysPrice),
+      };
     });
-    return sumMonthData(monthDataCalc);
+    return newArr;
   };
-  // const monthData = () => {
-  //   let salesSum = 0;
-  //   let buysSum = 0;
-  //   const monthDataCalc = res.map((data) => {
-  //     const monthCorrect = format(data.date.toDate(), "MM/dd");
-  //     const monthReg = /^((0)[9])\/./;
-  //     if (monthReg.test(monthCorrect)) {
-  //       const calcSalesPrice = sumPrice(data.salesPrice);
-  //       const calcBuysPrice = sumPrice(data.buysPrice);
-  //       salesSum += calcSalesPrice;
-  //       buysSum += calcBuysPrice;
-  //       return {
-  //         日付: "9月",
-  //         売上: salesSum,
-  //         経費: buysSum,
-  //       };
-  //     }
-  //   });
-  //   return monthDataCalc[monthDataCalc.length - 1];
-  // };
 
   // 表
-  const data = [
-    { month: "1月", 売上: 800, 経費: 1400 },
-    { month: "2月", 売上: 967, 経費: 1506 },
-  ];
   const salesChart = () => {
     return (
       <ComposedChart //グラフ全体のサイズや位置、データを指定。場合によってmarginで上下左右の位置を指定する必要あり。
         width={600} //グラフ全体の幅を指定
         height={280} //グラフ全体の高さを指定
-        data={pick} //ここにArray型のデータを指定
+        data={toggleTable === "months" ? graphData : monthData()} //ここにArray型のデータを指定
         style={{ margin: "0 auto" }}
       >
         <XAxis
@@ -571,6 +564,12 @@ const Management = ({ history }) => {
             月間
           </button>
           <button
+            value="months"
+            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 "
+          >
+            月別
+          </button>
+          <button
             value="year"
             class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded-r "
           >
@@ -595,7 +594,7 @@ const Management = ({ history }) => {
                 class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
                 type="text"
                 type="date"
-                name="date"
+                date="date"
                 value={salesDate}
                 onChange={(e) => setSalesDate(e.target.value)}
               />
@@ -607,7 +606,7 @@ const Management = ({ history }) => {
               <input
                 class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
                 type="number"
-                name="sales"
+                date="sales"
                 value={salesPrice}
                 onChange={(e) => setSalesPrice(e.target.value)}
               />
@@ -629,7 +628,7 @@ const Management = ({ history }) => {
               <input
                 class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
                 type="date"
-                name="date"
+                date="date"
                 value={buysDate}
                 onChange={(e) => setBuysDate(e.target.value)}
               />
@@ -641,7 +640,7 @@ const Management = ({ history }) => {
               <input
                 class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
                 type="number"
-                name="buys"
+                date="buys"
                 value={buysPrice}
                 onChange={(e) => setBuysPrice(e.target.value)}
               />
@@ -653,7 +652,7 @@ const Management = ({ history }) => {
               <input
                 class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
                 type="text"
-                name="detail"
+                date="detail"
                 value={buysDetail}
                 onChange={(e) => setBuysDetail(e.target.value)}
               />

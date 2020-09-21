@@ -111,8 +111,8 @@ const Menu = ({ history, selectItem }) => {
   return (
     <>
       <div style={{ width: "100%" }}>
-        <img src={store} style={{ width: "50%", height: 400 }} />
-        <img src={counter} style={{ width: "50%", height: 415 }} />
+        {/* <img src={store} style={{ width: "50%", height: 400 }} />
+        <img src={counter} style={{ width: "50%", height: 415 }} /> */}
       </div>
       <button
         onClick={() => {
