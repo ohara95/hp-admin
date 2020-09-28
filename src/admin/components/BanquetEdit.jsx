@@ -26,6 +26,7 @@ const BanquetEdit = () => {
 
   const editMenu = (e) => {
     e.preventDefault();
+
     setMenuTitle("");
     setMenuPrice("");
     setDetail("");
@@ -65,110 +66,169 @@ const BanquetEdit = () => {
 
   return (
     <>
-      <div class="w-70">
-        <form
-          class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-          onSubmit={editMenu}
-        >
-          <h4>宴会メニュー</h4>
-          <div
-            class="inline-flex"
-            onClick={(e) => {
-              setOperation(e.target.value);
-            }}
-          >
-            <button
-              value="add"
-              class={
-                operation === "add"
-                  ? "hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 "
-                  : "hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 "
-              }
-            >
-              追加
-            </button>
-            <button
-              value="edit"
-              class={
-                operation === "edit"
-                  ? "hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 "
-                  : "hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 "
-              }
-            >
-              変更
-            </button>
-            <button
-              value="delete"
-              class={
-                operation === "delete"
-                  ? "hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 "
-                  : "hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 "
-              }
-            >
-              削除
-            </button>
+      <div id="section2" class="p-8 mt-6 lg:mt-0 rounded">
+        <form onSubmit={editMenu}>
+          <div class="md:flex mb-6">
+            <div class="md:w-1/3">
+              <label
+                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                for="my-textfield"
+              >
+                宴会メニュー
+              </label>
+            </div>
+            <div class="md:w-2/3">
+              <div
+                class="pt-8"
+                onClick={(e) => {
+                  setOperation(e.target.value);
+                }}
+              >
+                <button
+                  class={
+                    operation === "add"
+                      ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
+                      : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
+                  }
+                  type="button"
+                  value="add"
+                >
+                  追加
+                </button>
+
+                <button
+                  class={
+                    operation === "edit"
+                      ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
+                      : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
+                  }
+                  type="button"
+                  value="edit"
+                >
+                  変更
+                </button>
+
+                <button
+                  class={
+                    operation === "delete"
+                      ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
+                      : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
+                  }
+                  type="button"
+                  value="delete"
+                >
+                  削除
+                </button>
+              </div>
+            </div>
           </div>
 
           {operation !== "add" && (
-            <select
-              onChange={(e) => {
-                setSelectItem(e.target.value);
-              }}
-              class="block appearance-none bg-white border border-gray-400 px-4 py-2 pr-8 rounded leading-tight focus:outline-none "
-            >
-              <option>選択して下さい</option>
-              {selectMenu()}
-            </select>
+            <div class="md:flex mb-6">
+              <div class="md:w-1/3">
+                <label
+                  class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                  for="my-select"
+                >
+                  投稿内容
+                </label>
+              </div>
+              <div class="md:w-2/3 border-gray-400 border">
+                <select
+                  onChange={(e) => {
+                    setSelectItem(e.target.value);
+                  }}
+                  class="form-select block w-full focus:bg-white rounded"
+                >
+                  <option>選択して下さい</option>
+                  {selectMenu()}
+                </select>
+              </div>
+            </div>
           )}
           {operation !== "delete" && (
             <>
-              <div>
-                <label>【名目】</label>
-                <input
-                  class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-                  rows="4"
-                  type="text"
-                  value={menuTitle}
-                  onChange={(e) => {
-                    setMenuTitle(e.target.value);
-                  }}
-                />
+              <div class="md:flex mb-6">
+                <div class="md:w-1/3">
+                  <label
+                    class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                    for="my-select"
+                  >
+                    メニュー名
+                  </label>
+                </div>
+                <div class="md:w-2/3 ">
+                  <input
+                    class="form-textarea block w-full focus:bg-white border rounded"
+                    rows="4"
+                    type="text"
+                    value={menuTitle}
+                    onChange={(e) => {
+                      setMenuTitle(e.target.value);
+                    }}
+                  />
+                </div>
+              </div>
+              <div class="md:flex mb-6">
+                <div class="md:w-1/3">
+                  <label
+                    class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                    for="my-select"
+                  >
+                    金額
+                  </label>
+                </div>
+                <div class="md:w-2/3">
+                  <input
+                    class="form-textarea block w-full focus:bg-white border rounded"
+                    rows="4"
+                    type="number"
+                    value={menuPrice}
+                    onChange={(e) => {
+                      setMenuPrice(e.target.value);
+                    }}
+                  />
+                </div>
               </div>
               <div>
-                <label>【金額】</label>
-                <input
-                  class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-                  rows="4"
-                  type="number"
-                  value={menuPrice}
-                  onChange={(e) => {
-                    setMenuPrice(e.target.value);
-                  }}
-                />
-              </div>
-              <div>
-                <label>【詳細】</label>
-                <textarea
-                  type="text"
-                  class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-                  rows="4"
-                  value={detail}
-                  onChange={(e) => {
-                    setDetail(e.target.value);
-                  }}
-                />
+                <div class="md:flex mb-6">
+                  <div class="md:w-1/3">
+                    <label
+                      class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                      for="my-select"
+                    >
+                      入力欄
+                    </label>
+                  </div>
+                  <div class="md:w-2/3">
+                    <textarea
+                      type="textarea"
+                      class="form-textarea block w-full focus:bg-white border rounded"
+                      rows="8"
+                      value={detail}
+                      onChange={(e) => {
+                        setDetail(e.target.value);
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
             </>
           )}
-          {operation === "delete" ? (
-            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
-              削除
-            </button>
-          ) : (
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-              送信
-            </button>
-          )}
+          <div class="md:flex md:items-center">
+            <div class="md:w-1/3"></div>
+            <div class="md:w-2/3">
+              {operation === "delete" ? (
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                  削除
+                </button>
+              ) : (
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  送信
+                </button>
+              )}
+            </div>
+          </div>
         </form>
       </div>
     </>

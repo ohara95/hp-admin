@@ -130,44 +130,82 @@ const RecruitEdit = () => {
 
   return (
     <>
-      <div class="w-64">
-        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          <h4>求人</h4>
-          <select
-            onChange={handleChange}
-            class="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-          >
-            <option value="none">選択して下さい</option>
-            <option value="work">仕事内容</option>
-            <option value="wont">求める人材</option>
-            <option value="conditions">応募資格</option>
-            <option value="time">勤務時間・休日</option>
-            <option value="welfare">福利厚生</option>
-          </select>
-          <textarea
-            type="text"
-            class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-            rows="4"
-            value={chooseItem()}
-            onChange={(e) => {
-              selectChange(e.target.value);
-            }}
-          />
-          <button
-            onClick={onNoticeSubmit}
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-          >
-            送信
-          </button>
-          <button
-            onClick={changePrev}
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-          >
-            プレビュー
-          </button>
+      <div id="section4" class="p-8 mt-6 lg:mt-0 rounded">
+        <form>
+          <div class="md:flex mb-6">
+            <div class="md:w-1/3">
+              <label
+                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                for="my-textfield"
+              >
+                求人
+              </label>
+            </div>
+          </div>
+
+          <div class="md:flex mb-6">
+            <div class="md:w-1/3">
+              <label
+                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                for="my-select"
+              >
+                投稿内容
+              </label>
+            </div>
+            <div class="md:w-2/3 border-gray-400 border">
+              <select
+                name=""
+                onChange={handleChange}
+                class="form-select block w-full focus:bg-white rounded"
+                id="my-select"
+              >
+                <option value="none">選択して下さい</option>
+                <option value="work">仕事内容</option>
+                <option value="wont">求める人材</option>
+                <option value="conditions">応募資格</option>
+                <option value="time">勤務時間・休日</option>
+                <option value="welfare">福利厚生</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="md:flex mb-6">
+            <div class="md:w-1/3">
+              <label
+                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                for="my-textarea"
+                value={chooseItem()}
+                onChange={(e) => {
+                  selectChange(e.target.value);
+                }}
+              >
+                入力欄
+              </label>
+            </div>
+            <div class="md:w-2/3">
+              <textarea
+                class="form-textarea block w-full focus:bg-white border rounded"
+                id="my-textarea"
+                value={chooseItem()}
+                rows="8"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="md:flex md:items-center">
+            <div class="md:w-1/3"></div>
+            <div class="md:w-2/3">
+              <button
+                onClick={onNoticeSubmit}
+                class="bg-blue-500 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded"
+                type="button"
+              >
+                送信
+              </button>
+            </div>
+          </div>
         </form>
       </div>
-      <div>{decision && displayPrev()}</div>
     </>
   );
 };

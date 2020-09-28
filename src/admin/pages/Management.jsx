@@ -16,7 +16,7 @@ import {
 } from "recharts";
 import { useEffect } from "react";
 import { format } from "date-fns";
-import { FormProvider } from "react-hook-form";
+// import { Helmet } from "react-helmet";
 
 const Management = ({ history }) => {
   const [salesDate, setSalesDate] = useState(null);
@@ -35,10 +35,10 @@ const Management = ({ history }) => {
   const [editBuysPrice, setEditBuysPrice] = useState("");
   const [editBuysDetail, setEditBuysDetail] = useState("");
   const [toggleTable, setToggleTable] = useState("months");
-  const [monthDataArr, setMonthDataArr] = useState([]);
 
   const [salesEditOpen, setSalesEditOpen] = useState(false);
-  const [buysEditOpen, setBuysEditOpen] = useState(false);
+  const [chooseBtn, setChooseBtn] = useState("");
+  const [chooseBtnOpen, setChooseBtnOpen] = useState(false);
 
   const [dbSales, setDbSales] = useState([]);
   const [dbBuys, setDbBuys] = useState([]);
@@ -72,6 +72,7 @@ const Management = ({ history }) => {
       });
   };
 
+  /** 経費計上 */
   const minusSubmit = (e) => {
     e.preventDefault();
     setBuysPrice("");
@@ -356,9 +357,6 @@ const Management = ({ history }) => {
   const salesEditBtn = () => {
     setSalesEditOpen(!salesEditOpen);
   };
-  const buysEditOpenBtn = () => {
-    setBuysEditOpen(!buysEditOpen);
-  };
 
   /** 同じ日付の金額足し算 */
   const sumData = (selectData) => {
@@ -404,8 +402,6 @@ const Management = ({ history }) => {
     return res;
   };
 
-  const sumMonthData = (selectData) => {};
-
   /** 配列内の合算 */
   const sumPrice = (price) => {
     let sum = 0;
@@ -438,8 +434,19 @@ const Management = ({ history }) => {
       };
     });
 
+  /** 表用のデータ(選択) */
+  const chooseGraphData = sumData(setData)
+    .filter((data) => format(data.date.toDate(), "MM") == chooseBtn)
+    .map((data) => {
+      return {
+        日付: format(data.date.toDate(), "MM/dd"),
+        売上: sumPrice(data.salesPrice),
+        経費: sumPrice(data.buysPrice),
+      };
+    });
+
   /** 表用のデータ(月計) */
-  const monthData = () => {
+  const allMonthData = () => {
     let arr = [];
     const totalData = sumData(setData);
 
@@ -482,13 +489,27 @@ const Management = ({ history }) => {
     return newArr;
   };
 
+  /** グラフ種類選択 */
+  const chooseGraph = () => {
+    switch (toggleTable) {
+      case "months":
+        return graphData;
+      case "year":
+        return allMonthData();
+      case "chooseMonth":
+        return chooseGraphData;
+      default:
+        return;
+    }
+  };
+
   // 表
   const salesChart = () => {
     return (
       <ComposedChart //グラフ全体のサイズや位置、データを指定。場合によってmarginで上下左右の位置を指定する必要あり。
         width={600} //グラフ全体の幅を指定
         height={280} //グラフ全体の高さを指定
-        data={toggleTable === "months" ? graphData : monthData()} //ここにArray型のデータを指定
+        data={chooseGraph()} //ここにArray型のデータを指定
         style={{ margin: "0 auto" }}
       >
         <XAxis
@@ -540,8 +561,28 @@ const Management = ({ history }) => {
   //     });
   // };
 
+  const monthBtnClick = (e) => {
+    if (toggleTable === "chooseMonth") {
+      setChooseBtnOpen(!chooseBtnOpen);
+    }
+    setToggleTable(e.target.value);
+  };
+
+  // 12ヶ月
+  const months = () => {
+    let monthArr = [];
+    for (let i = 1; i <= 12; i++) {
+      monthArr.push(<div>{i}</div>);
+    }
+    return monthArr;
+  };
+
   return (
     <>
+      {/* <Helmet>
+        <title>管理画面</title>
+      </Helmet> */}
+
       <h1>管理画面</h1>
       <button
         onClick={() => {
@@ -551,29 +592,47 @@ const Management = ({ history }) => {
         ホームページ編集
       </button>
       <div style={{ width: "100%" }}>
-        <div
-          onClick={(e) => {
-            setToggleTable(e.target.value);
-          }}
-          style={{ width: 300, margin: "0 auto" }}
-        >
+        <div onClick={monthBtnClick} style={{ width: 300, margin: "0 auto" }}>
           <button
             value="months"
-            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded-l "
+            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700    text-sm text-white py-1 px-2 rounded-l "
           >
             月間
           </button>
           <button
-            value="months"
-            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 "
-          >
-            月別
-          </button>
-          <button
             value="year"
-            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded-r "
+            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700   text-sm text-white py-1 px-2 "
           >
             年間
+          </button>
+          <button
+            value="chooseMonth"
+            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700   text-sm text-white py-1 px-2 rounded-r"
+          >
+            月別
+            <select
+              onChange={(e) => {
+                setChooseBtn(e.target.value);
+              }}
+              class="bg-teal-500 hover:bg-teal-700 hover:border-teal-700  text-sm text-white"
+            >
+              {chooseBtnOpen && (
+                <>
+                  <option value="01">1月</option>
+                  <option value="02">2月</option>
+                  <option value="03">3月</option>
+                  <option value="04">4月</option>
+                  <option value="05">5月</option>
+                  <option value="06">6月</option>
+                  <option value="07">7月</option>
+                  <option value="08">8月</option>
+                  <option value="09">9月</option>
+                  <option value="10">10月</option>
+                  <option value="11">11月</option>
+                  <option value="12">12月</option>
+                </>
+              )}
+            </select>
           </button>
         </div>
       </div>
@@ -743,6 +802,16 @@ const Management = ({ history }) => {
           style={{ height: 400, width: "30%", overflow: "scroll" }}
         >
           経費表
+          <div class="shadow flex">
+            <input
+              class="w-full rounded p-2"
+              type="text"
+              placeholder="Search..."
+            />
+            <button class="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400">
+              <i class="fas fa-search" />
+            </button>
+          </div>
           {buysHistory()}
         </div>
         <div

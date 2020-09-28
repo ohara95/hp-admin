@@ -198,57 +198,51 @@ const MenuEdit = () => {
     switch (selectClassifying) {
       case "cuisine":
         return (
-          <div>
-            <select
-              onChange={(e) => {
-                setSelectCuisine(e.target.value);
-              }}
-              class="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none"
-            >
-              <option value="none">選択して下さい</option>
-              <option value="snack">おつまみ</option>
-              <option value="salad">サラダ</option>
-              <option value="grill">焼き物</option>
-              <option value="fried">揚げ物</option>
-              <option value="main">ごはんもの</option>
-              <option value="dessert">デザート</option>
-            </select>
-          </div>
+          <select
+            onChange={(e) => {
+              setSelectCuisine(e.target.value);
+            }}
+            class="form-select block w-full focus:bg-white border rounded"
+          >
+            <option value="none">選択して下さい</option>
+            <option value="snack">おつまみ</option>
+            <option value="salad">サラダ</option>
+            <option value="grill">焼き物</option>
+            <option value="fried">揚げ物</option>
+            <option value="main">ごはんもの</option>
+            <option value="dessert">デザート</option>
+          </select>
         );
       case "drink":
         return (
-          <div>
-            <select
-              onChange={(e) => {
-                setSelectDrink(e.target.value);
-              }}
-              class="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-            >
-              <option>選択して下さい</option>
-              <option value="beer">ビール</option>
-              <option value="sour">サワー</option>
-              <option value="cocktail">カクテル</option>
-              <option value="whisky">ウィスキー</option>
-              <option value="shochu">焼酎</option>
-              <option value="wine">ワイン</option>
-              <option value="non-al">ノンアル</option>
-            </select>
-          </div>
+          <select
+            onChange={(e) => {
+              setSelectDrink(e.target.value);
+            }}
+            class="form-select block w-full focus:bg-white border rounded"
+          >
+            <option>選択して下さい</option>
+            <option value="beer">ビール</option>
+            <option value="sour">サワー</option>
+            <option value="cocktail">カクテル</option>
+            <option value="whisky">ウィスキー</option>
+            <option value="shochu">焼酎</option>
+            <option value="wine">ワイン</option>
+            <option value="non-al">ノンアル</option>
+          </select>
         );
       case "recommend":
         return (
-          <div>
-            <select
-              onChange={(e) => {
-                setSelectRecommend(e.target.value);
-              }}
-              class="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-            >
-              <option>選択して下さい</option>
-              <option value="cuisine">料理</option>
-              <option value="drink">ドリンク</option>
-            </select>
-          </div>
+          <select
+            onChange={(e) => {
+              setSelectRecommend(e.target.value);
+            }}
+            class="form-select block w-full focus:bg-white border rounded"
+          >
+            <option>選択して下さい</option>
+            <option value="cuisine">料理</option>
+            <option value="drink">ドリンク</option>
+          </select>
         );
 
       default:
@@ -286,119 +280,189 @@ const MenuEdit = () => {
 
   return (
     <>
-      <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 h-400">
-        <div class="w-70">
-          <h4>メニュー</h4>
-          <div
-            onClick={(e) => {
-              setSelectMethod(e.target.value);
-            }}
-            class="flex justify-center items-center"
-          >
-            <button
-              value="add"
-              class={
-                selectMethod === "add"
-                  ? "hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 "
-                  : "hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 "
-              }
-            >
-              追加
-            </button>
-            <button
-              value="edit"
-              class={
-                selectMethod === "edit"
-                  ? "hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 "
-                  : "hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 "
-              }
-            >
-              変更
-            </button>
-            <button
-              value="delete"
-              class={
-                selectMethod === "delete"
-                  ? "hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 "
-                  : "hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 "
-              }
-            >
-              削除
-            </button>
+      <div id="section1" class="p-8 mt-6 lg:mt-0 rounded">
+        <form>
+          <div class="md:flex mb-6">
+            <div class="md:w-1/3">
+              <label
+                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                for="my-textfield"
+              >
+                メニュー
+              </label>
+            </div>
+            <div class="md:w-2/3">
+              <div
+                class="pt-8"
+                onClick={(e) => {
+                  setSelectMethod(e.target.value);
+                }}
+              >
+                <button
+                  class={
+                    selectMethod === "add"
+                      ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
+                      : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
+                  }
+                  type="button"
+                  value="add"
+                >
+                  追加
+                </button>
+
+                <button
+                  class={
+                    selectMethod === "edit"
+                      ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
+                      : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
+                  }
+                  type="button"
+                  value="edit"
+                >
+                  変更
+                </button>
+
+                <button
+                  class={
+                    selectMethod === "delete"
+                      ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
+                      : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
+                  }
+                  type="button"
+                  value="delete"
+                >
+                  削除
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="flex justify-center items-center">
-            <div>
+
+          <div class="md:flex mb-6">
+            <div class="md:w-1/3">
+              <label
+                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                for="my-select"
+              >
+                メニューカテゴリ(大分類)
+              </label>
+            </div>
+            <div class="md:w-2/3 border-gray-400 border">
               <select
+                name=""
+                class="form-select block w-full focus:bg-white rounded"
+                id="my-select"
                 onClick={methodCheck}
                 onChange={(e) => {
                   setSelectClassifying(e.target.value);
                 }}
-                class="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none mt-5"
               >
                 <option value="none">選択して下さい</option>
                 <option value="cuisine">料理</option>
                 <option value="drink">ドリンク</option>
                 <option value="recommend">おすすめ</option>
               </select>
-              {selected()}
-              {((selectCuisine && selectMethod == "edit") ||
-                selectMethod == "delete") && (
-                <div>
-                  <select class="block appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none">
-                    {editOption()}
-                  </select>
-                </div>
-              )}
             </div>
           </div>
-          <form>
-            <div>
-              【名目】
+          <div class="md:flex mb-6">
+            <div class="md:w-1/3">
+              <label
+                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                for="my-select"
+              >
+                メニューカテゴリ(中分類)
+              </label>
+            </div>
+            <div class="md:w-2/3 border-gray-400 border">{selected()}</div>
+          </div>
+          {((selectCuisine && selectMethod == "edit") ||
+            selectMethod == "delete") && (
+            <div class="md:flex mb-6">
+              <div class="md:w-1/3">
+                <label
+                  class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                  for="my-select"
+                >
+                  メニューカテゴリ(小分類)
+                </label>
+              </div>
+              <div class="md:w-2/3 border-gray-400 border">
+                <select class="form-select block w-full focus:bg-white rounded">
+                  {editOption()}
+                </select>
+              </div>
+            </div>
+          )}
+
+          <div class="md:flex mb-6">
+            <div class="md:w-1/3">
+              <label
+                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                for="my-textarea"
+              >
+                メニュー名
+              </label>
+            </div>
+            <div class="md:w-2/3">
               <input
-                class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-                rows="4"
-                type="text"
+                class="form-textarea block w-full focus:bg-white border rounded"
+                id="my-textarea"
                 value={toggleChange()}
                 onChange={(e) => {
                   controlChange(e.target.value);
                 }}
+                rows="8"
               />
             </div>
-            {selectMethod === "delete" ? (
-              <div style={{ color: "red" }}>
-                ※確認のため名目を記入して下さい
+          </div>
+          {selectMethod === "delete" ? (
+            <p style={{ color: "red" }}>
+              ※確認のためメニュー名を記入して下さい
+            </p>
+          ) : (
+            <div class="md:flex mb-6">
+              <div class="md:w-1/3">
+                <label
+                  class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                  for="my-textarea"
+                >
+                  金額
+                </label>
               </div>
-            ) : (
-              <div>
-                【金額】
+              <div class="md:w-2/3">
                 <input
-                  class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none"
-                  rows="4"
-                  type="number"
+                  class="form-textarea block w-full focus:bg-white border rounded"
+                  id="my-textarea"
                   value={amount}
                   onChange={(e) => {
                     setAmount(e.target.value);
                   }}
-                />
+                  rows="8"
+                ></input>
               </div>
-            )}
-            {selectMethod === "delete" ? (
-              <button
-                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
-                onClick={onMenuSubmit}
-              >
-                削除
-              </button>
-            ) : (
-              <button
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                onClick={onMenuSubmit}
-              >
-                送信
-              </button>
-            )}
-          </form>
-        </div>
+            </div>
+          )}
+
+          <div class="md:flex md:items-center">
+            <div class="md:w-1/3"></div>
+            <div class="md:w-2/3">
+              {selectMethod === "delete" ? (
+                <button
+                  class="bg-red-500 hover:bg-red-300 text-white font-bold py-2 px-4 rounded "
+                  onClick={onMenuSubmit}
+                >
+                  削除
+                </button>
+              ) : (
+                <button
+                  class="bg-blue-500 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded"
+                  onClick={onMenuSubmit}
+                >
+                  送信
+                </button>
+              )}
+            </div>
+          </div>
+        </form>
       </div>
     </>
   );

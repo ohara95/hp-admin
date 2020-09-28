@@ -4,12 +4,10 @@ import SignUp from "../components/SignUp";
 
 const SignIn_up = ({ history }) => {
   return (
-    <>
-      <div>ログイン</div>
+    <div style={{ display: "flex", margin: "0 auto" }}>
       <SignIn history={history} />
-      <div>新規登録</div>
       <SignUp history={history} />
-    </>
+    </div>
   );
 };
 

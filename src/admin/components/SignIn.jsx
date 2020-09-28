@@ -26,34 +26,68 @@ const SignIn = ({ history }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label>メールアドレス</label>
-      <input
-        type="email"
-        name="email"
-        autoComplete="on"
-        value={email}
-        ref={register({
-          required: "※必須です",
-        })}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      {/* errors.nameにする */}
-      {errors.email && <span>{errors.email.message}</span>}
-      <label>パスワード</label>
-      <input
-        type="password"
-        name="password"
-        autoComplete="on"
-        value={password}
-        ref={register({
-          required: "※必須です",
-        })}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      {errors.password && <span>{errors.password.message}</span>}
-      <button>ログイン</button>
-    </form>
+    <>
+      <div>
+        <div class="md:w-1/2 ">
+          <div class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
+            <p class="text-center text-3xl">LogIn</p>
+            <form
+              class="flex flex-col pt-3 md:pt-8"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div class="flex flex-col pt-4">
+                <label for="email" class="text-lg">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  autoComplete="on"
+                  value={email}
+                  ref={register({
+                    required: "※必須です",
+                  })}
+                  onChange={(e) => setEmail(e.target.value)}
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+
+              <div class="flex flex-col pt-4">
+                {errors.email && <span>{errors.email.message}</span>}
+                <label for="password" class="text-lg">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  autoComplete="on"
+                  value={password}
+                  ref={register({
+                    required: "※必須です",
+                  })}
+                  onChange={(e) => setPassword(e.target.value)}
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                />
+              </div>
+              {errors.password && <span>{errors.password.message}</span>}
+              <input
+                type="submit"
+                value="Done"
+                class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"
+              />
+            </form>
+            <div class="text-center pt-12 pb-12">
+              <p>
+                forgot password?{" "}
+                <a href="register.html" class="underline font-semibold">
+                  Resetting here.
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

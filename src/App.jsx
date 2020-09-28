@@ -6,6 +6,7 @@ import Menu from "./hp/pages/Menu";
 import Notice from "./hp/pages/Notice";
 import Information from "./hp/components/Information";
 import Header from "./hp/components/Header";
+import { Footer } from "./hp/components/Footer";
 import SignInUp from "./admin/pages/SignIn_SignUp";
 import Management from "./admin/pages/Management";
 import Edit from "./admin/pages/Edit";
@@ -25,6 +26,7 @@ const App = () => {
             <LoggedInRoute path="/management" component={Management} />
             <Route path="/edit" component={Edit} />
             <Route path="/login" component={SignInUp} />
+            {/* <Footer path="/management" component={Management} /> */}
           </Switch>
         </BrowserRouter>
       </AuthProvider>
