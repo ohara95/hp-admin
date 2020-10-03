@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { auth, db } from "../../config/firebese";
 import BuysTodo from "../components/BuysTodo";
+import { Alert } from "../../atoms/Alert";
 import "./management.scss";
 import {
   ResponsiveContainer,
@@ -16,7 +17,6 @@ import {
 } from "recharts";
 import { useEffect } from "react";
 import { format } from "date-fns";
-// import { Helmet } from "react-helmet";
 
 const Management = ({ history }) => {
   const [salesDate, setSalesDate] = useState(null);
@@ -24,9 +24,6 @@ const Management = ({ history }) => {
   const [salesPrice, setSalesPrice] = useState("");
   const [buysPrice, setBuysPrice] = useState("");
   const [buysDetail, setBuysDetail] = useState("");
-  const [fixedDate, setFixedDate] = useState(null);
-  const [fixedItem, setFixedItem] = useState("");
-  const [fixedPrice, setFixedPrice] = useState("");
   const [edit, setEdit] = useState(false);
   const [editId, setEditId] = useState("");
   const [editSalesPrice, setEditSalesPrice] = useState("");
@@ -44,15 +41,26 @@ const Management = ({ history }) => {
   const [dbBuys, setDbBuys] = useState([]);
   const setData = dbSales.concat(dbBuys);
 
+  const [inputErr, setInputErr] = useState(false);
+
   // const today = new Date().toISOString().slice(0, 10);
   const today = new Date();
   const toMonth = today.getMonth() + 1;
 
+  const [salesSelectMonth, setSalesSelectMonth] = useState("all");
+  const [buysSelectMonth, setBuysSelectMonth] = useState("all");
+
   const plusSubmit = (e) => {
     e.preventDefault();
-    setSalesPrice("");
-    setSalesDate("");
-    salesDB(salesDate, salesPrice, "sales");
+    if (!salesDate || !salesPrice) {
+      setInputErr(true);
+      return;
+    } else {
+      setSalesPrice("");
+      setSalesDate("");
+      salesDB(salesDate, salesPrice, "sales");
+      setInputErr(false);
+    }
   };
 
   /** 売上をDBに登録 */
@@ -75,10 +83,15 @@ const Management = ({ history }) => {
   /** 経費計上 */
   const minusSubmit = (e) => {
     e.preventDefault();
-    setBuysPrice("");
-    setBuysDate("");
-    setBuysDetail("");
-    buysDB(buysDate, buysPrice, buysDetail, "buys");
+    if (!buysPrice || !buysDate || !buysDetail) {
+      alert("入力してください");
+      return;
+    } else {
+      setBuysPrice("");
+      setBuysDate("");
+      setBuysDetail("");
+      buysDB(buysDate, buysPrice, buysDetail, "buys");
+    }
   };
 
   /** 経費をDBに登録 */
@@ -155,7 +168,7 @@ const Management = ({ history }) => {
     return dbSales.map((db) => {
       return (
         <div>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", marginTop: 10 }}>
             <button
               id={db.id}
               onClick={(e) => {
@@ -187,7 +200,7 @@ const Management = ({ history }) => {
                   }}
                   placeholder={db.salesPrice}
                 />
-                <button type="submit">決定</button>
+                <button type="submit" class="fas fa-check" />
               </form>
             ) : (
               <p>{db.salesPrice}円</p>
@@ -245,7 +258,7 @@ const Management = ({ history }) => {
     return dbBuys.map((db) => {
       return (
         <div>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", marginTop: 10 }}>
             <button
               id={db.id}
               onClick={inputPossibleBuys}
@@ -267,23 +280,27 @@ const Management = ({ history }) => {
                   upDateBuys(e, db.id);
                 }}
               >
-                <input
-                  type="number"
-                  value={editBuysPrice}
-                  onChange={(e) => {
-                    setEditBuysPrice(e.target.value);
-                  }}
-                  placeholder={db.buysPrice}
-                />
-                <input
-                  type="text"
-                  value={editBuysDetail}
-                  onChange={(e) => {
-                    setEditBuysDetail(e.target.value);
-                  }}
-                  placeholder={db.detail}
-                />
-                <button type="submit">決定</button>
+                <div style={{ display: "flex" }}>
+                  <input
+                    type="number"
+                    value={editBuysPrice}
+                    onChange={(e) => {
+                      setEditBuysPrice(e.target.value);
+                    }}
+                    placeholder={db.buysPrice}
+                    style={{ width: 100 }}
+                  />
+                  <input
+                    type="text"
+                    value={editBuysDetail}
+                    onChange={(e) => {
+                      setEditBuysDetail(e.target.value);
+                    }}
+                    placeholder={db.detail}
+                    style={{ width: 100 }}
+                  />
+                  <button type="submit" class="fas fa-check" />
+                </div>
               </form>
             ) : (
               <p>
@@ -507,8 +524,8 @@ const Management = ({ history }) => {
   const salesChart = () => {
     return (
       <ComposedChart //グラフ全体のサイズや位置、データを指定。場合によってmarginで上下左右の位置を指定する必要あり。
-        width={600} //グラフ全体の幅を指定
-        height={280} //グラフ全体の高さを指定
+        width={1000} //グラフ全体の幅を指定
+        height={350} //グラフ全体の高さを指定
         data={chooseGraph()} //ここにArray型のデータを指定
         style={{ margin: "0 auto" }}
       >
@@ -540,27 +557,6 @@ const Management = ({ history }) => {
     );
   };
 
-  // 固定費
-  // const onFixedSubmit = (e) => {
-  //   e.preventDefault();
-  //   setFixedDate("");
-  //   setFixedItem("");
-  //   setFixedPrice("");
-  //   fixedDB(fixedDate, fixedItem, fixedPrice);
-  // };
-
-  // const fixedDB = (date, item, price) => {
-  //   db.collection("management")
-  //     .doc("NcmaRejmRabdytHQfbKU")
-  //     .collection("fixed")
-  //     .doc()
-  //     .set({
-  //       date,
-  //       item,
-  //       price,
-  //     });
-  // };
-
   const monthBtnClick = (e) => {
     if (toggleTable === "chooseMonth") {
       setChooseBtnOpen(!chooseBtnOpen);
@@ -569,20 +565,17 @@ const Management = ({ history }) => {
   };
 
   // 12ヶ月
-  const months = () => {
-    let monthArr = [];
-    for (let i = 1; i <= 12; i++) {
-      monthArr.push(<div>{i}</div>);
-    }
-    return monthArr;
-  };
+  // const months = () => {
+  //   let monthArr = [];
+  //   for (let i = 1; i <= 12; i++) {
+  //     monthArr.push(<option value={i}>{i}月</option>);
+  //   }
+  //   return monthArr;
+  // };
 
   return (
     <>
-      {/* <Helmet>
-        <title>管理画面</title>
-      </Helmet> */}
-
+      {inputErr && <Alert title="注意！" text="入力してください" />}
       <h1>管理画面</h1>
       <button
         onClick={() => {
@@ -591,53 +584,51 @@ const Management = ({ history }) => {
       >
         ホームページ編集
       </button>
-      <div style={{ width: "100%" }}>
-        <div onClick={monthBtnClick} style={{ width: 300, margin: "0 auto" }}>
+      <div>
+        <div
+          onClick={monthBtnClick}
+          style={{ margin: "10px auto", width: "20%" }}
+        >
           <button
             value="months"
-            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700    text-sm text-white py-1 px-2 rounded-l "
+            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 text-white py-3 px-5 rounded-l "
           >
             月間
           </button>
           <button
             value="year"
-            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700   text-sm text-white py-1 px-2 "
+            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 text-white py-3 px-5 "
           >
             年間
           </button>
           <button
             value="chooseMonth"
-            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700   text-sm text-white py-1 px-2 rounded-r"
+            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 text-white py-3 px-5 rounded-r"
           >
             月別
             <select
               onChange={(e) => {
                 setChooseBtn(e.target.value);
               }}
-              class="bg-teal-500 hover:bg-teal-700 hover:border-teal-700  text-sm text-white"
+              class="bg-teal-500 hover:bg-teal-700 text-white"
             >
-              {chooseBtnOpen && (
-                <>
-                  <option value="01">1月</option>
-                  <option value="02">2月</option>
-                  <option value="03">3月</option>
-                  <option value="04">4月</option>
-                  <option value="05">5月</option>
-                  <option value="06">6月</option>
-                  <option value="07">7月</option>
-                  <option value="08">8月</option>
-                  <option value="09">9月</option>
-                  <option value="10">10月</option>
-                  <option value="11">11月</option>
-                  <option value="12">12月</option>
-                </>
-              )}
+              <option value="01">1月</option>
+              <option value="02">2月</option>
+              <option value="03">3月</option>
+              <option value="04">4月</option>
+              <option value="05">5月</option>
+              <option value="06">6月</option>
+              <option value="07">7月</option>
+              <option value="08">8月</option>
+              <option value="09">9月</option>
+              <option value="10">10月</option>
+              <option value="11">11月</option>
+              <option value="12">12月</option>
             </select>
           </button>
         </div>
+        <div>{salesChart()}</div>
       </div>
-
-      <div>{salesChart()}</div>
 
       <div
         style={{ display: "flex", width: "90%", margin: "0 auto" }}
@@ -724,44 +715,6 @@ const Management = ({ history }) => {
           </form>
         </div>
 
-        {/* <div>
-        <h3>固定費登録</h3>
-        <form onSubmit={onFixedSubmit}>
-          <label class="block text-gray-700 text-sm font-bold mb-2">
-            支払日
-          </label>
-          <input
-            type="date"
-            value={fixedDate}
-            onChange={(e) => {
-              setFixedDate(e.target.value);
-            }}
-            class="appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none "
-          />
-          <label class="block text-gray-700 text-sm font-bold mb-2">項目</label>
-          <input
-            type="text"
-            value={fixedItem}
-            onChange={(e) => {
-              setFixedItem(e.target.value);
-            }}
-            class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
-          />
-          <label class="block text-gray-700 text-sm font-bold mb-2">金額</label>
-          <input
-            type="number"
-            value={fixedPrice}
-            onChange={(e) => {
-              setFixedPrice(e.target.value);
-            }}
-            class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
-          />
-          <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded">
-            登録
-          </button>
-        </form>
-      </div> */}
-
         <div>
           <div class="px-8 pt-6 pb-8">
             <h3 class="block text-gray-700 text-sm font-bold mb-2">売上計</h3>
@@ -794,31 +747,27 @@ const Management = ({ history }) => {
           class="px-8 pt-6 pb-8 mb-4 "
           style={{ height: 400, width: "30%", overflow: "scroll" }}
         >
-          売上表
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            売上表
+          </label>
           {salesHistory()}
         </div>
         <div
           class="px-8 pt-6 pb-8 mb-4"
           style={{ height: 400, width: "30%", overflow: "scroll" }}
         >
-          経費表
-          <div class="shadow flex">
-            <input
-              class="w-full rounded p-2"
-              type="text"
-              placeholder="Search..."
-            />
-            <button class="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400">
-              <i class="fas fa-search" />
-            </button>
-          </div>
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            経費表
+          </label>
           {buysHistory()}
         </div>
         <div
           class="px-8 pt-6 pb-8 mb-4"
           style={{ height: 400, width: "30%", overflow: "scroll" }}
         >
-          買い物リスト
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            買い物リスト
+          </label>
           <BuysTodo />
         </div>
       </div>

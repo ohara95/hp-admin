@@ -37,11 +37,48 @@ const response = {
     },
   ],
 };
-const { data: users = [] } = response;
-console.log(users);
-{
-  /* // const Test = () => { */
-}
+
+const createData = (id, img, name, code, price, stock, open, period) => ({
+  id,
+  img,
+  name,
+  code,
+  price,
+  stock,
+  open,
+  period,
+});
+
+const rows = [
+  createData(
+    34,
+    "img",
+    "徳用きゅうり",
+    "fork-01",
+    12000,
+    2,
+    true,
+    "06月29日 08時〜06月29日 08時"
+  ),
+  createData(
+    17,
+    "img",
+    "徳用トマト",
+    "fork-01",
+    12000,
+    2,
+    true,
+    "06月29日 08時〜06月29日 08時"
+  ),
+];
+
+rows.map((el, i) => console.log([el.i]));
+
+// const { data: users = [] } = response;
+// console.log(users);
+// {
+//   /* // const Test = () => { */
+// }
 //   const num = 123;
 //   const str = "123";
 //   return <Test2 {...{ num, str }} />;

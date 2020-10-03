@@ -11,8 +11,9 @@ const MainPage = () => {
         src={store}
         style={{ borderRadius: "50%", height: 600, width: 600 }}
       />
-      <Header />
-      {/* <Information /> */}
+      <div style={{ margin: "0 auto" }}>
+        <Header />
+      </div>
     </div>
   );
 };

@@ -92,7 +92,8 @@ const BuysListForm = ({ todos, setTodos, content, setContent }) => {
 
   const deleteTodo = (e) => {
     e.preventDefault();
-    for (const key of todos) {
+    const deleteItem = todos.filter((todo) => todo.isDone);
+    for (const key of deleteItem) {
       db.collection("todos")
         .doc(key.id)
         .onSnapshot((snap) => {

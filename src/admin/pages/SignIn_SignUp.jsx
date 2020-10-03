@@ -4,7 +4,12 @@ import SignUp from "../components/SignUp";
 
 const SignIn_up = ({ history }) => {
   return (
-    <div style={{ display: "flex", margin: "0 auto" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
       <SignIn history={history} />
       <SignUp history={history} />
     </div>

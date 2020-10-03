@@ -197,3 +197,107 @@ const monthData = () => {
 //     id: [fee.id],
 //   });
 // }
+
+// 固定費
+// const onFixedSubmit = (e) => {
+//   e.preventDefault();
+//   setFixedDate("");
+//   setFixedItem("");
+//   setFixedPrice("");
+//   fixedDB(fixedDate, fixedItem, fixedPrice);
+// };
+
+// const fixedDB = (date, item, price) => {
+//   db.collection("management")
+//     .doc("NcmaRejmRabdytHQfbKU")
+//     .collection("fixed")
+//     .doc()
+//     .set({
+//       date,
+//       item,
+//       price,
+//     });
+// };
+
+// const [fixedDate, setFixedDate] = useState(null);
+// const [fixedItem, setFixedItem] = useState("");
+// const [fixedPrice, setFixedPrice] = useState("");
+
+{
+  /* <div>
+        <h3>固定費登録</h3>
+        <form onSubmit={onFixedSubmit}>
+          <label class="block text-gray-700 text-sm font-bold mb-2">
+            支払日
+          </label>
+          <input
+            type="date"
+            value={fixedDate}
+            onChange={(e) => {
+              setFixedDate(e.target.value);
+            }}
+            class="appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+          />
+          <label class="block text-gray-700 text-sm font-bold mb-2">項目</label>
+          <input
+            type="text"
+            value={fixedItem}
+            onChange={(e) => {
+              setFixedItem(e.target.value);
+            }}
+            class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+          />
+          <label class="block text-gray-700 text-sm font-bold mb-2">金額</label>
+          <input
+            type="number"
+            value={fixedPrice}
+            onChange={(e) => {
+              setFixedPrice(e.target.value);
+            }}
+            class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+          />
+          <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded">
+            登録
+          </button>
+        </form>
+      </div> */
+}
+
+{
+  /* <div class="shadow flex">
+            <input
+              class="w-full rounded p-2"
+              type="text"
+              placeholder="Search..."
+            />
+            <button class="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400 fas fa-search"></button>
+          </div> */
+}
+
+// 一覧月別表示
+//     <div onClick={monthBtnClick}>
+//       <select
+//         onChange={(e) => {
+//           setSalesSelectMonth(e.target.value);
+//         }}
+//         class="bg-teal-500 hover:bg-teal-700 text-white py-1 px-3 rounded"
+//       >
+//         <option value="all">年間</option>
+//         <option value="01">1月</option>
+//         <option value="02">2月</option>
+//         <option value="03">3月</option>
+//         <option value="04">4月</option>
+//         <option value="05">5月</option>
+//         <option value="06">6月</option>
+//         <option value="07">7月</option>
+//         <option value="08">8月</option>
+//         <option value="09">9月</option>
+//         <option value="10">10月</option>
+//         <option value="11">11月</option>
+//         <option value="12">12月</option>
+//       </select>
+//     </div>;
+
+// const filterData = dbSales.filter(
+//   (data) => format(data.date.toDate(), "MM") == salesSelectMonth
+// );

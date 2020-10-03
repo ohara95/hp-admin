@@ -61,16 +61,24 @@ const Edit = ({ history }) => {
         </div>
       </div> */}
       <h1>
-        <button
-          onClick={() => {
-            history.push("/");
-          }}
-        >
-          ホームページ
-        </button>
-        <button type="button" onClick={() => history.goBack()}>
-          戻る
-        </button>
+        <div style={{ display: "flex" }}>
+          <button
+            class="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400"
+            type="button"
+            onClick={() => history.goBack()}
+          >
+            戻る
+          </button>
+
+          <button
+            class="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400"
+            onClick={() => {
+              history.push("/");
+            }}
+          >
+            ホームページ表示
+          </button>
+        </div>
       </h1>
       <section class="w-full">
         <h1 class="flex items-center font-sans font-bold break-normal text-gray-700 px-2 text-xl mt-12 lg:mt-0 md:text-2xl">
