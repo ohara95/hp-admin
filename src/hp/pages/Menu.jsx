@@ -110,61 +110,62 @@ const Menu = ({ history, selectItem }) => {
 
   return (
     <>
-      <div style={{ width: "100%" }}>
-        {/* <img src={store} style={{ width: "50%", height: 400 }} />
-        <img src={counter} style={{ width: "50%", height: 415 }} /> */}
+      <div style={{ background: "white" }}>
+        <h1>メニュー</h1>
+        <h2>！！！！本日のおすすめ！！！！</h2>
+        <h3>food</h3>
+        <h4>{recommendMenu("cuisine")}</h4>
+        <h3>drink</h3>
+        <h4>{recommendMenu("drink")}</h4>
+
+        <h2>food</h2>
+        <img src={takokara} />
+        <img src={sarada} />
+
+        <h3>おつまみ</h3>
+        {cuisineMenu("snack")}
+        <h3>サラダ</h3>
+        {cuisineMenu("salad")}
+        <h3>揚げ物</h3>
+        {cuisineMenu("fried")}
+        <h3>焼き物</h3>
+        {cuisineMenu("grill")}
+        <h3>〆</h3>
+        {cuisineMenu("main")}
+        <h3>デザート</h3>
+        {cuisineMenu("dessert")}
+
+        <h2>drink</h2>
+        <h3>ビール</h3>
+        {drinkMenu("beer")}
+        <h3>サワー</h3>
+        {drinkMenu("sour")}
+        <h3>ウィスキー</h3>
+        {drinkMenu("whisky")}
+        <h3>焼酎</h3>
+        {drinkMenu("shochu")}
+        <h3>カクテル</h3>
+        {drinkMenu("cocktail")}
+        <h3>ワイン</h3>
+        {drinkMenu("wine")}
+        <h3>ノンアル</h3>
+        {drinkMenu("non-al")}
+        <img src={beel} />
+        <h2>宴会コース</h2>
+        {banquet()}
       </div>
-      <button
-        onClick={() => {
-          history.push("/");
-        }}
-      >
-        ホームへ
-      </button>
-      <h1>メニュー</h1>
-      <h2>！！！！本日のおすすめ！！！！</h2>
-      <h3>food</h3>
-      <h4>{recommendMenu("cuisine")}</h4>
-      <h3>drink</h3>
-      <h4>{recommendMenu("drink")}</h4>
-
-      <h2>food</h2>
-      <img src={takokara} />
-      <img src={sarada} />
-
-      <h3>おつまみ</h3>
-      {cuisineMenu("snack")}
-      <h3>サラダ</h3>
-      {cuisineMenu("salad")}
-      <h3>揚げ物</h3>
-      {cuisineMenu("fried")}
-      <h3>焼き物</h3>
-      {cuisineMenu("grill")}
-      <h3>〆</h3>
-      {cuisineMenu("main")}
-      <h3>デザート</h3>
-      {cuisineMenu("dessert")}
-
-      <h2>drink</h2>
-      <h3>ビール</h3>
-      {drinkMenu("beer")}
-      <h3>サワー</h3>
-      {drinkMenu("sour")}
-      <h3>ウィスキー</h3>
-      {drinkMenu("whisky")}
-      <h3>焼酎</h3>
-      {drinkMenu("shochu")}
-      <h3>カクテル</h3>
-      {drinkMenu("cocktail")}
-      <h3>ワイン</h3>
-      {drinkMenu("wine")}
-      <h3>ノンアル</h3>
-      {drinkMenu("non-al")}
-      <img src={beel} />
-      <h2>宴会コース</h2>
-      {banquet()}
     </>
   );
 };
 
 export default Menu;
+{
+  /* <div style={{ width: "100%" }}> */
+}
+{
+  /* <img src={store} style={{ width: "50%", height: 400 }} />
+        <img src={counter} style={{ width: "50%", height: 415 }} /> */
+}
+{
+  /* </div> */
+}

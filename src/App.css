@@ -17,3 +17,9 @@ body {
 .activeBtn {
   background-color: gray;
 }
+
+.headerStyle {
+  font-family: "Permanent Marker", cursive;
+  width: 100%;
+  height: 100vh;
+}

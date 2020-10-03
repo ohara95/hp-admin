@@ -1,22 +1,16 @@
-import React, { useState } from "react";
+import React, { Children, useState } from "react";
 import { auth, db } from "../../config/firebese";
-import BuysTodo from "../components/BuysTodo";
+import BuysTodo from "../components/buysTodo";
 import { Alert } from "../../atoms/Alert";
-import "./management.scss";
-import {
-  ResponsiveContainer,
-  AreaChart,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Area,
-  Legend,
-  Bar,
-  ComposedChart,
-} from "recharts";
 import { useEffect } from "react";
 import { format } from "date-fns";
+import ManagementGraph from "../components/ManagementGraph";
+import SalesList from "../components/SalesList";
+import BuysList from "../components/BuysList";
+import SalesInput from "../components/SalesInput";
+import BuysInput from "../components/BuysInput";
+import CustomLabel from "../../atoms/CustomLabel";
+import IconPop from "../../atoms/IconPop";
 
 const Management = ({ history }) => {
   const [salesDate, setSalesDate] = useState(null);
@@ -32,24 +26,17 @@ const Management = ({ history }) => {
   const [editBuysPrice, setEditBuysPrice] = useState("");
   const [editBuysDetail, setEditBuysDetail] = useState("");
   const [toggleTable, setToggleTable] = useState("months");
-
-  const [salesEditOpen, setSalesEditOpen] = useState(false);
   const [chooseBtn, setChooseBtn] = useState("");
-  const [chooseBtnOpen, setChooseBtnOpen] = useState(false);
-
   const [dbSales, setDbSales] = useState([]);
   const [dbBuys, setDbBuys] = useState([]);
-  const setData = dbSales.concat(dbBuys);
-
   const [inputErr, setInputErr] = useState(false);
+  const setData = dbSales.concat(dbBuys);
 
   // const today = new Date().toISOString().slice(0, 10);
   const today = new Date();
   const toMonth = today.getMonth() + 1;
 
-  const [salesSelectMonth, setSalesSelectMonth] = useState("all");
-  const [buysSelectMonth, setBuysSelectMonth] = useState("all");
-
+  /** 売上計上 */
   const plusSubmit = (e) => {
     e.preventDefault();
     if (!salesDate || !salesPrice) {
@@ -114,18 +101,46 @@ const Management = ({ history }) => {
 
   /** 売上計算 */
   const totalSales = () => {
-    const total = dbSales.reduce(
-      (cumulative, current) => cumulative + current.salesPrice,
-      0
-    );
+    let total;
+    if (toggleTable === "chooseMonth") {
+      total = dbSales
+        .filter((sales) => format(sales.date.toDate(), "MM") == chooseBtn)
+        .reduce((cumulative, current) => cumulative + current.salesPrice, 0);
+    } else if (toggleTable === "months") {
+      total = dbSales
+        .filter(
+          (sales) => format(sales.date.toDate(), "MM") == toMonth.toString()
+        )
+        .reduce((cumulative, current) => cumulative + current.salesPrice, 0);
+    } else {
+      total = dbSales.reduce(
+        (cumulative, current) => cumulative + current.salesPrice,
+        0
+      );
+    }
     return total;
   };
+
   /** 経費計算 */
   const totalBuys = () => {
-    const total = dbBuys.reduce(
-      (cumulative, current) => cumulative + current.buysPrice,
-      0
-    );
+    let total;
+    if (toggleTable === "chooseMonth") {
+      total = dbBuys
+        .filter((sales) => format(sales.date.toDate(), "MM") == chooseBtn)
+        .reduce((cumulative, current) => cumulative + current.buysPrice, 0);
+    } else if (toggleTable === "months") {
+      total = dbBuys
+        .filter(
+          (sales) => format(sales.date.toDate(), "MM") == toMonth.toString()
+        )
+        .reduce((cumulative, current) => cumulative + current.buysPrice, 0);
+    } else {
+      total = dbBuys.reduce(
+        (cumulative, current) => cumulative + current.buysPrice,
+        0
+      );
+    }
+
     return total;
   };
 
@@ -163,218 +178,6 @@ const Management = ({ history }) => {
       });
   }, []);
 
-  /** 売上一覧 */
-  const salesHistory = () => {
-    return dbSales.map((db) => {
-      return (
-        <div>
-          <div style={{ display: "flex", marginTop: 10 }}>
-            <button
-              id={db.id}
-              onClick={(e) => {
-                inputPossible(e.target.id);
-              }}
-              class="text-teal-500 py-1 px-2 rounded far fa-edit"
-            />
-            <button
-              onClick={() => {
-                deleteSales(db.id);
-              }}
-              class="text-teal-500 py-1 px-2 rounded far fa-trash-alt"
-            />
-            <p>
-              {format(db.date.toDate(), "MM/dd")}
-              &nbsp;
-            </p>
-            {edit && editId === db.id ? (
-              <form
-                onSubmit={(e) => {
-                  upDateSales(e, db.id);
-                }}
-              >
-                <input
-                  type="number"
-                  value={editSalesPrice}
-                  onChange={(e) => {
-                    setEditSalesPrice(e.target.value);
-                  }}
-                  placeholder={db.salesPrice}
-                />
-                <button type="submit" class="fas fa-check" />
-              </form>
-            ) : (
-              <p>{db.salesPrice}円</p>
-            )}
-          </div>
-        </div>
-      );
-    });
-  };
-
-  /** 売上項目編集 */
-  const upDateSales = (e, id) => {
-    e.preventDefault();
-    setEditSalesPrice("");
-    setEdit(false);
-    if (editSalesPrice) {
-      db.collection("management")
-        .doc("NcmaRejmRabdytHQfbKU")
-        .collection("sales")
-        .doc(id)
-        .get()
-        .then((res) => {
-          res.ref.update({
-            salesPrice: parseInt(editSalesPrice),
-          });
-        });
-    }
-  };
-
-  /** 押した編集ボタンのID取得(売上) */
-  const inputPossible = (id) => {
-    setEdit(!edit);
-    salesEditBtn();
-    return dbSales.map((db) => {
-      if (id === db.id) {
-        setEditId(db.id);
-      }
-    });
-  };
-
-  /** 売上削除 */
-  const deleteSales = (id) => {
-    db.collection("management")
-      .doc("NcmaRejmRabdytHQfbKU")
-      .collection("sales")
-      .doc(id)
-      .get()
-      .then((res) => {
-        res.ref.delete();
-      });
-  };
-
-  /** 経費一覧 */
-  const buysHistory = () => {
-    return dbBuys.map((db) => {
-      return (
-        <div>
-          <div style={{ display: "flex", marginTop: 10 }}>
-            <button
-              id={db.id}
-              onClick={inputPossibleBuys}
-              class="text-teal-500 far fa-edit"
-            />
-            <button
-              onClick={() => {
-                deleteBuys(db.id);
-              }}
-              class="text-teal-500 py-1 px-2 rounded far fa-trash-alt"
-            />
-            <p>
-              {format(db.date.toDate(), "MM/dd")}
-              &nbsp;
-            </p>
-            {buysEdit && buysEditId === db.id ? (
-              <form
-                onSubmit={(e) => {
-                  upDateBuys(e, db.id);
-                }}
-              >
-                <div style={{ display: "flex" }}>
-                  <input
-                    type="number"
-                    value={editBuysPrice}
-                    onChange={(e) => {
-                      setEditBuysPrice(e.target.value);
-                    }}
-                    placeholder={db.buysPrice}
-                    style={{ width: 100 }}
-                  />
-                  <input
-                    type="text"
-                    value={editBuysDetail}
-                    onChange={(e) => {
-                      setEditBuysDetail(e.target.value);
-                    }}
-                    placeholder={db.detail}
-                    style={{ width: 100 }}
-                  />
-                  <button type="submit" class="fas fa-check" />
-                </div>
-              </form>
-            ) : (
-              <p>
-                {db.buysPrice}円 &nbsp;
-                <i class="fas fa-caret-right" />
-                &nbsp;
-                {db.detail}
-              </p>
-            )}
-          </div>
-        </div>
-      );
-    });
-  };
-
-  /** 経費項目編集 */
-  const upDateBuys = (e, id) => {
-    e.preventDefault();
-    setEditBuysPrice("");
-    setEditBuysDetail("");
-    setBuysEdit(false);
-    if (editBuysPrice) {
-      db.collection("management")
-        .doc("NcmaRejmRabdytHQfbKU")
-        .collection("buys")
-        .doc(id)
-        .get()
-        .then((res) => {
-          res.ref.update({
-            buysPrice: parseInt(editBuysPrice),
-          });
-        });
-    }
-
-    if (editBuysDetail) {
-      db.collection("management")
-        .doc("NcmaRejmRabdytHQfbKU")
-        .collection("buys")
-        .doc(id)
-        .get()
-        .then((res) => {
-          res.ref.update({
-            detail: editBuysDetail,
-          });
-        });
-    }
-  };
-
-  /** 押した編集ボタンのID取得(経費) */
-  const inputPossibleBuys = (e) => {
-    setBuysEdit(!buysEdit);
-    return dbBuys.map((db) => {
-      if (e.target.id === db.id) {
-        setBuysEditId(db.id);
-      }
-    });
-  };
-
-  /** 経費削除 */
-  const deleteBuys = (id) => {
-    db.collection("management")
-      .doc("NcmaRejmRabdytHQfbKU")
-      .collection("buys")
-      .doc(id)
-      .get()
-      .then((res) => {
-        res.ref.delete();
-      });
-  };
-
-  const salesEditBtn = () => {
-    setSalesEditOpen(!salesEditOpen);
-  };
-
   /** 同じ日付の金額足し算 */
   const sumData = (selectData) => {
     const res = [];
@@ -393,26 +196,28 @@ const Management = ({ history }) => {
         }
         continue;
       }
-      if (key.detail && key.buysPrice && key.salesPrice) {
-        res.push({
-          ...key,
-          buysPrice: [key.buysPrice],
-          salesPrice: [key.salesPrice],
-          detail: [key.detail],
-        });
+      if (key.detail && key.buysPrice) {
+        if (key.salesPrice) {
+          res.push({
+            ...key,
+            buysPrice: [key.buysPrice],
+            salesPrice: [key.salesPrice],
+            detail: [key.detail],
+          });
+        } else {
+          res.push({
+            ...key,
+            buysPrice: [key.buysPrice],
+            salesPrice: [],
+            detail: [key.detail],
+          });
+        }
       } else if (key.salesPrice) {
         res.push({
           ...key,
-          buysPrice: [0],
+          buysPrice: [],
           salesPrice: [key.salesPrice],
           detail: [],
-        });
-      } else if (key.buysPrice && key.detail) {
-        res.push({
-          ...key,
-          buysPrice: [key.buysPrice],
-          salesPrice: [0],
-          detail: [key.detail],
         });
       }
     }
@@ -421,18 +226,20 @@ const Management = ({ history }) => {
 
   /** 配列内の合算 */
   const sumPrice = (price) => {
-    let sum = 0;
-    for (let i = 0; i < price.length; i++) {
-      sum += price[i];
+    if (price) {
+      let sum = 0;
+      for (let i = 0; i < price.length; i++) {
+        sum += price[i];
+      }
+      return sum;
     }
-    return sum;
   };
 
   /** 差額表示 */
   const difference = totalSales(dbSales) - totalBuys(dbBuys);
 
   /** 日付順にソート */
-  sumData(setData).sort((a, b) => {
+  const sortSetData = sumData(setData).sort((a, b) => {
     if (a.date < b.date) {
       return -1;
     } else {
@@ -441,13 +248,13 @@ const Management = ({ history }) => {
   });
 
   /** 表用のデータ(今月) */
-  const graphData = sumData(setData)
+  const graphData = sumData(sortSetData)
     .filter((data) => Number(format(data.date.toDate(), "MM")) === toMonth)
     .map((data) => {
       return {
         日付: format(data.date.toDate(), "MM/dd"),
-        売上: sumPrice(data.salesPrice),
-        経費: sumPrice(data.buysPrice),
+        売上: sumPrice(data.salesPrice[0]),
+        経費: sumPrice(data.buysPrice[0]),
       };
     });
 
@@ -473,24 +280,13 @@ const Management = ({ history }) => {
           format(data.date.toDate(), "MM") === format(key.date.toDate(), "MM")
       );
       if (item) {
-        if (item.salesPrice === 0) {
-          item.salesPrice += parseInt(key.salesPrice);
-        } else if (Array.isArray(item.salesPrice)) {
-          if (Array.isArray(key.salesPrice)) {
-            item.salesPrice.concat(key.salesPrice);
-          } else {
-            item.salesPrice.push(key.salesPrice);
-          }
+        if (item.buysPrice) {
+          Object.assign(item.buysPrice, key.buysPrice);
         }
-        if (item.buysPrice === 0) {
-          item.buysPrice += parseInt(key.buysPrice);
-        } else if (Array.isArray(item.buysPrice)) {
-          if (Array.isArray(key.buysPrice)) {
-            item.buysPrice.concat(key.buysPrice);
-          } else {
-            item.buysPrice.push(key.buysPrice);
-          }
+        if (item.salesPrice) {
+          Object.assign(item.salesPrice, key.salesPrice);
         }
+        continue;
       }
       arr.push({
         ...key,
@@ -520,50 +316,6 @@ const Management = ({ history }) => {
     }
   };
 
-  // 表
-  const salesChart = () => {
-    return (
-      <ComposedChart //グラフ全体のサイズや位置、データを指定。場合によってmarginで上下左右の位置を指定する必要あり。
-        width={1000} //グラフ全体の幅を指定
-        height={350} //グラフ全体の高さを指定
-        data={chooseGraph()} //ここにArray型のデータを指定
-        style={{ margin: "0 auto" }}
-      >
-        <XAxis
-          dataKey="日付" //Array型のデータの、X軸に表示したい値のキーを指定
-          interval={0}
-        />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <CartesianGrid //グラフのグリッドを指定
-          stroke="#f5f5f5" //グリッド線の色を指定
-        />
-        <Area //面積を表すグラフ
-          type="monotone" //グラフが曲線を描くように指定。default値は折れ線グラフ
-          dataKey="経費" //Array型のデータの、Y軸に表示したい値のキーを指定
-          stroke="#00aced" ////グラフの線の色を指定
-          fillOpacity={1} ////グラフの中身の薄さを指定
-          fill="rgba(0, 172, 237, 0.2)" //グラフの色を指定
-        />
-        <Bar //棒グラフ
-          dataKey="売上" //Array型のデータの、Y軸に表示したい値のキーを指定
-          barSize={20} //棒の太さを指定
-          stroke="rgba(34, 80, 162, 0.2)" ////レーダーの線の色を指定
-          fillOpacity={1} //レーダーの中身の色の薄さを指定
-          fill="#2250A2" ////レーダーの中身の色を指定
-        />
-      </ComposedChart>
-    );
-  };
-
-  const monthBtnClick = (e) => {
-    if (toggleTable === "chooseMonth") {
-      setChooseBtnOpen(!chooseBtnOpen);
-    }
-    setToggleTable(e.target.value);
-  };
-
   // 12ヶ月
   // const months = () => {
   //   let monthArr = [];
@@ -576,17 +328,23 @@ const Management = ({ history }) => {
   return (
     <>
       {inputErr && <Alert title="注意！" text="入力してください" />}
-      <h1>管理画面</h1>
       <button
+        class="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400"
         onClick={() => {
           history.push("/edit");
         }}
       >
         ホームページ編集
       </button>
+      <h1 class="flex items-center font-sans font-bold break-normal text-gray-700 px-2 text-xl mt-12 lg:mt-0 md:text-2xl">
+        管理画面
+      </h1>
+
       <div>
         <div
-          onClick={monthBtnClick}
+          onClick={(e) => {
+            setToggleTable(e.target.value);
+          }}
           style={{ margin: "10px auto", width: "20%" }}
         >
           <button
@@ -597,7 +355,7 @@ const Management = ({ history }) => {
           </button>
           <button
             value="year"
-            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 text-white py-3 px-5 "
+            className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 text-white py-3 px-5 "
           >
             年間
           </button>
@@ -627,111 +385,39 @@ const Management = ({ history }) => {
             </select>
           </button>
         </div>
-        <div>{salesChart()}</div>
+        <ManagementGraph chooseGraph={chooseGraph} />
       </div>
 
       <div
         style={{ display: "flex", width: "90%", margin: "0 auto" }}
         class="bg-white shadow-md rounded "
       >
-        <div>
-          <form class="px-8 pt-6 pb-8 mb-4" onSubmit={plusSubmit}>
-            <div class="mb-4">
-              <label class="block text-gray-700 text-sm font-bold mb-2">
-                売上日
-              </label>
-              <input
-                class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
-                type="text"
-                type="date"
-                date="date"
-                value={salesDate}
-                onChange={(e) => setSalesDate(e.target.value)}
-              />
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700 text-sm font-bold mb-2">
-                売上額
-              </label>
-              <input
-                class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
-                type="number"
-                date="sales"
-                value={salesPrice}
-                onChange={(e) => setSalesPrice(e.target.value)}
-              />
-            </div>
-            <div>
-              <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded">
-                計上
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <div>
-          <form class="px-8 pt-6 pb-8 mb-4" onSubmit={minusSubmit}>
-            <div class="mb-4">
-              <label class="block text-gray-700 text-sm font-bold mb-2">
-                出費日
-              </label>
-              <input
-                class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
-                type="date"
-                date="date"
-                value={buysDate}
-                onChange={(e) => setBuysDate(e.target.value)}
-              />
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700 text-sm font-bold mb-2">
-                出費額
-              </label>
-              <input
-                class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
-                type="number"
-                date="buys"
-                value={buysPrice}
-                onChange={(e) => setBuysPrice(e.target.value)}
-              />
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700 text-sm font-bold mb-2">
-                出費明細
-              </label>
-              <input
-                class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
-                type="text"
-                date="detail"
-                value={buysDetail}
-                onChange={(e) => setBuysDetail(e.target.value)}
-              />
-            </div>
-            <div>
-              <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded">
-                計上
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <div>
-          <div class="px-8 pt-6 pb-8">
-            <h3 class="block text-gray-700 text-sm font-bold mb-2">売上計</h3>
+        <SalesInput
+          setSalesDate={setSalesDate}
+          salesPrice={salesPrice}
+          setSalesPrice={setSalesPrice}
+          plusSubmit={plusSubmit}
+          salesDate={salesDate}
+        />
+        <BuysInput
+          setBuysPrice={setBuysPrice}
+          buysDetail={buysDetail}
+          setBuysDetail={setBuysDetail}
+          buysDate={buysDate}
+          setBuysDate={setBuysDate}
+          buysPrice={buysPrice}
+          minusSubmit={minusSubmit}
+        />
+        <div class="md:w-1/2 p-3">
+          <IconPop text="売上計" color="blue" icon="fas fa-plus">
             {totalSales() !== 0 && `${totalSales().toLocaleString()}円`}
-          </div>
-
-          <div class="px-8 pt-6 pb-8 mb-4">
-            <h3 class="block text-gray-700 text-sm font-bold mb-2">経費計</h3>
+          </IconPop>
+          <IconPop text="経費計" color="red" icon="fas fa-minus">
             {totalBuys() !== 0 && `${totalBuys().toLocaleString()}円`}
-          </div>
-
-          <div class="px-8 pt-6 pb-8 mb-4">
-            <h3>差額</h3>
-            <p className={difference < 0 && "minus"}>
-              {difference.toLocaleString()}
-            </p>
-          </div>
+          </IconPop>
+          <IconPop text="差額" color="green" icon="fas fa-hand-holding-usd">
+            {difference.toLocaleString()}
+          </IconPop>
         </div>
       </div>
       <div
@@ -747,27 +433,40 @@ const Management = ({ history }) => {
           class="px-8 pt-6 pb-8 mb-4 "
           style={{ height: 400, width: "30%", overflow: "scroll" }}
         >
-          <label class="block text-gray-700 text-sm font-bold mb-2">
-            売上表
-          </label>
-          {salesHistory()}
+          <CustomLabel text="売上表" />
+          <SalesList
+            dbSales={dbSales}
+            edit={edit}
+            setEdit={setEdit}
+            editId={editId}
+            setEditId={setEditId}
+            editSalesPrice={editSalesPrice}
+            setEditSalesPrice={setEditSalesPrice}
+          />
         </div>
         <div
           class="px-8 pt-6 pb-8 mb-4"
           style={{ height: 400, width: "30%", overflow: "scroll" }}
         >
-          <label class="block text-gray-700 text-sm font-bold mb-2">
-            経費表
-          </label>
-          {buysHistory()}
+          <CustomLabel text="経費表" />
+          <BuysList
+            dbBuys={dbBuys}
+            buysEdit={buysEdit}
+            setBuysEditId={setBuysEditId}
+            setEditBuysPrice={setEditBuysPrice}
+            editBuysDetail={editBuysDetail}
+            setEditBuysDetail={setEditBuysDetail}
+            setBuysEdit={setBuysEdit}
+            editBuysPrice={editBuysPrice}
+            setBuysEdit={setBuysEdit}
+            buysEditId={buysEditId}
+          />
         </div>
         <div
           class="px-8 pt-6 pb-8 mb-4"
           style={{ height: 400, width: "30%", overflow: "scroll" }}
         >
-          <label class="block text-gray-700 text-sm font-bold mb-2">
-            買い物リスト
-          </label>
+          <CustomLabel text="買い物リスト" />
           <BuysTodo />
         </div>
       </div>

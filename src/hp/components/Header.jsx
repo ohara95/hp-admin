@@ -10,19 +10,19 @@ const Header = () => {
       </h1>
       <ul className="content">
         <li>
-          <Link to="/menu">メニュー</Link>
+          <Link to="/menu">menu</Link>
         </li>
         <li>
-          <Link to="/notice">お知らせ</Link>
+          <Link to="/notice">notice</Link>
         </li>
         <li>
-          <a href="http://blog.sukemasa.net/">ブログ</a>
+          <a href="http://blog.sukemasa.net/">blog</a>
         </li>
         <li>
-          <Link to="/information">店舗情報</Link>
+          <Link to="/information">information</Link>
         </li>
         <li>
-          <Link to="/login">管理</Link>
+          <Link to="/login">admin</Link>
         </li>
       </ul>
     </div>

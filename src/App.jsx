@@ -4,7 +4,7 @@ import { AuthProvider, AuthContext } from "./AuthProvider";
 import MainPage from "./hp/pages/MainPage";
 import Menu from "./hp/pages/Menu";
 import Notice from "./hp/pages/Notice";
-import Information from "./hp/components/Information";
+import Information from "./hp/pages/Information";
 import SignInUp from "./admin/pages/SignIn_SignUp";
 import Management from "./admin/pages/Management";
 import Edit from "./admin/pages/Edit";

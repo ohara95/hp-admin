@@ -1,14 +1,14 @@
-const monthData = () => {
-  let salesSum = 0;
-  let buysSum = 0;
-  let arr = [];
-  const monthDataCalc = sumData(setData).map((key) => {
-    const monthCorrect = format(key.date.toDate(), "MM"); //日付
-    const calcSalesPrice = key.salesPrice;
-    const calcBuysPrice = key.buysPrice;
-  });
-  return sumMonthData(monthDataCalc);
-};
+// const monthData = () => {
+//   let salesSum = 0;
+//   let buysSum = 0;
+//   let arr = [];
+//   const monthDataCalc = sumData(setData).map((key) => {
+//     const monthCorrect = format(key.date.toDate(), "MM"); //日付
+//     const calcSalesPrice = key.salesPrice;
+//     const calcBuysPrice = key.buysPrice;
+//   });
+//   return sumMonthData(monthDataCalc);
+// };
 // const monthData = () => {
 //   let salesSum = 0;
 //   let buysSum = 0;
@@ -301,3 +301,6 @@ const monthData = () => {
 // const filterData = dbSales.filter(
 //   (data) => format(data.date.toDate(), "MM") == salesSelectMonth
 // );
+
+// const [salesSelectMonth, setSalesSelectMonth] = useState("all");
+// const [buysSelectMonth, setBuysSelectMonth] = useState("all");

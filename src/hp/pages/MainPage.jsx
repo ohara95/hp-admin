@@ -1,7 +1,7 @@
 import React from "react";
-import Information from "../components/Information";
 import Header from "../components/Header";
 import store from "../../assets/img/store.jpeg";
+import Menu from "./Menu";
 import "./main.css";
 
 const MainPage = () => {
@@ -11,8 +11,13 @@ const MainPage = () => {
         src={store}
         style={{ borderRadius: "50%", height: 600, width: 600 }}
       />
-      <div style={{ margin: "0 auto" }}>
-        <Header />
+      <div style={{ width: "100%" }}>
+        <div className="headerStyle">
+          <Header />
+          <div style={{ width: "90%", margin: "10 auto" }}>
+            <Menu />
+          </div>
+        </div>
       </div>
     </div>
   );
