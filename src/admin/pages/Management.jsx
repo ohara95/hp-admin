@@ -11,6 +11,7 @@ import SalesInput from "../components/SalesInput";
 import BuysInput from "../components/BuysInput";
 import CustomLabel from "../../atoms/CustomLabel";
 import IconPop from "../../atoms/IconPop";
+import sumData from "../utils/sameDaysCalc";
 
 const Management = ({ history }) => {
   const [salesDate, setSalesDate] = useState(null);
@@ -178,52 +179,6 @@ const Management = ({ history }) => {
       });
   }, []);
 
-  /** 同じ日付の金額足し算 */
-  const sumData = (selectData) => {
-    const res = [];
-    for (const key of selectData) {
-      const item = res.find((item) => key.date.seconds === item.date.seconds);
-      if (item) {
-        // resで作った配列にpush
-        if (item.detail && key.detail) {
-          item.detail.push(key.detail);
-        }
-        if (item.buysPrice && key.buysPrice) {
-          item.buysPrice.push(key.buysPrice);
-        }
-        if (item.salesPrice && key.salesPrice) {
-          item.salesPrice.push(key.salesPrice);
-        }
-        continue;
-      }
-      if (key.detail && key.buysPrice) {
-        if (key.salesPrice) {
-          res.push({
-            ...key,
-            buysPrice: [key.buysPrice],
-            salesPrice: [key.salesPrice],
-            detail: [key.detail],
-          });
-        } else {
-          res.push({
-            ...key,
-            buysPrice: [key.buysPrice],
-            salesPrice: [],
-            detail: [key.detail],
-          });
-        }
-      } else if (key.salesPrice) {
-        res.push({
-          ...key,
-          buysPrice: [],
-          salesPrice: [key.salesPrice],
-          detail: [],
-        });
-      }
-    }
-    return res;
-  };
-
   /** 配列内の合算 */
   const sumPrice = (price) => {
     if (price) {
@@ -259,13 +214,13 @@ const Management = ({ history }) => {
     });
 
   /** 表用のデータ(選択) */
-  const chooseGraphData = sumData(setData)
+  const chooseGraphData = sumData(sortSetData)
     .filter((data) => format(data.date.toDate(), "MM") == chooseBtn)
     .map((data) => {
       return {
         日付: format(data.date.toDate(), "MM/dd"),
-        売上: sumPrice(data.salesPrice),
-        経費: sumPrice(data.buysPrice),
+        売上: sumPrice(data.salesPrice[0]),
+        経費: sumPrice(data.buysPrice[0]),
       };
     });
 
@@ -317,17 +272,24 @@ const Management = ({ history }) => {
   };
 
   // 12ヶ月
-  // const months = () => {
-  //   let monthArr = [];
-  //   for (let i = 1; i <= 12; i++) {
-  //     monthArr.push(<option value={i}>{i}月</option>);
-  //   }
-  //   return monthArr;
-  // };
+  const months = () => {
+    let monthArr = [];
+    for (let i = 1; i <= 12; i++) {
+      const formatDate = ("0" + i).slice(-2);
+      monthArr.push(<option value={formatDate}>{formatDate}月</option>);
+    }
+    return monthArr;
+  };
 
   return (
     <>
-      {inputErr && <Alert title="注意！" text="入力してください" />}
+      {inputErr && (
+        <Alert
+          title="注意！"
+          text="入力してください"
+          icon="fas fa-exclamation-circle"
+        />
+      )}
       <button
         className="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400"
         onClick={() => {
@@ -339,7 +301,6 @@ const Management = ({ history }) => {
       <h1 className="flex items-center font-sans font-bold break-normal text-gray-700 px-2 text-xl mt-12 lg:mt-0 md:text-2xl">
         管理画面
       </h1>
-
       <div>
         <div
           onClick={(e) => {
@@ -370,24 +331,12 @@ const Management = ({ history }) => {
               }}
               className="bg-teal-500 hover:bg-teal-700 text-white"
             >
-              <option value="01">1月</option>
-              <option value="02">2月</option>
-              <option value="03">3月</option>
-              <option value="04">4月</option>
-              <option value="05">5月</option>
-              <option value="06">6月</option>
-              <option value="07">7月</option>
-              <option value="08">8月</option>
-              <option value="09">9月</option>
-              <option value="10">10月</option>
-              <option value="11">11月</option>
-              <option value="12">12月</option>
+              {months()}
             </select>
           </button>
         </div>
         <ManagementGraph chooseGraph={chooseGraph} />
       </div>
-
       <div
         style={{ display: "flex", width: "90%", margin: "0 auto" }}
         className="bg-white shadow-md rounded "
@@ -470,7 +419,6 @@ const Management = ({ history }) => {
           <BuysTodo />
         </div>
       </div>
-
       <button
         className="flex-shrink-0 bg-red-500 hover:bg-red-700 border-red-500 hover:border-red-700 text-sm border-4 text-white py-1 px-2 rounded"
         onClick={() => auth.signOut()}

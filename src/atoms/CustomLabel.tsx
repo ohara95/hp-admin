@@ -1,6 +1,9 @@
-import React from "react";
+import React, { FC } from "react";
 
-const CustomLabel = ({ text }) => {
+type Props = {
+  text: string;
+};
+const CustomLabel: FC<Props> = ({ text }) => {
   return (
     <>
       <label className="block text-gray-700 text-sm font-bold mb-2">

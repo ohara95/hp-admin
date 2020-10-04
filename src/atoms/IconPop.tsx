@@ -1,6 +1,12 @@
-import React from "react";
+import React, { FC } from "react";
 
-const IconPop = ({ color, icon, text, children }) => (
+type Props = {
+  color: string;
+  icon: string;
+  text: string;
+};
+
+const IconPop: FC<Props> = ({ color, icon, text, children }) => (
   <div className="bg-white rounded p-2 ">
     <div className="flex flex-row items-center">
       <div className="flex-shrink">
