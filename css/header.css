@@ -1,0 +1,26 @@
+.on {
+  width: 100%;
+  font-size: 20px;
+  margin-top: 20px;
+  font-family: "Permanent Marker", cursive;
+}
+
+.on a {
+  color: white;
+}
+
+.on .content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 80%;
+  margin: 20px auto;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.title {
+  font-size: 40px;
+}
+/*# sourceMappingURL=header.css.map */

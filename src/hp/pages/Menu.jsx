@@ -110,8 +110,7 @@ const Menu = ({ history, selectItem }) => {
 
   return (
     <>
-      <div style={{ background: "white" }}>
-        <h1>メニュー</h1>
+      <div>
         <h2>！！！！本日のおすすめ！！！！</h2>
         <h3>food</h3>
         <h4>{recommendMenu("cuisine")}</h4>

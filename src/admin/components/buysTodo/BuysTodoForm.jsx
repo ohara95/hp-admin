@@ -58,16 +58,22 @@ const BuysTodoForm = ({ todos, setTodos, content, setContent }) => {
         />
         <div
           style={{
-            width: "30%",
+            width: "45%",
             display: "flex",
             justifyContent: "space-around",
           }}
         >
-          <button onClick={addTodo} class="text-teal-500 far fa-edit" />
-          <button onClick={deleteTodo} class="text-teal-500 far fa-trash-alt" />
+          <button
+            onClick={addTodo}
+            class="text-teal-500 far fa-edit text-2xl"
+          />
+          <button
+            onClick={deleteTodo}
+            class="text-teal-500 far fa-trash-alt text-2xl"
+          />
           <button
             onClick={allCheck}
-            class="text-teal-500 far fa-check-square"
+            class="text-teal-500 far fa-check-square text-2xl"
           />
         </div>
       </form>

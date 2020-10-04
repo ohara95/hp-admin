@@ -3,11 +3,8 @@ a {
   color: black;
 }
 
-/* HPの部分だけ背景黒にしたい */
 body {
   margin: 0;
-  /* background-color: black;
-  color: white; */
 }
 
 .minus {
@@ -19,7 +16,6 @@ body {
 }
 
 .headerStyle {
-  font-family: "Permanent Marker", cursive;
   width: 100%;
   height: 100vh;
 }

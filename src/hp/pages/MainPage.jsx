@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../components/Header";
 import store from "../../assets/img/store.jpeg";
 import Menu from "./Menu";
+import Notice from "./Notice";
 import "./main.css";
 
 const MainPage = () => {
@@ -14,8 +15,16 @@ const MainPage = () => {
       <div style={{ width: "100%" }}>
         <div className="headerStyle">
           <Header />
-          <div style={{ width: "90%", margin: "10 auto" }}>
-            <Menu />
+          <div style={{ width: "80%", margin: "0 auto" }}>
+            <div
+              style={{
+                background: "white",
+                height: "70vh",
+                overflow: "scroll",
+              }}
+            >
+              <Notice />
+            </div>
           </div>
         </div>
       </div>

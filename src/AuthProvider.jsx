@@ -5,6 +5,7 @@ export const AuthContext = React.createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [currentPath, setCurrentPath] = "";
 
   useEffect(() => {
     // 現在ログインしているユーザーを取得
@@ -15,6 +16,8 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, currentPath, setCurrentPath }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
