@@ -3,9 +3,28 @@ import Header from "../components/Header";
 import store from "../../assets/img/store.jpeg";
 import Menu from "./Menu";
 import Notice from "./Notice";
-import "./main.css";
+import Information from "./Information";
+import Top from "./Top";
+import "../../App.css";
+import { AuthContext } from "../../AuthProvider";
+import { useContext } from "react";
 
 const MainPage = () => {
+  const { currentPath } = useContext(AuthContext);
+  const movePage = () => {
+    switch (currentPath) {
+      case "top":
+        return <Top />;
+      case "menu":
+        return <Menu />;
+      case "information":
+        return <Information />;
+      case "notice":
+        return <Notice />;
+      default:
+        break;
+    }
+  };
   return (
     <div className="background">
       <img
@@ -23,7 +42,7 @@ const MainPage = () => {
                 overflow: "scroll",
               }}
             >
-              <Notice />
+              {movePage()}
             </div>
           </div>
         </div>

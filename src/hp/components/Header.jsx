@@ -1,10 +1,6 @@
 import React, { useContext } from "react";
 import { Route, Link } from "react-router-dom";
 import "./header.scss";
-import Menu from "../pages/Menu";
-import Notice from "../pages/Notice";
-import Information from "../pages/Information";
-import SignInUp from "../../admin/pages/SignIn_SignUp";
 import { AuthContext } from "../../AuthProvider";
 
 const Header = () => {
@@ -12,24 +8,35 @@ const Header = () => {
   console.log(currentPath);
   return (
     <div className="on">
-      <h1 className="title">亮昌</h1>
-      <ul className="content">
+      <h1 className="title">Sukemasa</h1>
+      <ul
+        className="content"
+        onClick={(e) => {
+          setCurrentPath(e.target.value);
+        }}
+      >
         <li>
-          <p style={{ color: "white" }}>top</p>
+          <button style={{ color: "white" }} value="top">
+            top
+          </button>
         </li>
         <li>
-          <Link to="/menu">menu</Link>
+          <button style={{ color: "white" }} value="menu">
+            menu
+          </button>
         </li>
         <li>
-          <Route path="/notice" component={Notice} />
-          <p style={{ color: "white" }}>notice</p>
+          <button style={{ color: "white" }} value="notice">
+            notice
+          </button>
         </li>
         <li>
           <a href="http://blog.sukemasa.net/">blog</a>
         </li>
         <li>
-          <Route path="/information" component={Information} />
-          <p style={{ color: "white" }}>information</p>
+          <button style={{ color: "white" }} value="information">
+            information
+          </button>
         </li>
       </ul>
     </div>
