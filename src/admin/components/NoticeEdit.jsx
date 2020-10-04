@@ -87,12 +87,12 @@ const NoticeEdit = () => {
 
   return (
     <>
-      <div id="section4" class="p-8 mt-6 lg:mt-0 rounded">
+      <div id="section4" className="p-8 mt-6 lg:mt-0 rounded">
         <form>
-          <div class="md:flex mb-6">
-            <div class="md:w-1/3">
+          <div className="md:flex mb-6">
+            <div className="md:w-1/3">
               <label
-                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                 for="my-textfield"
               >
                 休日・その他
@@ -100,20 +100,20 @@ const NoticeEdit = () => {
             </div>
           </div>
 
-          <div class="md:flex mb-6">
-            <div class="md:w-1/3">
+          <div className="md:flex mb-6">
+            <div className="md:w-1/3">
               <label
-                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                 for="my-select"
               >
                 投稿内容
               </label>
             </div>
-            <div class="md:w-2/3 border-gray-400 border">
+            <div className="md:w-2/3 border-gray-400 border">
               <select
                 name=""
                 onChange={handleChange}
-                class="form-select block w-full focus:bg-white rounded"
+                className="form-select block w-full focus:bg-white rounded"
                 id="my-select"
               >
                 <option value="none">選択して下さい</option>
@@ -123,10 +123,10 @@ const NoticeEdit = () => {
             </div>
           </div>
 
-          <div class="md:flex mb-6">
-            <div class="md:w-1/3">
+          <div className="md:flex mb-6">
+            <div className="md:w-1/3">
               <label
-                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                 for="my-textarea"
                 value={chooseItem()}
                 onChange={(e) => {
@@ -136,9 +136,9 @@ const NoticeEdit = () => {
                 入力欄
               </label>
             </div>
-            <div class="md:w-2/3">
+            <div className="md:w-2/3">
               <textarea
-                class="form-textarea block w-full focus:bg-white border rounded"
+                className="form-textarea block w-full focus:bg-white border rounded"
                 id="my-textarea"
                 value=""
                 rows="8"
@@ -146,12 +146,12 @@ const NoticeEdit = () => {
             </div>
           </div>
 
-          <div class="md:flex md:items-center">
-            <div class="md:w-1/3"></div>
-            <div class="md:w-2/3">
+          <div className="md:flex md:items-center">
+            <div className="md:w-1/3"></div>
+            <div className="md:w-2/3">
               <button
                 onClick={onNoticeSubmit}
-                class="bg-blue-500 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded"
+                className="bg-blue-500 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded"
                 type="button"
               >
                 送信
@@ -162,7 +162,7 @@ const NoticeEdit = () => {
       </div>
       {/* <button
             onClick={changePrev}
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
           >
             プレビュー
           </button>

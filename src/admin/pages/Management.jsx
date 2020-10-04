@@ -329,14 +329,14 @@ const Management = ({ history }) => {
     <>
       {inputErr && <Alert title="注意！" text="入力してください" />}
       <button
-        class="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400"
+        className="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400"
         onClick={() => {
           history.push("/edit");
         }}
       >
         ホームページ編集
       </button>
-      <h1 class="flex items-center font-sans font-bold break-normal text-gray-700 px-2 text-xl mt-12 lg:mt-0 md:text-2xl">
+      <h1 className="flex items-center font-sans font-bold break-normal text-gray-700 px-2 text-xl mt-12 lg:mt-0 md:text-2xl">
         管理画面
       </h1>
 
@@ -349,7 +349,7 @@ const Management = ({ history }) => {
         >
           <button
             value="months"
-            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 text-white py-3 px-5 rounded-l "
+            className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 text-white py-3 px-5 rounded-l "
           >
             月間
           </button>
@@ -361,14 +361,14 @@ const Management = ({ history }) => {
           </button>
           <button
             value="chooseMonth"
-            class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 text-white py-3 px-5 rounded-r"
+            className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 text-white py-3 px-5 rounded-r"
           >
             月別
             <select
               onChange={(e) => {
                 setChooseBtn(e.target.value);
               }}
-              class="bg-teal-500 hover:bg-teal-700 text-white"
+              className="bg-teal-500 hover:bg-teal-700 text-white"
             >
               <option value="01">1月</option>
               <option value="02">2月</option>
@@ -390,7 +390,7 @@ const Management = ({ history }) => {
 
       <div
         style={{ display: "flex", width: "90%", margin: "0 auto" }}
-        class="bg-white shadow-md rounded "
+        className="bg-white shadow-md rounded "
       >
         <SalesInput
           setSalesDate={setSalesDate}
@@ -408,7 +408,7 @@ const Management = ({ history }) => {
           buysPrice={buysPrice}
           minusSubmit={minusSubmit}
         />
-        <div class="md:w-1/2 p-3">
+        <div className="md:w-1/2 p-3">
           <IconPop text="売上計" color="blue" icon="fas fa-plus">
             {totalSales() !== 0 && `${totalSales().toLocaleString()}円`}
           </IconPop>
@@ -427,10 +427,10 @@ const Management = ({ history }) => {
           width: "90%",
           margin: "30px auto",
         }}
-        class="bg-white shadow-md rounded "
+        className="bg-white shadow-md rounded "
       >
         <div
-          class="px-8 pt-6 pb-8 mb-4 "
+          className="px-8 pt-6 pb-8 mb-4 "
           style={{ height: 400, width: "30%", overflow: "scroll" }}
         >
           <CustomLabel text="売上表" />
@@ -445,7 +445,7 @@ const Management = ({ history }) => {
           />
         </div>
         <div
-          class="px-8 pt-6 pb-8 mb-4"
+          className="px-8 pt-6 pb-8 mb-4"
           style={{ height: 400, width: "30%", overflow: "scroll" }}
         >
           <CustomLabel text="経費表" />
@@ -463,7 +463,7 @@ const Management = ({ history }) => {
           />
         </div>
         <div
-          class="px-8 pt-6 pb-8 mb-4"
+          className="px-8 pt-6 pb-8 mb-4"
           style={{ height: 400, width: "30%", overflow: "scroll" }}
         >
           <CustomLabel text="買い物リスト" />
@@ -472,7 +472,7 @@ const Management = ({ history }) => {
       </div>
 
       <button
-        class="flex-shrink-0 bg-red-500 hover:bg-red-700 border-red-500 hover:border-red-700 text-sm border-4 text-white py-1 px-2 rounded"
+        className="flex-shrink-0 bg-red-500 hover:bg-red-700 border-red-500 hover:border-red-700 text-sm border-4 text-white py-1 px-2 rounded"
         onClick={() => auth.signOut()}
       >
         ログアウト

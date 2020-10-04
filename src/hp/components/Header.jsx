@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { Route, Link } from "react-router-dom";
 import "./header.scss";
 import { AuthContext } from "../../AuthProvider";
 

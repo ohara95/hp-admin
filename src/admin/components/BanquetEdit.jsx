@@ -66,26 +66,26 @@ const BanquetEdit = () => {
 
   return (
     <>
-      <div id="section2" class="p-8 mt-6 lg:mt-0 rounded">
+      <div id="section2" className="p-8 mt-6 lg:mt-0 rounded">
         <form onSubmit={editMenu}>
-          <div class="md:flex mb-6">
-            <div class="md:w-1/3">
+          <div className="md:flex mb-6">
+            <div className="md:w-1/3">
               <label
-                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                 for="my-textfield"
               >
                 宴会メニュー
               </label>
             </div>
-            <div class="md:w-2/3">
+            <div className="md:w-2/3">
               <div
-                class="pt-8"
+                className="pt-8"
                 onClick={(e) => {
                   setOperation(e.target.value);
                 }}
               >
                 <button
-                  class={
+                  className={
                     operation === "add"
                       ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
                       : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
@@ -97,7 +97,7 @@ const BanquetEdit = () => {
                 </button>
 
                 <button
-                  class={
+                  className={
                     operation === "edit"
                       ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
                       : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
@@ -109,7 +109,7 @@ const BanquetEdit = () => {
                 </button>
 
                 <button
-                  class={
+                  className={
                     operation === "delete"
                       ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
                       : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
@@ -124,21 +124,21 @@ const BanquetEdit = () => {
           </div>
 
           {operation !== "add" && (
-            <div class="md:flex mb-6">
-              <div class="md:w-1/3">
+            <div className="md:flex mb-6">
+              <div className="md:w-1/3">
                 <label
-                  class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                  className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                   for="my-select"
                 >
                   投稿内容
                 </label>
               </div>
-              <div class="md:w-2/3 border-gray-400 border">
+              <div className="md:w-2/3 border-gray-400 border">
                 <select
                   onChange={(e) => {
                     setSelectItem(e.target.value);
                   }}
-                  class="form-select block w-full focus:bg-white rounded"
+                  className="form-select block w-full focus:bg-white rounded"
                 >
                   <option>選択して下さい</option>
                   {selectMenu()}
@@ -148,18 +148,18 @@ const BanquetEdit = () => {
           )}
           {operation !== "delete" && (
             <>
-              <div class="md:flex mb-6">
-                <div class="md:w-1/3">
+              <div classname="md:flex mb-6">
+                <div classname="md:w-1/3">
                   <label
-                    class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                    classname="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                     for="my-select"
                   >
                     メニュー名
                   </label>
                 </div>
-                <div class="md:w-2/3 ">
+                <div className="md:w-2/3 ">
                   <input
-                    class="form-textarea block w-full focus:bg-white border rounded"
+                    className="form-textarea block w-full focus:bg-white border rounded"
                     rows="4"
                     type="text"
                     value={menuTitle}
@@ -169,18 +169,18 @@ const BanquetEdit = () => {
                   />
                 </div>
               </div>
-              <div class="md:flex mb-6">
-                <div class="md:w-1/3">
+              <div className="md:flex mb-6">
+                <div className="md:w-1/3">
                   <label
-                    class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                    className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                     for="my-select"
                   >
                     金額
                   </label>
                 </div>
-                <div class="md:w-2/3">
+                <div className="md:w-2/3">
                   <input
-                    class="form-textarea block w-full focus:bg-white border rounded"
+                    className="form-textarea block w-full focus:bg-white border rounded"
                     rows="4"
                     type="number"
                     value={menuPrice}
@@ -191,19 +191,19 @@ const BanquetEdit = () => {
                 </div>
               </div>
               <div>
-                <div class="md:flex mb-6">
-                  <div class="md:w-1/3">
+                <div className="md:flex mb-6">
+                  <div className="md:w-1/3">
                     <label
-                      class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                      className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                       for="my-select"
                     >
                       入力欄
                     </label>
                   </div>
-                  <div class="md:w-2/3">
+                  <div className="md:w-2/3">
                     <textarea
                       type="textarea"
-                      class="form-textarea block w-full focus:bg-white border rounded"
+                      className="form-textarea block w-full focus:bg-white border rounded"
                       rows="8"
                       value={detail}
                       onChange={(e) => {
@@ -215,15 +215,15 @@ const BanquetEdit = () => {
               </div>
             </>
           )}
-          <div class="md:flex md:items-center">
-            <div class="md:w-1/3"></div>
-            <div class="md:w-2/3">
+          <div className="md:flex md:items-center">
+            <div className="md:w-1/3"></div>
+            <div className="md:w-2/3">
               {operation === "delete" ? (
-                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                   削除
                 </button>
               ) : (
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                   送信
                 </button>
               )}

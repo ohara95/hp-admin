@@ -29,14 +29,14 @@ const SignIn = ({ history }) => {
     <>
       <div>
         <div>
-          <div class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-            <p class="text-center text-3xl">LogIn</p>
+          <div className="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
+            <p className="text-center text-3xl">LogIn</p>
             <form
-              class="flex flex-col pt-3 md:pt-8"
+              className="flex flex-col pt-3 md:pt-8"
               onSubmit={handleSubmit(onSubmit)}
             >
-              <div class="flex flex-col pt-4">
-                <label for="email" class="text-lg">
+              <div className="flex flex-col pt-4">
+                <label for="email" className="text-lg">
                   Email
                 </label>
                 <input
@@ -48,13 +48,13 @@ const SignIn = ({ history }) => {
                     required: "※必須です",
                   })}
                   onChange={(e) => setEmail(e.target.value)}
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                 />
               </div>
 
-              <div class="flex flex-col pt-4">
+              <div className="flex flex-col pt-4">
                 {errors.email && <span>{errors.email.message}</span>}
-                <label for="password" class="text-lg">
+                <label for="password" className="text-lg">
                   Password
                 </label>
                 <input
@@ -66,20 +66,20 @@ const SignIn = ({ history }) => {
                     required: "※必須です",
                   })}
                   onChange={(e) => setPassword(e.target.value)}
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                 />
               </div>
               {errors.password && <span>{errors.password.message}</span>}
               <input
                 type="submit"
                 value="Done"
-                class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"
+                className="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8"
               />
             </form>
-            <div class="text-center pt-12 pb-12">
+            <div className="text-center pt-12 pb-12">
               <p>
                 forgot password?{" "}
-                <a href="register.html" class="underline font-semibold">
+                <a href="register.html" className="underline font-semibold">
                   Resetting here.
                 </a>
               </p>

@@ -227,7 +227,7 @@
   /* <div>
         <h3>固定費登録</h3>
         <form onSubmit={onFixedSubmit}>
-          <label class="block text-gray-700 text-sm font-bold mb-2">
+          <label classname="block text-gray-700 text-sm font-bold mb-2">
             支払日
           </label>
           <input
@@ -236,27 +236,27 @@
             onChange={(e) => {
               setFixedDate(e.target.value);
             }}
-            class="appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+            classname="appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none "
           />
-          <label class="block text-gray-700 text-sm font-bold mb-2">項目</label>
+          <label classname="block text-gray-700 text-sm font-bold mb-2">項目</label>
           <input
             type="text"
             value={fixedItem}
             onChange={(e) => {
               setFixedItem(e.target.value);
             }}
-            class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+            classname="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
           />
-          <label class="block text-gray-700 text-sm font-bold mb-2">金額</label>
+          <label classname="block text-gray-700 text-sm font-bold mb-2">金額</label>
           <input
             type="number"
             value={fixedPrice}
             onChange={(e) => {
               setFixedPrice(e.target.value);
             }}
-            class="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+            classname="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
           />
-          <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded">
+          <button classname="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded">
             登録
           </button>
         </form>
@@ -264,13 +264,13 @@
 }
 
 {
-  /* <div class="shadow flex">
+  /* <div classname="shadow flex">
             <input
-              class="w-full rounded p-2"
+              classname="w-full rounded p-2"
               type="text"
               placeholder="Search..."
             />
-            <button class="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400 fas fa-search"></button>
+            <button classname="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400 fas fa-search"></button>
           </div> */
 }
 
@@ -280,7 +280,7 @@
 //         onChange={(e) => {
 //           setSalesSelectMonth(e.target.value);
 //         }}
-//         class="bg-teal-500 hover:bg-teal-700 text-white py-1 px-3 rounded"
+//         classname="bg-teal-500 hover:bg-teal-700 text-white py-1 px-3 rounded"
 //       >
 //         <option value="all">年間</option>
 //         <option value="01">1月</option>

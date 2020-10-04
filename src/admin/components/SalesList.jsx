@@ -63,13 +63,13 @@ const SalesList = ({
                 onClick={(e) => {
                   inputPossible(e.target.id);
                 }}
-                class="text-teal-500 far fa-edit"
+                className="text-teal-500 far fa-edit"
               />
               <button
                 onClick={() => {
                   deleteSales(db.id);
                 }}
-                class="text-teal-500 py-1 px-2 far fa-trash-alt"
+                className="text-teal-500 py-1 px-2 far fa-trash-alt"
               />
               <p>
                 {format(db.date.toDate(), "MM/dd")}
@@ -89,7 +89,7 @@ const SalesList = ({
                     }}
                     placeholder={db.salesPrice}
                   />
-                  <button type="submit" class="fas fa-check" />
+                  <button type="submit" className="fas fa-check" />
                 </form>
               ) : (
                 <p>{db.salesPrice}円</p>

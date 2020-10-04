@@ -77,13 +77,13 @@ const BuysList = ({
               <button
                 id={db.id}
                 onClick={inputPossibleBuys}
-                class="text-teal-500 far fa-edit"
+                className="text-teal-500 far fa-edit"
               />
               <button
                 onClick={() => {
                   deleteBuys(db.id);
                 }}
-                class="text-teal-500 py-1 px-2 far fa-trash-alt"
+                className="text-teal-500 py-1 px-2 far fa-trash-alt"
               />
               <p>
                 {format(db.date.toDate(), "MM/dd")}
@@ -114,13 +114,13 @@ const BuysList = ({
                       placeholder={db.detail}
                       style={{ width: 100 }}
                     />
-                    <button type="submit" class="fas fa-check" />
+                    <button type="submit" className="fas fa-check" />
                   </div>
                 </form>
               ) : (
                 <p>
                   {db.buysPrice}円 &nbsp;
-                  <i class="fas fa-caret-right" />
+                  <i className="fas fa-caret-right" />
                   &nbsp;
                   {db.detail}
                 </p>

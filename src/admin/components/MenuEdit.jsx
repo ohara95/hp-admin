@@ -202,7 +202,7 @@ const MenuEdit = () => {
             onChange={(e) => {
               setSelectCuisine(e.target.value);
             }}
-            class="form-select block w-full focus:bg-white border rounded"
+            className="form-select block w-full focus:bg-white border rounded"
           >
             <option value="none">選択して下さい</option>
             <option value="snack">おつまみ</option>
@@ -219,7 +219,7 @@ const MenuEdit = () => {
             onChange={(e) => {
               setSelectDrink(e.target.value);
             }}
-            class="form-select block w-full focus:bg-white border rounded"
+            className="form-select block w-full focus:bg-white border rounded"
           >
             <option>選択して下さい</option>
             <option value="beer">ビール</option>
@@ -237,7 +237,7 @@ const MenuEdit = () => {
             onChange={(e) => {
               setSelectRecommend(e.target.value);
             }}
-            class="form-select block w-full focus:bg-white border rounded"
+            className="form-select block w-full focus:bg-white border rounded"
           >
             <option>選択して下さい</option>
             <option value="cuisine">料理</option>
@@ -280,26 +280,26 @@ const MenuEdit = () => {
 
   return (
     <>
-      <div id="section1" class="p-8 mt-6 lg:mt-0 rounded">
+      <div id="section1" className="p-8 mt-6 lg:mt-0 rounded">
         <form>
-          <div class="md:flex mb-6">
-            <div class="md:w-1/3">
+          <div className="md:flex mb-6">
+            <div className="md:w-1/3">
               <label
-                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                 for="my-textfield"
               >
                 メニュー
               </label>
             </div>
-            <div class="md:w-2/3">
+            <div className="md:w-2/3">
               <div
-                class="pt-8"
+                className="pt-8"
                 onClick={(e) => {
                   setSelectMethod(e.target.value);
                 }}
               >
                 <button
-                  class={
+                  className={
                     selectMethod === "add"
                       ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
                       : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
@@ -311,7 +311,7 @@ const MenuEdit = () => {
                 </button>
 
                 <button
-                  class={
+                  className={
                     selectMethod === "edit"
                       ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
                       : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
@@ -323,7 +323,7 @@ const MenuEdit = () => {
                 </button>
 
                 <button
-                  class={
+                  className={
                     selectMethod === "delete"
                       ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
                       : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
@@ -337,19 +337,19 @@ const MenuEdit = () => {
             </div>
           </div>
 
-          <div class="md:flex mb-6">
-            <div class="md:w-1/3">
+          <div className="md:flex mb-6">
+            <div className="md:w-1/3">
               <label
-                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                 for="my-select"
               >
                 メニューカテゴリ(大分類)
               </label>
             </div>
-            <div class="md:w-2/3 border-gray-400 border">
+            <div className="md:w-2/3 border-gray-400 border">
               <select
                 name=""
-                class="form-select block w-full focus:bg-white rounded"
+                className="form-select block w-full focus:bg-white rounded"
                 id="my-select"
                 onClick={methodCheck}
                 onChange={(e) => {
@@ -363,48 +363,48 @@ const MenuEdit = () => {
               </select>
             </div>
           </div>
-          <div class="md:flex mb-6">
-            <div class="md:w-1/3">
+          <div className="md:flex mb-6">
+            <div className="md:w-1/3">
               <label
-                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                 for="my-select"
               >
                 メニューカテゴリ(中分類)
               </label>
             </div>
-            <div class="md:w-2/3 border-gray-400 border">{selected()}</div>
+            <div className="md:w-2/3 border-gray-400 border">{selected()}</div>
           </div>
           {((selectCuisine && selectMethod == "edit") ||
             selectMethod == "delete") && (
-            <div class="md:flex mb-6">
-              <div class="md:w-1/3">
+            <div className="md:flex mb-6">
+              <div className="md:w-1/3">
                 <label
-                  class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                  className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                   for="my-select"
                 >
                   メニューカテゴリ(小分類)
                 </label>
               </div>
-              <div class="md:w-2/3 border-gray-400 border">
-                <select class="form-select block w-full focus:bg-white rounded">
+              <div className="md:w-2/3 border-gray-400 border">
+                <select className="form-select block w-full focus:bg-white rounded">
                   {editOption()}
                 </select>
               </div>
             </div>
           )}
 
-          <div class="md:flex mb-6">
-            <div class="md:w-1/3">
+          <div className="md:flex mb-6">
+            <div className="md:w-1/3">
               <label
-                class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                 for="my-textarea"
               >
                 メニュー名
               </label>
             </div>
-            <div class="md:w-2/3">
+            <div className="md:w-2/3">
               <input
-                class="form-textarea block w-full focus:bg-white border rounded"
+                className="form-textarea block w-full focus:bg-white border rounded"
                 id="my-textarea"
                 value={toggleChange()}
                 onChange={(e) => {
@@ -419,18 +419,18 @@ const MenuEdit = () => {
               ※確認のためメニュー名を記入して下さい
             </p>
           ) : (
-            <div class="md:flex mb-6">
-              <div class="md:w-1/3">
+            <div className="md:flex mb-6">
+              <div className="md:w-1/3">
                 <label
-                  class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                  className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                   for="my-textarea"
                 >
                   金額
                 </label>
               </div>
-              <div class="md:w-2/3">
+              <div className="md:w-2/3">
                 <input
-                  class="form-textarea block w-full focus:bg-white border rounded"
+                  className="form-textarea block w-full focus:bg-white border rounded"
                   id="my-textarea"
                   value={amount}
                   onChange={(e) => {
@@ -442,19 +442,19 @@ const MenuEdit = () => {
             </div>
           )}
 
-          <div class="md:flex md:items-center">
-            <div class="md:w-1/3"></div>
-            <div class="md:w-2/3">
+          <div className="md:flex md:items-center">
+            <div className="md:w-1/3"></div>
+            <div className="md:w-2/3">
               {selectMethod === "delete" ? (
                 <button
-                  class="bg-red-500 hover:bg-red-300 text-white font-bold py-2 px-4 rounded "
+                  className="bg-red-500 hover:bg-red-300 text-white font-bold py-2 px-4 rounded "
                   onClick={onMenuSubmit}
                 >
                   削除
                 </button>
               ) : (
                 <button
-                  class="bg-blue-500 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded"
+                  className="bg-blue-500 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded"
                   onClick={onMenuSubmit}
                 >
                   送信
