@@ -187,6 +187,9 @@ const RecruitEdit = () => {
                 className="form-textarea block w-full focus:bg-white border rounded"
                 id="my-textarea"
                 value={chooseItem()}
+                onChange={(e) => {
+                  selectChange(e.target.value);
+                }}
                 rows="8"
               ></textarea>
             </div>

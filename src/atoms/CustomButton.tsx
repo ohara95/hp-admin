@@ -1,6 +1,6 @@
-import React from "react";
+import React, { FC } from "react";
 
-const CustomButton = ({ children }) => {
+const CustomButton: FC = ({ children }) => {
   return <button>{children}</button>;
 };
 

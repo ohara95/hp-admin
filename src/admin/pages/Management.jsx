@@ -12,6 +12,7 @@ import BuysInput from "../components/BuysInput";
 import CustomLabel from "../../atoms/CustomLabel";
 import IconPop from "../../atoms/IconPop";
 import sumData from "../utils/sameDaysCalc";
+import CountUp from "react-countup";
 
 const Management = ({ history }) => {
   const [salesDate, setSalesDate] = useState(null);
@@ -429,3 +430,4 @@ const Management = ({ history }) => {
   );
 };
 export default Management;
+// {totalSales() !== 0 && `${totalSales().toLocaleString()}円`}

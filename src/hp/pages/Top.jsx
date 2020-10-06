@@ -12,9 +12,15 @@ const Top = () => {
           height: "90%",
         }}
       >
-        <p>一人飲み、団体さん、女子会...</p>
-        <p>賑やかな店内で美味しい肴をつまみに</p>
-        <p>今夜は亮昌で一杯どうですか？</p>
+        <p style={{ lineHeight: 2 }} className="slow-1">
+          一人飲み、団体さん、女子会...
+        </p>
+        <p style={{ lineHeight: 2 }} className="slow-2">
+          賑やかな店内で美味しい肴をつまみに
+        </p>
+        <p style={{ fontSize: 25, lineHeight: 2 }} className="slow-3">
+          今夜は亮昌で一杯どうですか？
+        </p>
       </div>
     </div>
   );

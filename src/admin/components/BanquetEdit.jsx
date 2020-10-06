@@ -148,10 +148,10 @@ const BanquetEdit = () => {
           )}
           {operation !== "delete" && (
             <>
-              <div classname="md:flex mb-6">
-                <div classname="md:w-1/3">
+              <div className="md:flex mb-6">
+                <div className="md:w-1/3">
                   <label
-                    classname="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
+                    className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
                     for="my-select"
                   >
                     メニュー名

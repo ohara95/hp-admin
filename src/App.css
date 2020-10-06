@@ -28,3 +28,98 @@ body {
   margin: 0;
   display: flex;
 }
+
+.slow-1 {
+  animation-name: fadein;
+  animation-duration: 2s;
+  line-height: 2;
+}
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.slow-2 {
+  animation-name: fadein;
+  animation-duration: 8s;
+  line-height: 2;
+}
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.slow-3 {
+  animation-name: fadein;
+  animation-duration: 14s;
+  line-height: 2;
+}
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.itemLineBlue {
+  background: linear-gradient(transparent 75%, #c1e0ff 75%);
+  font-weight: bold;
+  width: 26%;
+  padding: 10px;
+}
+
+.itemLineYellow {
+  background: linear-gradient(transparent 75%, #fff799 75%);
+  font-weight: bold;
+  width: 20%;
+  padding: 10px;
+}
+
+.rowItem {
+  display: flex;
+  justify-content: start;
+}
+
+.menuImage {
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
+}
+
+.categoryItem {
+  position: relative; /*相対位置*/
+  line-height: 1.4; /*行高*/
+  display: inline-block;
+}
+
+.categoryItem:before,
+.categoryItem:after {
+  position: relative;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  display: inline-block;
+  font-size: 1em;
+  color: gray;
+}
+.categoryItem:before {
+  content: "\f053"; /*アイコン種類*/
+  padding-right: 0.5em;
+}
+.categoryItem:after {
+  content: "\f054"; /*アイコン種類*/
+  padding-left: 0.5em;
+}

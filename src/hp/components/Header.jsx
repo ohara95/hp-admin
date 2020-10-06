@@ -1,13 +1,26 @@
 import React, { useContext } from "react";
 import "./header.scss";
+import logo from "../../assets/img/logo.jpg";
 import { AuthContext } from "../../AuthProvider";
 
 const Header = () => {
-  const { currentPath, setCurrentPath } = useContext(AuthContext);
-  console.log(currentPath);
+  const { setCurrentPath } = useContext(AuthContext);
   return (
     <div className="on">
-      <h1 className="title">Sukemasa</h1>
+      <div className="title">
+        <div style={{ display: "flex" }}>
+          <h1>Sukemasa</h1>
+          <img
+            src={logo}
+            style={{
+              height: 50,
+              width: 50,
+              borderStyle: "none",
+              marginLeft: 10,
+            }}
+          />
+        </div>
+      </div>
       <ul
         className="content"
         onClick={(e) => {

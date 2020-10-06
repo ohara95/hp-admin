@@ -7,8 +7,14 @@ import counter from "../../assets/img/counter.jpg";
 import takokara from "../../assets/img/takokara.jpeg";
 import beel from "../../assets/img/beel.jpeg";
 import sarada from "../../assets/img/images.jpeg";
+import enkai from "../../assets/img/enkai.jpeg";
+import ice from "../../assets/img/ice.jpg";
+import otyaduke from "../../assets/img/otyaduke.jpg";
+import yasai from "../../assets/img/yasai.jpg";
+import cocktail from "../../assets/img/cocktail.jpg";
+import edamame from "../../assets/img/edamame.jpeg";
 
-const Menu = ({ history, selectItem }) => {
+const Menu = () => {
   const [cuisine, setCuisine] = useState([]);
   const [drink, setDrink] = useState([]);
   const [recommend, setRecommend] = useState([]);
@@ -109,51 +115,71 @@ const Menu = ({ history, selectItem }) => {
   };
 
   return (
-    <>
-      <div>
-        <h2>！！！！本日のおすすめ！！！！</h2>
-        <h3>food</h3>
-        <h4>{recommendMenu("cuisine")}</h4>
-        <h3>drink</h3>
-        <h4>{recommendMenu("drink")}</h4>
+    <div style={{ width: "100%" }}>
+      <div style={{ width: "80%", margin: "10px auto" }}>
+        <div>
+          <h2 className="itemLineYellow">本日のおすすめ</h2>
+          <h3 className="categoryItem">food</h3>
+          <h4>{recommendMenu("cuisine")}</h4>
+          <h3 className="categoryItem">drink</h3>
+          <h4>{recommendMenu("drink")}</h4>
+        </div>
 
-        <h2>food</h2>
-        <img src={takokara} />
-        <img src={sarada} />
+        <div>
+          <h2 className="itemLineYellow">FOOD</h2>
+          <div className="rowItem" style={{ marginTop: 20 }}>
+            <img src={edamame} className="menuImage" />
+            <div style={{ width: "50%" }}>
+              <h3 className="categoryItem">おつまみ</h3>
+              {cuisineMenu("snack")}
+            </div>
+          </div>
+          <img src={sarada} className="menuImage" />
+          <h3 className="categoryItem">サラダ</h3>
+          {cuisineMenu("salad")}
+          <img src={takokara} className="menuImage" />
+          <h3 className="categoryItem">揚げ物</h3>
+          {cuisineMenu("fried")}
+          <img src={yasai} className="menuImage" />
+          <h3 className="categoryItem">焼き物</h3>
+          {cuisineMenu("grill")}
+          <img src={otyaduke} className="menuImage" />
+          <h3 className="categoryItem">〆</h3>
+          {cuisineMenu("main")}
+          <img src={ice} className="menuImage" />
+          <h3 className="categoryItem">デザート</h3>
+          {cuisineMenu("dessert")}
+        </div>
 
-        <h3>おつまみ</h3>
-        {cuisineMenu("snack")}
-        <h3>サラダ</h3>
-        {cuisineMenu("salad")}
-        <h3>揚げ物</h3>
-        {cuisineMenu("fried")}
-        <h3>焼き物</h3>
-        {cuisineMenu("grill")}
-        <h3>〆</h3>
-        {cuisineMenu("main")}
-        <h3>デザート</h3>
-        {cuisineMenu("dessert")}
+        <div>
+          <h2 className="itemLineYellow">DRINK</h2>
+          <img src={beel} className="menuImage" />
+          <h3 className="categoryItem">ビール</h3>
+          {drinkMenu("beer")}
+          <h3 className="categoryItem">サワー</h3>
+          {drinkMenu("sour")}
+          <h3 className="categoryItem">ウィスキー</h3>
+          {drinkMenu("whisky")}
+          <h3 className="categoryItem">焼酎</h3>
+          {drinkMenu("shochu")}
+          <img src={cocktail} className="menuImage" />
+          <h3 className="categoryItem">カクテル</h3>
+          {drinkMenu("cocktail")}
+          <h3 className="categoryItem">ワイン</h3>
+          {drinkMenu("wine")}
+          <h3 className="categoryItem">ノンアル</h3>
+          {drinkMenu("non-al")}
+        </div>
 
-        <h2>drink</h2>
-        <h3>ビール</h3>
-        {drinkMenu("beer")}
-        <h3>サワー</h3>
-        {drinkMenu("sour")}
-        <h3>ウィスキー</h3>
-        {drinkMenu("whisky")}
-        <h3>焼酎</h3>
-        {drinkMenu("shochu")}
-        <h3>カクテル</h3>
-        {drinkMenu("cocktail")}
-        <h3>ワイン</h3>
-        {drinkMenu("wine")}
-        <h3>ノンアル</h3>
-        {drinkMenu("non-al")}
-        <img src={beel} />
-        <h2>宴会コース</h2>
-        {banquet()}
+        <div className="rowItem">
+          <div style={{ width: "50%" }}>
+            <h2 className="itemLineYellow">COURSE</h2>
+            {banquet()}
+          </div>
+          <img src={enkai} className="menuImage" />
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

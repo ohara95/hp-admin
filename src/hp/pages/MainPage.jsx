@@ -37,9 +37,9 @@ const MainPage = () => {
           <div style={{ width: "80%", margin: "0 auto" }}>
             <div
               style={{
-                background: "white",
                 height: "70vh",
                 overflow: "scroll",
+                color: "white",
               }}
             >
               {movePage()}
