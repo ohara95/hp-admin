@@ -12,7 +12,6 @@ import BuysInput from "../components/BuysInput";
 import CustomLabel from "../../atoms/CustomLabel";
 import IconPop from "../../atoms/IconPop";
 import sumData from "../utils/sameDaysCalc";
-import CountUp from "react-countup";
 
 const Management = ({ history }) => {
   const [salesDate, setSalesDate] = useState(null);
@@ -37,6 +36,10 @@ const Management = ({ history }) => {
   // const today = new Date().toISOString().slice(0, 10);
   const today = new Date();
   const toMonth = today.getMonth() + 1;
+
+  const test = dbSales.filter(
+    (sales) => format(sales.date.toDate(), "MM") == toMonth
+  );
 
   /** 売上計上 */
   const plusSubmit = (e) => {
@@ -282,6 +285,41 @@ const Management = ({ history }) => {
     return monthArr;
   };
 
+  // 選択毎に売上一覧の表示を切替
+  const changeSalesDB = () => {
+    switch (toggleTable) {
+      case "months":
+        return dbSales.filter(
+          (sales) => format(sales.date.toDate(), "MM") == toMonth
+        );
+      case "year":
+        return dbSales;
+      case "chooseMonth":
+        return dbSales.filter(
+          (sales) => format(sales.date.toDate(), "MM") == chooseBtn
+        );
+      default:
+        return dbSales;
+    }
+  };
+
+  const changeBuysDB = () => {
+    switch (toggleTable) {
+      case "months":
+        return dbBuys.filter(
+          (sales) => format(sales.date.toDate(), "MM") == toMonth
+        );
+      case "year":
+        return dbBuys;
+      case "chooseMonth":
+        return dbBuys.filter(
+          (sales) => format(sales.date.toDate(), "MM") == chooseBtn
+        );
+      default:
+        return dbBuys;
+    }
+  };
+
   return (
     <>
       {inputErr && (
@@ -307,33 +345,38 @@ const Management = ({ history }) => {
           onClick={(e) => {
             setToggleTable(e.target.value);
           }}
-          style={{ margin: "10px auto", width: "20%" }}
+          style={{ margin: "10px auto", width: "30%" }}
         >
           <button
             value="months"
-            className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 text-white py-3 px-5 rounded-l "
+            className="bg-teal-500 text-white py-1 px-3 rounded-l"
           >
             月間
           </button>
-          <button
-            value="year"
-            className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 text-white py-3 px-5 "
-          >
+          <button value="year" className="bg-teal-500 text-white py-1 px-3">
             年間
           </button>
-          <button
-            value="chooseMonth"
-            className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 text-white py-3 px-5 rounded-r"
+          <select
+            onChange={(e) => {
+              setChooseBtn(e.target.value);
+            }}
           >
-            月別
-            <select
-              onChange={(e) => {
-                setChooseBtn(e.target.value);
+            {/** memo  他のボタン選択時に未選択に変えたい */}
+            <option
+              value="none"
+              selected={() => {
+                (toggleTable === "months" || "year") && setChooseBtn("none");
               }}
-              className="bg-teal-500 hover:bg-teal-700 text-white"
             >
-              {months()}
-            </select>
+              未選択
+            </option>
+            {months()}
+          </select>
+          <button
+            className="bg-teal-500 text-white py-1 px-3 rounded-r"
+            value="chooseMonth"
+          >
+            表示
           </button>
         </div>
         <ManagementGraph chooseGraph={chooseGraph} />
@@ -360,13 +403,13 @@ const Management = ({ history }) => {
         />
         <div className="md:w-1/2 p-3">
           <IconPop text="売上計" color="blue" icon="fas fa-plus">
-            {totalSales() !== 0 && `${totalSales().toLocaleString()}円`}
+            {`${totalSales().toLocaleString()}円`}
           </IconPop>
           <IconPop text="経費計" color="red" icon="fas fa-minus">
-            {totalBuys() !== 0 && `${totalBuys().toLocaleString()}円`}
+            {`${totalBuys().toLocaleString()}円`}
           </IconPop>
           <IconPop text="差額" color="green" icon="fas fa-hand-holding-usd">
-            {difference.toLocaleString()}
+            {`${difference.toLocaleString()}円`}
           </IconPop>
         </div>
       </div>
@@ -392,6 +435,7 @@ const Management = ({ history }) => {
             setEditId={setEditId}
             editSalesPrice={editSalesPrice}
             setEditSalesPrice={setEditSalesPrice}
+            changeSalesDB={changeSalesDB}
           />
         </div>
         <div
@@ -410,6 +454,7 @@ const Management = ({ history }) => {
             editBuysPrice={editBuysPrice}
             setBuysEdit={setBuysEdit}
             buysEditId={buysEditId}
+            changeBuysDB={changeBuysDB}
           />
         </div>
         <div
@@ -430,4 +475,3 @@ const Management = ({ history }) => {
   );
 };
 export default Management;
-// {totalSales() !== 0 && `${totalSales().toLocaleString()}円`}

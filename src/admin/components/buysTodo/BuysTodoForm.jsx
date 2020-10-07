@@ -42,11 +42,37 @@ const BuysTodoForm = ({ todos, setTodos, content, setContent }) => {
 
   const allCheck = (e) => {
     e.preventDefault();
+
+    const isDoneTrue = todos.filter((todo) => todo.isDone === true);
+    const isDoneFalse = todos.filter((todo) => todo.isDone === false);
     const changeIsDone = todos.map((todo) => {
-      return { ...todo, isDone: !todo.isDone };
+      if (isDoneTrue.length < todos.length) {
+        if (!todo.isDone) {
+          return {
+            ...todo,
+            isDone: true,
+          };
+        } else {
+          return todo;
+        }
+      } else if (isDoneFalse.length < todos.length) {
+        if (todo.isDone) {
+          return {
+            ...todo,
+            isDone: false,
+          };
+        } else {
+          return todo;
+        }
+      } else {
+        return todos.map((todo) => {
+          return { ...todo, isDone: !todo.isDone };
+        });
+      }
     });
     setTodos(changeIsDone);
   };
+
   return (
     <div>
       <form style={{ width: "100%", display: "flex" }}>

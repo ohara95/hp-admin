@@ -64,6 +64,13 @@ const BanquetEdit = () => {
     }
   };
 
+  /**追加か変更が押されてなかったら注意 */
+  const methodCheck = () => {
+    if (operation === "") {
+      alert("追加or変更or削除を選択して下さい");
+    }
+  };
+
   return (
     <>
       <div id="section2" className="p-8 mt-6 lg:mt-0 rounded">
@@ -139,6 +146,7 @@ const BanquetEdit = () => {
                     setSelectItem(e.target.value);
                   }}
                   className="form-select block w-full focus:bg-white rounded"
+                  onClick={methodCheck()}
                 >
                   <option>選択して下さい</option>
                   {selectMenu()}

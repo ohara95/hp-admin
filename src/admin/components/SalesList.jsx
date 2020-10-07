@@ -11,6 +11,7 @@ const SalesList = ({
   setEditId,
   editSalesPrice,
   setEditSalesPrice,
+  changeSalesDB,
 }) => {
   /** 売上項目編集 */
   const upDateSales = (e, id) => {
@@ -52,9 +53,10 @@ const SalesList = ({
         res.ref.delete();
       });
   };
+
   return (
     <>
-      {dbSales.map((db) => {
+      {changeSalesDB().map((db) => {
         return (
           <div>
             <div style={{ display: "flex", marginTop: 10 }}>

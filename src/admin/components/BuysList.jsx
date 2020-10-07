@@ -13,6 +13,7 @@ const BuysList = ({
   setBuysEdit,
   editBuysPrice,
   buysEditId,
+  changeBuysDB,
 }) => {
   /** 経費項目編集 */
   const upDateBuys = (e, id) => {
@@ -70,7 +71,7 @@ const BuysList = ({
   };
   return (
     <>
-      {dbBuys.map((db) => {
+      {changeBuysDB().map((db) => {
         return (
           <div>
             <div style={{ display: "flex", marginTop: 10 }}>

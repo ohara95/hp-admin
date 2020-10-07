@@ -1,14 +1,17 @@
 import React from "react";
-import { db } from "../../../config/firebese";
 
-const BuysTodoItem = ({ item, id, isDone }) => {
+const BuysTodoItem = ({ item, id, isDone, todos, setTodos }) => {
   const checkedItem = (itemId) => {
-    if (itemId === id) {
-      db.collection("todos").doc(id).update({
-        isDone: !isDone,
-      });
-    }
+    const checkIsDone = todos.map((todo) => {
+      if (itemId === todo.id) {
+        return { ...todo, isDone: !todo.isDone };
+      } else {
+        return todo;
+      }
+    });
+    setTodos(checkIsDone);
   };
+
   return (
     <>
       <li>

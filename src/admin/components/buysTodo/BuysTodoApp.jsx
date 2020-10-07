@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import BuysTodoForm from "./BuysTodoForm";
 import BuysTodoList from "./BuysTodoList";
-import { useSelector, useDispatch } from "react-redux";
-import { todos3 } from "../../../store/todoData";
 
 const BuysTodoApp = () => {
   const [todos, setTodos] = useState([]);
@@ -16,7 +14,7 @@ const BuysTodoApp = () => {
         content={content}
         setContent={setContent}
       />
-      <BuysTodoList todos={todos} />
+      <BuysTodoList todos={todos} setTodos={setTodos} />
     </>
   );
 };

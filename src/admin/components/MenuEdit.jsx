@@ -10,8 +10,6 @@ const MenuEdit = () => {
   const [amount, setAmount] = useState("");
   const [selectMethod, setSelectMethod] = useState("");
 
-  const { register, handleSubmit, errors } = useForm();
-
   const [dbMenu, setDbMenu] = useState([]);
   const [selectCuisine, setSelectCuisine] = useState("snack");
   const [selectDrink, setSelectDrink] = useState("beer");
