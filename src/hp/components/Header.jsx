@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import "./header.scss";
 import logo from "../../assets/img/logo.jpg";
 import { AuthContext } from "../../AuthProvider";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const { setCurrentPath } = useContext(AuthContext);
@@ -27,28 +28,20 @@ const Header = () => {
           setCurrentPath(e.target.value);
         }}
       >
-        <li>
-          <button style={{ color: "white" }} value="top">
-            top
-          </button>
+        <li style={{ color: "white" }}>
+          <Link to="/top">TOP</Link>
         </li>
-        <li>
-          <button style={{ color: "white" }} value="menu">
-            menu
-          </button>
+        <li style={{ color: "white" }}>
+          <Link to="/menu">MENU</Link>
         </li>
-        <li>
-          <button style={{ color: "white" }} value="notice">
-            notice
-          </button>
+        <li style={{ color: "white" }}>
+          <Link to="/notice">NOTICE</Link>
         </li>
         <li>
           <a href="http://blog.sukemasa.net/">blog</a>
         </li>
-        <li>
-          <button style={{ color: "white" }} value="information">
-            information
-          </button>
+        <li style={{ color: "white" }}>
+          <Link to="/information">INFORMATION</Link>
         </li>
       </ul>
     </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { db } from "../../config/firebese";
+import { match } from "react-router-dom";
 
 //画像
 import store from "../../assets/img/inStore.jpg";
@@ -14,11 +15,13 @@ import yasai from "../../assets/img/yasai.jpg";
 import cocktail from "../../assets/img/cocktail.jpg";
 import edamame from "../../assets/img/edamame.jpeg";
 
-const Menu = () => {
+const Menu = (props) => {
   const [cuisine, setCuisine] = useState([]);
   const [drink, setDrink] = useState([]);
   const [recommend, setRecommend] = useState([]);
   const [banquetMenu, setBanquetMenu] = useState([]);
+
+  console.log(props);
 
   useEffect(() => {
     db.collection("menu")
