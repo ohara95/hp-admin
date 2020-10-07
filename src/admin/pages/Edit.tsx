@@ -1,10 +1,15 @@
-import React from "react";
+import React, { FC } from "react";
 import RecruitEdit from "../components/RecruitEdit";
 import MenuEdit from "../components/MenuEdit";
 import NoticeEdit from "../components/NoticeEdit";
 import BanquetEdit from "../components/BanquetEdit";
+import * as H from "history";
 
-const Edit = ({ history }) => {
+type Props = {
+  history: H.History;
+};
+
+const Edit: FC<Props> = ({ history }) => {
   return (
     <>
       {/* <div className="container w-full flex flex-wrap mx-auto px-2 pt-8 lg:pt-16 mt-16">

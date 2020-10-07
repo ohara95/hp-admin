@@ -1,7 +1,7 @@
-import React, { Children, useState } from "react";
+import React, { useState } from "react";
 import { auth, db } from "../../config/firebese";
 import BuysTodo from "../components/buysTodo";
-import { Alert } from "../../atoms/Alert";
+import Alert from "../../atoms/Alert";
 import { useEffect } from "react";
 import { format } from "date-fns";
 import ManagementGraph from "../components/ManagementGraph";
@@ -228,6 +228,8 @@ const Management = ({ history }) => {
       };
     });
 
+  console.log(chooseGraphData);
+
   /** 表用のデータ(月計) */
   const allMonthData = () => {
     let arr = [];
@@ -385,22 +387,24 @@ const Management = ({ history }) => {
         style={{ display: "flex", width: "90%", margin: "0 auto" }}
         className="bg-white shadow-md rounded "
       >
-        <SalesInput
-          setSalesDate={setSalesDate}
-          salesPrice={salesPrice}
-          setSalesPrice={setSalesPrice}
-          plusSubmit={plusSubmit}
-          salesDate={salesDate}
-        />
-        <BuysInput
-          setBuysPrice={setBuysPrice}
-          buysDetail={buysDetail}
-          setBuysDetail={setBuysDetail}
-          buysDate={buysDate}
-          setBuysDate={setBuysDate}
-          buysPrice={buysPrice}
-          minusSubmit={minusSubmit}
-        />
+        <form className="px-8 pt-6 pb-8 mb-4" onSubmit={plusSubmit}>
+          <SalesInput
+            setSalesDate={setSalesDate}
+            salesPrice={salesPrice}
+            setSalesPrice={setSalesPrice}
+            salesDate={salesDate}
+          />
+        </form>
+        <form className="px-8 pt-6 pb-8 mb-4" onSubmit={minusSubmit}>
+          <BuysInput
+            setBuysPrice={setBuysPrice}
+            buysDetail={buysDetail}
+            setBuysDetail={setBuysDetail}
+            buysDate={buysDate}
+            setBuysDate={setBuysDate}
+            buysPrice={buysPrice}
+          />
+        </form>
         <div className="md:w-1/2 p-3">
           <IconPop text="売上計" color="blue" icon="fas fa-plus">
             {`${totalSales().toLocaleString()}円`}

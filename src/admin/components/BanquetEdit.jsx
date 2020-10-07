@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import firebase, { db } from "../../config/firebese";
+import { db } from "../../config/firebese";
+import CustomLabel from "../../atoms/CustomLabel";
 
 const BanquetEdit = () => {
   const [dbMenu, setDbMenu] = useState([]);
@@ -64,25 +65,13 @@ const BanquetEdit = () => {
     }
   };
 
-  /**追加か変更が押されてなかったら注意 */
-  const methodCheck = () => {
-    if (operation === "") {
-      alert("追加or変更or削除を選択して下さい");
-    }
-  };
-
   return (
     <>
       <div id="section2" className="p-8 mt-6 lg:mt-0 rounded">
         <form onSubmit={editMenu}>
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <label
-                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                for="my-textfield"
-              >
-                宴会メニュー
-              </label>
+              <CustomLabel text="宴会メニュー" size="xl" />
             </div>
             <div className="md:w-2/3">
               <div
@@ -133,12 +122,7 @@ const BanquetEdit = () => {
           {operation !== "add" && (
             <div className="md:flex mb-6">
               <div className="md:w-1/3">
-                <label
-                  className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                  for="my-select"
-                >
-                  投稿内容
-                </label>
+                <CustomLabel text="投稿内容" />
               </div>
               <div className="md:w-2/3 border-gray-400 border">
                 <select
@@ -146,7 +130,6 @@ const BanquetEdit = () => {
                     setSelectItem(e.target.value);
                   }}
                   className="form-select block w-full focus:bg-white rounded"
-                  onClick={methodCheck()}
                 >
                   <option>選択して下さい</option>
                   {selectMenu()}
@@ -158,12 +141,7 @@ const BanquetEdit = () => {
             <>
               <div className="md:flex mb-6">
                 <div className="md:w-1/3">
-                  <label
-                    className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                    for="my-select"
-                  >
-                    メニュー名
-                  </label>
+                  <CustomLabel text="メニュー名" />
                 </div>
                 <div className="md:w-2/3 ">
                   <input
@@ -179,12 +157,7 @@ const BanquetEdit = () => {
               </div>
               <div className="md:flex mb-6">
                 <div className="md:w-1/3">
-                  <label
-                    className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                    for="my-select"
-                  >
-                    金額
-                  </label>
+                  <CustomLabel text="金額" />
                 </div>
                 <div className="md:w-2/3">
                   <input
@@ -201,18 +174,13 @@ const BanquetEdit = () => {
               <div>
                 <div className="md:flex mb-6">
                   <div className="md:w-1/3">
-                    <label
-                      className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                      for="my-select"
-                    >
-                      入力欄
-                    </label>
+                    <CustomLabel text="入力欄" />
                   </div>
                   <div className="md:w-2/3">
                     <textarea
                       type="textarea"
                       className="form-textarea block w-full focus:bg-white border rounded"
-                      rows="8"
+                      rows={8}
                       value={detail}
                       onChange={(e) => {
                         setDetail(e.target.value);

@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { db } from "../../config/firebese";
+import CustomLabel from "../../atoms/CustomLabel";
+import CustomButton from "../../atoms/CustomButton";
 
-const NoticeEdit = () => {
+type selectedProps = "holiday" | "other" | "none";
+
+const NoticeEdit: FC = () => {
   const [holiday, setHoliday] = useState("");
   const [other, setOther] = useState("");
-  const [selected, setSelected] = useState("holiday");
-  const [decision, setDecision] = useState(false);
+  const [selected, setSelected] = useState<selectedProps>("holiday");
 
-  const addDBNotice = (selectItem) => {
+  const addDBNotice = (selectItem: selectedProps) => {
     let key = "";
     let value = "";
 
@@ -29,10 +32,6 @@ const NoticeEdit = () => {
       });
   };
 
-  const handleChange = (e) => {
-    setSelected(e.target.value);
-  };
-
   const chooseItem = () => {
     switch (selected) {
       case "holiday":
@@ -43,7 +42,7 @@ const NoticeEdit = () => {
     }
   };
 
-  const selectChange = (value) => {
+  const selectChange = (value: string) => {
     switch (selected) {
       case "holiday":
         return setHoliday(value);
@@ -53,7 +52,9 @@ const NoticeEdit = () => {
     }
   };
 
-  const onNoticeSubmit = (e) => {
+  const onNoticeSubmit = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     switch (selected) {
       case "holiday":
@@ -66,23 +67,6 @@ const NoticeEdit = () => {
         alert("選択して下さい");
     }
     addDBNotice(selected);
-    setDecision(false);
-  };
-
-  const changePrev = (e) => {
-    e.preventDefault();
-    setDecision(true);
-  };
-
-  const displayPrev = () => {
-    switch (selected) {
-      case "holiday":
-        return <>{holiday}</>;
-      case "other":
-        return <>{other}</>;
-      default:
-        return null;
-    }
   };
 
   return (
@@ -91,29 +75,20 @@ const NoticeEdit = () => {
         <form>
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <label
-                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                for="my-textfield"
-              >
-                休日・その他
-              </label>
+              <CustomLabel text="休日・その他" size="xl" />
             </div>
           </div>
 
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <label
-                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                for="my-select"
-              >
-                投稿内容
-              </label>
+              <CustomLabel text="投稿内容" />
             </div>
             <div className="md:w-2/3 border-gray-400 border">
               <select
-                name=""
-                onChange={handleChange}
-                className="form-select block w-full focus:bg-white rounded"
+                onChange={(e) => {
+                  setSelected(e.target.value as selectedProps);
+                }}
+                className="form-select block w-full focus:bg-white rounded py-3"
                 id="my-select"
               >
                 <option value="none">選択して下さい</option>
@@ -125,24 +100,18 @@ const NoticeEdit = () => {
 
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <label
-                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                for="my-textarea"
-                value={chooseItem()}
-                onChange={(e) => {
-                  selectChange(e.target.value);
-                }}
-              >
-                入力欄
-              </label>
+              <CustomLabel text="入力欄" />
             </div>
             <div className="md:w-2/3">
               <textarea
                 className="form-textarea block w-full focus:bg-white border rounded"
                 id="my-textarea"
-                value=""
-                rows="8"
-              ></textarea>
+                rows={8}
+                onChange={(e) => {
+                  selectChange(e.target.value);
+                }}
+                value={chooseItem()}
+              />
             </div>
           </div>
 
@@ -151,8 +120,8 @@ const NoticeEdit = () => {
             <div className="md:w-2/3">
               <button
                 onClick={onNoticeSubmit}
-                className="bg-blue-500 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded"
                 type="button"
+                className="bg-blue-500 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded"
               >
                 送信
               </button>
@@ -160,14 +129,6 @@ const NoticeEdit = () => {
           </div>
         </form>
       </div>
-      {/* <button
-            onClick={changePrev}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-          >
-            プレビュー
-          </button>
-      </div>
-      <div>{decision && displayPrev()}</div> */}
     </>
   );
 };

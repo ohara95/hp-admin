@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { db } from "../../config/firebese";
+import CustomLabel from "../../atoms/CustomLabel";
 
 const RecruitEdit = () => {
   const [selected, setSelected] = useState("work");
-  const [decision, setDecision] = useState(false);
 
   const [work, setWork] = useState("");
   const [wont, setWont] = useState("");
@@ -85,7 +85,6 @@ const RecruitEdit = () => {
   const onNoticeSubmit = (e) => {
     e.preventDefault();
     addDBRecruit(selected);
-    setDecision(true);
 
     switch (selected) {
       case "work":
@@ -105,11 +104,6 @@ const RecruitEdit = () => {
         break;
       default:
     }
-  };
-
-  const changePrev = (e) => {
-    e.preventDefault();
-    setDecision(true);
   };
 
   const displayPrev = () => {
@@ -134,29 +128,19 @@ const RecruitEdit = () => {
         <form>
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <label
-                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                for="my-textfield"
-              >
-                求人
-              </label>
+              <CustomLabel text="求人" size="xl" />
             </div>
           </div>
 
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <label
-                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                for="my-select"
-              >
-                投稿内容
-              </label>
+              <CustomLabel text="投稿内容" />
             </div>
             <div className="md:w-2/3 border-gray-400 border">
               <select
                 name=""
                 onChange={handleChange}
-                className="form-select block w-full focus:bg-white rounded"
+                className="form-select block w-full focus:bg-white rounded py-3"
                 id="my-select"
               >
                 <option value="none">選択して下さい</option>
@@ -171,16 +155,7 @@ const RecruitEdit = () => {
 
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <label
-                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                for="my-textarea"
-                value={chooseItem()}
-                onChange={(e) => {
-                  selectChange(e.target.value);
-                }}
-              >
-                入力欄
-              </label>
+              <CustomLabel text="入力欄" />
             </div>
             <div className="md:w-2/3">
               <textarea
@@ -191,12 +166,12 @@ const RecruitEdit = () => {
                   selectChange(e.target.value);
                 }}
                 rows="8"
-              ></textarea>
+              />
             </div>
           </div>
 
           <div className="md:flex md:items-center">
-            <div className="md:w-1/3"></div>
+            <div className="md:w-1/3" />
             <div className="md:w-2/3">
               <button
                 onClick={onNoticeSubmit}

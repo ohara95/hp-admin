@@ -1,6 +1,7 @@
 import React from "react";
 import { db } from "../../config/firebese";
 import { format } from "date-fns";
+import CustomInput from "../../atoms/CustomInput";
 
 /** 経費一覧 */
 const BuysList = ({
@@ -97,7 +98,7 @@ const BuysList = ({
                   }}
                 >
                   <div style={{ display: "flex" }}>
-                    <input
+                    <CustomInput
                       type="number"
                       value={editBuysPrice}
                       onChange={(e) => {
@@ -106,7 +107,7 @@ const BuysList = ({
                       placeholder={db.buysPrice}
                       style={{ width: 100 }}
                     />
-                    <input
+                    <CustomInput
                       type="text"
                       value={editBuysDetail}
                       onChange={(e) => {
@@ -120,7 +121,7 @@ const BuysList = ({
                 </form>
               ) : (
                 <p>
-                  {db.buysPrice}円 &nbsp;
+                  {db.buysPrice.toLocaleString()}円 &nbsp;
                   <i className="fas fa-caret-right" />
                   &nbsp;
                   {db.detail}

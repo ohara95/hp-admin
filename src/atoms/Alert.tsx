@@ -5,7 +5,7 @@ type Props = {
   text: string;
   icon: "fas fa-exclamation-circle" | "fas fa-question-circle";
 };
-export const Alert: FC<Props> = ({ title, text, icon }) => {
+const Alert: FC<Props> = ({ title, text, icon }) => {
   return (
     <>
       <div className="shadow" role="alert">
@@ -26,3 +26,5 @@ export const Alert: FC<Props> = ({ title, text, icon }) => {
     </>
   );
 };
+
+export default Alert;

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebese";
-import { useForm } from "react-hook-form";
-import { data } from "autoprefixer";
+import CustomLabel from "../../atoms/CustomLabel";
 
 const MenuEdit = () => {
   const [cuisine, setCuisine] = useState("");
@@ -200,7 +199,7 @@ const MenuEdit = () => {
             onChange={(e) => {
               setSelectCuisine(e.target.value);
             }}
-            className="form-select block w-full focus:bg-white border rounded"
+            className="form-select block w-full focus:bg-white border rounded py-3"
           >
             <option value="none">選択して下さい</option>
             <option value="snack">おつまみ</option>
@@ -282,12 +281,7 @@ const MenuEdit = () => {
         <form>
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <label
-                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                for="my-textfield"
-              >
-                メニュー
-              </label>
+              <CustomLabel text="メニュー" size="xl" />
             </div>
             <div className="md:w-2/3">
               <div
@@ -337,17 +331,12 @@ const MenuEdit = () => {
 
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <label
-                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                for="my-select"
-              >
-                メニューカテゴリ(大分類)
-              </label>
+              <CustomLabel text="メニューカテゴリ(大分類)" />
             </div>
             <div className="md:w-2/3 border-gray-400 border">
               <select
                 name=""
-                className="form-select block w-full focus:bg-white rounded"
+                className="form-select block w-full focus:bg-white rounded py-3"
                 id="my-select"
                 onClick={methodCheck}
                 onChange={(e) => {
@@ -363,12 +352,7 @@ const MenuEdit = () => {
           </div>
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <label
-                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                for="my-select"
-              >
-                メニューカテゴリ(中分類)
-              </label>
+              <CustomLabel text="メニューカテゴリ(中分類)" />
             </div>
             <div className="md:w-2/3 border-gray-400 border">{selected()}</div>
           </div>
@@ -376,15 +360,10 @@ const MenuEdit = () => {
             selectMethod == "delete") && (
             <div className="md:flex mb-6">
               <div className="md:w-1/3">
-                <label
-                  className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                  for="my-select"
-                >
-                  メニューカテゴリ(小分類)
-                </label>
+                <CustomLabel text="メニューカテゴリ(小分類)" />
               </div>
               <div className="md:w-2/3 border-gray-400 border">
-                <select className="form-select block w-full focus:bg-white rounded">
+                <select className="form-select block w-full focus:bg-white rounded py-3">
                   {editOption()}
                 </select>
               </div>
@@ -393,22 +372,17 @@ const MenuEdit = () => {
 
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <label
-                className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                for="my-textarea"
-              >
-                メニュー名
-              </label>
+              <CustomLabel text="メニュー名" />
             </div>
             <div className="md:w-2/3">
               <input
-                className="form-textarea block w-full focus:bg-white border rounded"
+                className="form-textarea block w-full focus:bg-white border rounded py-3"
                 id="my-textarea"
                 value={toggleChange()}
                 onChange={(e) => {
                   controlChange(e.target.value);
                 }}
-                rows="8"
+                rows={8}
               />
             </div>
           </div>
@@ -419,22 +393,17 @@ const MenuEdit = () => {
           ) : (
             <div className="md:flex mb-6">
               <div className="md:w-1/3">
-                <label
-                  className="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4"
-                  for="my-textarea"
-                >
-                  金額
-                </label>
+                <CustomLabel text="金額" />
               </div>
               <div className="md:w-2/3">
                 <input
-                  className="form-textarea block w-full focus:bg-white border rounded"
+                  className="form-textarea block w-full focus:bg-white border rounded py-3"
                   id="my-textarea"
                   value={amount}
                   onChange={(e) => {
                     setAmount(e.target.value);
                   }}
-                  rows="8"
+                  rows={8}
                 ></input>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -12,7 +12,15 @@ import {
   ComposedChart,
 } from "recharts";
 
-const ManagementGraph = ({ chooseGraph }) => (
+type Props = {
+  chooseGraph: () => {
+    日付: string;
+    売上: number | undefined;
+    経費: number | undefined;
+  };
+};
+
+const ManagementGraph: FC<any> = ({ chooseGraph }) => (
   <ComposedChart //グラフ全体のサイズや位置、データを指定。場合によってmarginで上下左右の位置を指定する必要あり。
     width={1000} //グラフ全体の幅を指定
     height={350} //グラフ全体の高さを指定

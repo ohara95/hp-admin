@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import { auth } from "../../config/firebese";
 import { AuthContext } from "../../AuthProvider";
 import { Redirect } from "react-router-dom";
+import * as H from "history";
 
-const SignIn = ({ history }) => {
+const SignIn = ({ history }: { history: H.History }) => {
   const { user } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,7 +37,7 @@ const SignIn = ({ history }) => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <div className="flex flex-col pt-4">
-                <label for="email" className="text-lg">
+                <label htmlFor="email" className="text-lg">
                   Email
                 </label>
                 <input
@@ -54,7 +55,7 @@ const SignIn = ({ history }) => {
 
               <div className="flex flex-col pt-4">
                 {errors.email && <span>{errors.email.message}</span>}
-                <label for="password" className="text-lg">
+                <label htmlFor="password" className="text-lg">
                   Password
                 </label>
                 <input

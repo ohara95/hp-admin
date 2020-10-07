@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { db } from "../../../config/firebese";
-import { CustomInput } from "../../../atoms/CustomInput";
+import CustomInput from "../../../atoms/CustomInput";
 
 const BuysTodoForm = ({ todos, setTodos, content, setContent }) => {
   const addTodo = (e) => {
@@ -78,7 +78,7 @@ const BuysTodoForm = ({ todos, setTodos, content, setContent }) => {
       <form style={{ width: "100%", display: "flex" }}>
         <CustomInput
           style={{ width: "70%" }}
-          state={content}
+          value={content}
           setter={setContent}
           type={"text"}
         />

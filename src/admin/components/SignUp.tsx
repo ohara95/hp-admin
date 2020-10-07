@@ -1,13 +1,22 @@
 import React, { useState } from "react";
 import { auth } from "../../config/firebese";
+import * as H from "history";
 
-const SignUp = ({ history }) => {
-  const useInput = (initialValue) => {
+type Props = {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+const SignUp = ({ history }: { history: H.History }) => {
+  const useInput = (initialValue: string): Props => {
     const [value, set] = useState(initialValue);
-    return { value: value, onChange: (e) => set(e.target.value) };
+    return {
+      value,
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) => set(e.target.value),
+    };
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password.value !== confirmPassword.value) {
       alert("パスワード不一致");
@@ -16,11 +25,7 @@ const SignUp = ({ history }) => {
     auth
       .createUserWithEmailAndPassword(email.value, password.value)
       .then(() => {
-        alert("登録できました！");
         history.push("/management");
-        email.value("");
-        password.value("");
-        confirmPassword.value("");
       })
       .catch((err) => {
         console.log(err);
@@ -39,7 +44,7 @@ const SignUp = ({ history }) => {
             <p className="text-center text-3xl">Sign Up</p>
             <form className="flex flex-col pt-3 md:pt-8" onSubmit={onSubmit}>
               <div className="flex flex-col pt-4">
-                <label for="email" className="text-lg">
+                <label htmlFor="email" className="text-lg">
                   Email
                 </label>
                 <input
@@ -51,7 +56,7 @@ const SignUp = ({ history }) => {
               </div>
 
               <div className="flex flex-col pt-4">
-                <label for="password" className="text-lg">
+                <label htmlFor="password" className="text-lg">
                   Password
                 </label>
                 <input
@@ -63,7 +68,7 @@ const SignUp = ({ history }) => {
               </div>
 
               <div className="flex flex-col pt-4">
-                <label for="confirmPassword" className="text-lg">
+                <label htmlFor="confirmPassword" className="text-lg">
                   ConfirmPassword
                 </label>
                 <input

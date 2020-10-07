@@ -1,6 +1,7 @@
 import React from "react";
 import { db } from "../../config/firebese";
 import { format } from "date-fns";
+import CustomInput from "../../atoms/CustomInput";
 
 /** 売上一覧 */
 const SalesList = ({
@@ -83,7 +84,7 @@ const SalesList = ({
                     upDateSales(e, db.id);
                   }}
                 >
-                  <input
+                  <CustomInput
                     type="number"
                     value={editSalesPrice}
                     onChange={(e) => {
@@ -94,7 +95,7 @@ const SalesList = ({
                   <button type="submit" className="fas fa-check" />
                 </form>
               ) : (
-                <p>{db.salesPrice}円</p>
+                <p>{db.salesPrice.toLocaleString()}円</p>
               )}
             </div>
           </div>
