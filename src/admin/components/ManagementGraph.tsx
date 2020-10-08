@@ -19,7 +19,7 @@ type Props = {
     経費: number | undefined;
   };
 };
-
+//memo 型不明
 const ManagementGraph: FC<any> = ({ chooseGraph }) => (
   <ComposedChart //グラフ全体のサイズや位置、データを指定。場合によってmarginで上下左右の位置を指定する必要あり。
     width={1000} //グラフ全体の幅を指定

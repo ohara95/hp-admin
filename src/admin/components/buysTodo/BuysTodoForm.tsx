@@ -1,9 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, FC } from "react";
 import { db } from "../../../config/firebese";
 import CustomInput from "../../../atoms/CustomInput";
 
-const BuysTodoForm = ({ todos, setTodos, content, setContent }) => {
-  const addTodo = (e) => {
+type Todo = {
+  content: string;
+  id: string;
+  isDone: boolean;
+};
+
+type Props = {
+  todos: Todo[];
+  setTodos: (param: Todo[]) => void;
+  content: string;
+  setContent: (param: string) => void;
+};
+
+const BuysTodoForm: FC<Props> = ({ todos, setTodos, content, setContent }) => {
+  const addTodo = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (content === "") {
       return;
@@ -24,11 +37,12 @@ const BuysTodoForm = ({ todos, setTodos, content, setContent }) => {
           id: doc.id,
         };
       });
+      //@ts-ignore
       setTodos(dbData);
     });
   }, []);
 
-  const deleteTodo = (e) => {
+  const deleteTodo = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     const deleteItem = todos.filter((todo) => todo.isDone);
     for (const key of deleteItem) {
@@ -40,7 +54,7 @@ const BuysTodoForm = ({ todos, setTodos, content, setContent }) => {
     }
   };
 
-  const allCheck = (e) => {
+  const allCheck = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
     const isDoneTrue = todos.filter((todo) => todo.isDone === true);
@@ -70,18 +84,22 @@ const BuysTodoForm = ({ todos, setTodos, content, setContent }) => {
         });
       }
     });
+    //@ts-ignore
     setTodos(changeIsDone);
   };
 
   return (
     <div>
       <form style={{ width: "100%", display: "flex" }}>
-        <CustomInput
-          style={{ width: "70%" }}
-          value={content}
-          setter={setContent}
-          type={"text"}
-        />
+        <div style={{ width: "70%" }}>
+          <CustomInput
+            value={content}
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
+            type={"text"}
+          />
+        </div>
         <div
           style={{
             width: "45%",

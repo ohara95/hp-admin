@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebese";
-import CustomLabel from "../../atoms/CustomLabel";
+import { CustomLabel, CustomSelect } from "../../atoms";
 
 const RecruitEdit = () => {
-  const [selected, setSelected] = useState("work");
+  const [selected, setSelected] = useState("none");
 
   const [work, setWork] = useState("");
   const [wont, setWont] = useState("");
@@ -11,11 +11,7 @@ const RecruitEdit = () => {
   const [time, setTime] = useState("");
   const [welfare, setWelfare] = useState("");
 
-  const handleChange = (e) => {
-    setSelected(e.target.value);
-  };
-
-  const addDBRecruit = (selectItem) => {
+  const addDBRecruit = (selectItem: string) => {
     let key = "";
     let value = "";
 
@@ -66,7 +62,7 @@ const RecruitEdit = () => {
     }
   };
 
-  const selectChange = (value) => {
+  const selectChange = (value: string) => {
     switch (selected) {
       case "work":
         return setWork(value);
@@ -82,44 +78,17 @@ const RecruitEdit = () => {
     }
   };
 
-  const onNoticeSubmit = (e) => {
+  const onNoticeSubmit = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     addDBRecruit(selected);
 
-    switch (selected) {
-      case "work":
-        setWork("");
-        break;
-      case "wont":
-        setWont("");
-        break;
-      case "conditions":
-        setConditions("");
-        break;
-      case "time":
-        setTime("");
-        break;
-      case "welfare":
-        setWelfare("");
-        break;
-      default:
-    }
-  };
-
-  const displayPrev = () => {
-    switch (selected) {
-      case "work":
-        return <>{work}</>;
-      case "wont":
-        return <>{wont}</>;
-      case "conditions":
-        return <>{conditions}</>;
-      case "time":
-        return <>{time}</>;
-      case "welfare":
-        return <>{welfare}</>;
-      default:
-    }
+    setWork("");
+    setWont("");
+    setConditions("");
+    setTime("");
+    setWelfare("");
   };
 
   return (
@@ -136,12 +105,11 @@ const RecruitEdit = () => {
             <div className="md:w-1/3">
               <CustomLabel text="投稿内容" />
             </div>
-            <div className="md:w-2/3 border-gray-400 border">
-              <select
-                name=""
-                onChange={handleChange}
-                className="form-select block w-full focus:bg-white rounded py-3"
-                id="my-select"
+            <div className="md:w-2/3 border-gray-400 border-2 rounded">
+              <CustomSelect
+                onChange={(e) => {
+                  setSelected(e.target.value);
+                }}
               >
                 <option value="none">選択して下さい</option>
                 <option value="work">仕事内容</option>
@@ -149,7 +117,7 @@ const RecruitEdit = () => {
                 <option value="conditions">応募資格</option>
                 <option value="time">勤務時間・休日</option>
                 <option value="welfare">福利厚生</option>
-              </select>
+              </CustomSelect>
             </div>
           </div>
 
@@ -159,13 +127,12 @@ const RecruitEdit = () => {
             </div>
             <div className="md:w-2/3">
               <textarea
-                className="form-textarea block w-full focus:bg-white border rounded"
-                id="my-textarea"
+                className="form-textarea block w-full border-gray-400 border-2 rounded px-3 py-3"
                 value={chooseItem()}
                 onChange={(e) => {
                   selectChange(e.target.value);
                 }}
-                rows="8"
+                rows={6}
               />
             </div>
           </div>

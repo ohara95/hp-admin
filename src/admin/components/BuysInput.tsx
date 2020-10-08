@@ -1,7 +1,5 @@
 import React, { FC } from "react";
-import CustomButton from "../../atoms/CustomButton";
-import CustomInput from "../../atoms/CustomInput";
-import CustomLabel from "../../atoms/CustomLabel";
+import { CustomButton, CustomInput, CustomLabel } from "../../atoms";
 
 type Props = {
   buysPrice: number;

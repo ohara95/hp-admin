@@ -1,7 +1,5 @@
 import React, { FC } from "react";
-import CustomLabel from "../../atoms/CustomLabel";
-import CustomButton from "../../atoms/CustomButton";
-import CustomInput from "../../atoms/CustomInput";
+import { CustomLabel, CustomButton, CustomInput } from "../../atoms";
 
 type Props = {
   salesDate: string;

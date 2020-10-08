@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebese";
-import CustomLabel from "../../atoms/CustomLabel";
+import { CustomLabel, CustomSelect } from "../../atoms";
 
 const BanquetEdit = () => {
   const [dbMenu, setDbMenu] = useState([]);
@@ -81,35 +81,27 @@ const BanquetEdit = () => {
                 }}
               >
                 <button
-                  className={
-                    operation === "add"
-                      ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
-                      : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
-                  }
+                  className={`shadow hover:bg-gray-400 text-gray-800 ${
+                    operation === "add" ? "bg-gray-400 " : "bg-gray-100"
+                  } font-bold py-2 px-4 rounded mr-4`}
                   type="button"
                   value="add"
                 >
                   追加
                 </button>
-
                 <button
-                  className={
-                    operation === "edit"
-                      ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
-                      : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
-                  }
+                  className={`shadow hover:bg-gray-400 text-gray-800 ${
+                    operation === "edit" ? "bg-gray-400 " : "bg-gray-100"
+                  } font-bold py-2 px-4 rounded mr-4`}
                   type="button"
                   value="edit"
                 >
                   変更
                 </button>
-
                 <button
-                  className={
-                    operation === "delete"
-                      ? "shadow hover:bg-gray-400 text-gray-800 bg-gray-400 font-bold py-2 px-4 rounded mr-4"
-                      : "shadow hover:bg-gray-400 text-gray-800 bg-gray-100 font-bold py-2 px-4 rounded mr-4"
-                  }
+                  className={`shadow hover:bg-gray-400 text-gray-800 ${
+                    operation === "delete" ? "bg-gray-400 " : "bg-gray-100"
+                  } font-bold py-2 px-4 rounded mr-4`}
                   type="button"
                   value="delete"
                 >
@@ -124,16 +116,15 @@ const BanquetEdit = () => {
               <div className="md:w-1/3">
                 <CustomLabel text="投稿内容" />
               </div>
-              <div className="md:w-2/3 border-gray-400 border">
-                <select
+              <div className="md:w-2/3 border-gray-400 border-2 rounded">
+                <CustomSelect
                   onChange={(e) => {
                     setSelectItem(e.target.value);
                   }}
-                  className="form-select block w-full focus:bg-white rounded"
                 >
                   <option>選択して下さい</option>
                   {selectMenu()}
-                </select>
+                </CustomSelect>
               </div>
             </div>
           )}
@@ -145,7 +136,7 @@ const BanquetEdit = () => {
                 </div>
                 <div className="md:w-2/3 ">
                   <input
-                    className="form-textarea block w-full focus:bg-white border rounded"
+                    className="form-textarea block w-full border-gray-400 border-2 rounded py-3 px-3"
                     rows="4"
                     type="text"
                     value={menuTitle}
@@ -161,8 +152,8 @@ const BanquetEdit = () => {
                 </div>
                 <div className="md:w-2/3">
                   <input
-                    className="form-textarea block w-full focus:bg-white border rounded"
-                    rows="4"
+                    className="form-textarea block w-full border-gray-400 border-2 rounded py-3 px-3"
+                    rows={4}
                     type="number"
                     value={menuPrice}
                     onChange={(e) => {
@@ -179,8 +170,8 @@ const BanquetEdit = () => {
                   <div className="md:w-2/3">
                     <textarea
                       type="textarea"
-                      className="form-textarea block w-full focus:bg-white border rounded"
-                      rows={8}
+                      className="form-textarea block w-full focus:bg-white border-gray-400 border-2 rounded px-3 py-3"
+                      rows={6}
                       value={detail}
                       onChange={(e) => {
                         setDetail(e.target.value);

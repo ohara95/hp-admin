@@ -1,7 +1,7 @@
 import React from "react";
 import { db } from "../../config/firebese";
 import { format } from "date-fns";
-import CustomInput from "../../atoms/CustomInput";
+import { CustomInput } from "../../atoms";
 
 /** 経費一覧 */
 const BuysList = ({
@@ -16,16 +16,20 @@ const BuysList = ({
   buysEditId,
   changeBuysDB,
 }) => {
+  const buysRef = db
+    .collection("management")
+    .doc("NcmaRejmRabdytHQfbKU")
+    .collection("buys");
+
   /** 経費項目編集 */
   const upDateBuys = (e, id) => {
     e.preventDefault();
     setEditBuysPrice("");
     setEditBuysDetail("");
     setBuysEdit(false);
+
     if (editBuysPrice) {
-      db.collection("management")
-        .doc("NcmaRejmRabdytHQfbKU")
-        .collection("buys")
+      buysRef
         .doc(id)
         .get()
         .then((res) => {
@@ -36,9 +40,7 @@ const BuysList = ({
     }
 
     if (editBuysDetail) {
-      db.collection("management")
-        .doc("NcmaRejmRabdytHQfbKU")
-        .collection("buys")
+      buysRef
         .doc(id)
         .get()
         .then((res) => {
@@ -61,9 +63,7 @@ const BuysList = ({
 
   /** 経費削除 */
   const deleteBuys = (id) => {
-    db.collection("management")
-      .doc("NcmaRejmRabdytHQfbKU")
-      .collection("buys")
+    buysRef
       .doc(id)
       .get()
       .then((res) => {

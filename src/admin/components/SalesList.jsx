@@ -1,7 +1,7 @@
 import React from "react";
 import { db } from "../../config/firebese";
 import { format } from "date-fns";
-import CustomInput from "../../atoms/CustomInput";
+import { CustomInput } from "../../atoms";
 
 /** 売上一覧 */
 const SalesList = ({
