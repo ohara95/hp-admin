@@ -12,6 +12,11 @@ import BuysInput from "../components/BuysInput";
 import CustomLabel from "../../atoms/CustomLabel";
 import IconPop from "../../atoms/IconPop";
 import sumData from "../utils/sameDaysCalc";
+// import * as H from "history";
+
+// type Props = {
+//   history: H.History;
+// };
 
 const Management = ({ history }) => {
   const [salesDate, setSalesDate] = useState(null);
@@ -31,15 +36,14 @@ const Management = ({ history }) => {
   const [dbSales, setDbSales] = useState([]);
   const [dbBuys, setDbBuys] = useState([]);
   const [inputErr, setInputErr] = useState(false);
+
   const setData = dbSales.concat(dbBuys);
 
   // const today = new Date().toISOString().slice(0, 10);
   const today = new Date();
   const toMonth = today.getMonth() + 1;
 
-  const test = dbSales.filter(
-    (sales) => format(sales.date.toDate(), "MM") == toMonth
-  );
+  const managementRef = db.collection("management").doc("NcmaRejmRabdytHQfbKU");
 
   /** 売上計上 */
   const plusSubmit = (e) => {
@@ -57,8 +61,7 @@ const Management = ({ history }) => {
 
   /** 売上をDBに登録 */
   const salesDB = (date, price, type) => {
-    db.collection("management")
-      .doc("NcmaRejmRabdytHQfbKU")
+    managementRef
       .collection("sales")
       .doc()
       .set({
@@ -88,8 +91,7 @@ const Management = ({ history }) => {
 
   /** 経費をDBに登録 */
   const buysDB = (date, price, detail, type) => {
-    db.collection("management")
-      .doc("NcmaRejmRabdytHQfbKU")
+    managementRef
       .collection("buys")
       .doc()
       .set({
@@ -151,8 +153,7 @@ const Management = ({ history }) => {
 
   /** salesData取得 */
   useEffect(() => {
-    db.collection("management")
-      .doc("NcmaRejmRabdytHQfbKU")
+    managementRef
       .collection("sales")
       .orderBy("date")
       .onSnapshot((snap) => {
@@ -168,8 +169,7 @@ const Management = ({ history }) => {
 
   /** buysData取得 */
   useEffect(() => {
-    db.collection("management")
-      .doc("NcmaRejmRabdytHQfbKU")
+    managementRef
       .collection("buys")
       .orderBy("date")
       .onSnapshot((snap) => {
@@ -227,8 +227,6 @@ const Management = ({ history }) => {
         経費: sumPrice(data.buysPrice[0]),
       };
     });
-
-  console.log(chooseGraphData);
 
   /** 表用のデータ(月計) */
   const allMonthData = () => {
@@ -347,7 +345,7 @@ const Management = ({ history }) => {
           onClick={(e) => {
             setToggleTable(e.target.value);
           }}
-          style={{ margin: "10px auto", width: "30%" }}
+          className="mx-auto my-2 w-2/12"
         >
           <button
             value="months"
@@ -383,10 +381,7 @@ const Management = ({ history }) => {
         </div>
         <ManagementGraph chooseGraph={chooseGraph} />
       </div>
-      <div
-        style={{ display: "flex", width: "90%", margin: "0 auto" }}
-        className="bg-white shadow-md rounded "
-      >
+      <div className="flex w-11/12 my-0 mx-auto bg-white shadow-md rounded">
         <form className="px-8 pt-6 pb-8 mb-4" onSubmit={plusSubmit}>
           <SalesInput
             setSalesDate={setSalesDate}
@@ -417,56 +412,45 @@ const Management = ({ history }) => {
           </IconPop>
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          width: "90%",
-          margin: "30px auto",
-        }}
-        className="bg-white shadow-md rounded "
-      >
-        <div
-          className="px-8 pt-6 pb-8 mb-4 "
-          style={{ height: 400, width: "30%", overflow: "scroll" }}
-        >
+      <div className="flex justify-around mx-auto w-11/12 my-5 bg-white px-8 mt-10">
+        <div className="w-2/6">
           <CustomLabel text="売上表" />
-          <SalesList
-            dbSales={dbSales}
-            edit={edit}
-            setEdit={setEdit}
-            editId={editId}
-            setEditId={setEditId}
-            editSalesPrice={editSalesPrice}
-            setEditSalesPrice={setEditSalesPrice}
-            changeSalesDB={changeSalesDB}
-          />
+          <div className="h-64 overflow-y-scroll">
+            <SalesList
+              dbSales={dbSales}
+              edit={edit}
+              setEdit={setEdit}
+              editId={editId}
+              setEditId={setEditId}
+              editSalesPrice={editSalesPrice}
+              setEditSalesPrice={setEditSalesPrice}
+              changeSalesDB={changeSalesDB}
+            />
+          </div>
         </div>
-        <div
-          className="px-8 pt-6 pb-8 mb-4"
-          style={{ height: 400, width: "30%", overflow: "scroll" }}
-        >
+        <div className="w-2/6">
           <CustomLabel text="経費表" />
-          <BuysList
-            dbBuys={dbBuys}
-            buysEdit={buysEdit}
-            setBuysEditId={setBuysEditId}
-            setEditBuysPrice={setEditBuysPrice}
-            editBuysDetail={editBuysDetail}
-            setEditBuysDetail={setEditBuysDetail}
-            setBuysEdit={setBuysEdit}
-            editBuysPrice={editBuysPrice}
-            setBuysEdit={setBuysEdit}
-            buysEditId={buysEditId}
-            changeBuysDB={changeBuysDB}
-          />
+          <div className="h-64 overflow-y-scroll">
+            <BuysList
+              dbBuys={dbBuys}
+              buysEdit={buysEdit}
+              setBuysEditId={setBuysEditId}
+              setEditBuysPrice={setEditBuysPrice}
+              editBuysDetail={editBuysDetail}
+              setEditBuysDetail={setEditBuysDetail}
+              setBuysEdit={setBuysEdit}
+              editBuysPrice={editBuysPrice}
+              setBuysEdit={setBuysEdit}
+              buysEditId={buysEditId}
+              changeBuysDB={changeBuysDB}
+            />
+          </div>
         </div>
-        <div
-          className="px-8 pt-6 pb-8 mb-4"
-          style={{ height: 400, width: "30%", overflow: "scroll" }}
-        >
+        <div className="w-2/6">
           <CustomLabel text="買い物リスト" />
-          <BuysTodo />
+          <div className="h-64 overflow-y-scroll">
+            <BuysTodo />
+          </div>
         </div>
       </div>
       <button

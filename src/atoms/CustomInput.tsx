@@ -16,7 +16,8 @@ type Props = {
   onChange: (e: React.ChangeEvent<EventTarget & HTMLInputElement>) => void;
   value: string | number;
   placeholder?: string;
-  style?: { [param: string]: string | number };
+  // style?: { [param: string]: string | number };
+  plusStyle?: string;
 };
 
 const CustomInput: FC<Props> = ({
@@ -24,15 +25,14 @@ const CustomInput: FC<Props> = ({
   onChange,
   value,
   placeholder,
-  style,
+  plusStyle,
 }) => (
   <input
-    className="appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none "
+    className={`appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none ${plusStyle}`}
     type={type}
     value={value}
     onChange={onChange}
     placeholder={placeholder}
-    style={style}
   />
 );
 

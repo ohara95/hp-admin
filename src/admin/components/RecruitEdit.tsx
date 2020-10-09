@@ -127,7 +127,7 @@ const RecruitEdit = () => {
             </div>
             <div className="md:w-2/3">
               <textarea
-                className="form-textarea block w-full border-gray-400 border-2 rounded px-3 py-3"
+                className="block w-full border-gray-400 border-2 rounded px-3 py-3"
                 value={chooseItem()}
                 onChange={(e) => {
                   selectChange(e.target.value);

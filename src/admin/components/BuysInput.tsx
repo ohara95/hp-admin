@@ -2,8 +2,8 @@ import React, { FC } from "react";
 import { CustomButton, CustomInput, CustomLabel } from "../../atoms";
 
 type Props = {
-  buysPrice: number;
-  setBuysPrice: (param: number | string) => void;
+  buysPrice: string;
+  setBuysPrice: (param: string) => void;
   buysDetail: string;
   setBuysDetail: (param: string) => void;
   buysDate: string;

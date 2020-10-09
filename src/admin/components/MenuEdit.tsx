@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebese";
 import { CustomLabel, CustomSelect } from "../../atoms";
 
+type DBDATA = {
+  amount: number;
+  category: string;
+  item: string;
+};
+
 const MenuEdit = () => {
   const [cuisine, setCuisine] = useState("");
   const [drink, setDrink] = useState("");
@@ -9,7 +15,7 @@ const MenuEdit = () => {
   const [amount, setAmount] = useState("");
   const [selectMethod, setSelectMethod] = useState("");
 
-  const [dbMenu, setDbMenu] = useState([]);
+  const [dbMenu, setDbMenu] = useState<DBDATA[]>([]);
   const [selectCuisine, setSelectCuisine] = useState("snack");
   const [selectDrink, setSelectDrink] = useState("beer");
   const [selectRecommend, setSelectRecommend] = useState("cuisine");
@@ -28,13 +34,13 @@ const MenuEdit = () => {
   ];
 
   /** データベースに変更を保存 */
-  const addDBCuisine = (item, amount) => {
+  const addDBCuisine = (item: string, amount: string) => {
     const cuisineRef = menuRef.collection("cuisine");
 
     if (selectMethod === "add") {
       cuisineRef.add({
         item,
-        amount,
+        amount: parseInt(amount),
         category: selectCuisine,
       });
     } else if (selectMethod === "edit") {
@@ -45,7 +51,7 @@ const MenuEdit = () => {
           res.docs.map((el) => {
             el.ref.update({
               item,
-              amount,
+              amount: parseInt(amount),
               category: selectCuisine,
             });
           });
@@ -63,37 +69,77 @@ const MenuEdit = () => {
   };
 
   /** DBにドリンクデータ追加 */
-  const addDBDrink = (item, amount) => {
-    menuRef
-      .collection("drink")
-      .add({
+  const addDBDrink = (item: string, amount: string) => {
+    const drinkRef = menuRef.collection("drink");
+
+    if (selectMethod === "add") {
+      drinkRef.add({
         item,
-        amount,
-        category: selectDrink,
-      })
-      .then()
-      .catch((err) => {
-        console.log(err);
+        amount: parseInt(amount),
+        category: selectCuisine,
       });
+    } else if (selectMethod === "edit") {
+      drinkRef
+        .where("item", "==", item)
+        .get()
+        .then((res) => {
+          res.docs.map((el) => {
+            el.ref.update({
+              item,
+              amount: parseInt(amount),
+              category: selectCuisine,
+            });
+          });
+        });
+    } else if (selectMethod === "delete") {
+      drinkRef
+        .where("item", "==", item)
+        .get()
+        .then((res) => {
+          res.docs.map((el) => {
+            el.ref.delete();
+          });
+        });
+    }
   };
 
   /** DBにおすすめデータ追加 */
-  const addDBRecommend = (item, amount) => {
+  const addDBRecommend = (item: string, amount: string) => {
     if (!selectRecommend) {
       return;
     }
 
-    menuRef
-      .collection("recommend")
-      .add({
+    const recommendRef = menuRef.collection("recommend");
+
+    if (selectMethod === "add") {
+      recommendRef.add({
         item,
-        amount,
-        category: selectRecommend,
-      })
-      .then()
-      .catch((err) => {
-        console.log(err);
+        amount: parseInt(amount),
+        category: selectCuisine,
       });
+    } else if (selectMethod === "edit") {
+      recommendRef
+        .where("item", "==", item)
+        .get()
+        .then((res) => {
+          res.docs.map((el) => {
+            el.ref.update({
+              item,
+              amount: parseInt(amount),
+              category: selectCuisine,
+            });
+          });
+        });
+    } else if (selectMethod === "delete") {
+      recommendRef
+        .where("item", "==", item)
+        .get()
+        .then((res) => {
+          res.docs.map((el) => {
+            el.ref.delete();
+          });
+        });
+    }
   };
 
   /** DBからデータ取得*/
@@ -102,12 +148,12 @@ const MenuEdit = () => {
       const menu = snap.docs.map((doc) => {
         return doc.data();
       });
-      setDbMenu(menu);
+      setDbMenu(menu as DBDATA[]);
     });
   }, [selectClassifying]);
 
   /** 値セット&DBに追加関数発火 */
-  const onMenuSubmit = (e) => {
+  const onMenuSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (
       !selectClassifying &&
@@ -146,7 +192,7 @@ const MenuEdit = () => {
   };
 
   /** 大分類の値を制御 */
-  const controlChange = (value) => {
+  const controlChange = (value: string) => {
     switch (selectClassifying) {
       case "cuisine":
         return setCuisine(value);
@@ -168,7 +214,6 @@ const MenuEdit = () => {
       case "recommend":
         return recommend;
       default:
-        return null;
     }
   };
 
@@ -268,7 +313,7 @@ const MenuEdit = () => {
             <div className="md:w-2/3">
               <div
                 onClick={(e) => {
-                  setSelectMethod(e.target.value);
+                  setSelectMethod((e.target as HTMLInputElement).value);
                 }}
               >
                 <button
@@ -354,12 +399,11 @@ const MenuEdit = () => {
             </div>
             <div className="md:w-2/3">
               <input
-                className="form-textarea block w-full border-gray-400 border-2 rounded py-3 px-3"
+                className="block w-full border-gray-400 border-2 rounded py-3 px-3"
                 value={toggleChange()}
                 onChange={(e) => {
                   controlChange(e.target.value);
                 }}
-                rows={8}
               />
             </div>
           </div>
@@ -370,13 +414,12 @@ const MenuEdit = () => {
               </div>
               <div className="md:w-2/3">
                 <input
-                  className="form-textarea block w-full border-gray-400 border-2 rounded py-3 px-3"
+                  className="block w-full border-gray-400 border-2 rounded py-3 px-3"
                   id="my-textarea"
                   value={amount}
                   onChange={(e) => {
                     setAmount(e.target.value);
                   }}
-                  rows={8}
                 />
               </div>
             </div>

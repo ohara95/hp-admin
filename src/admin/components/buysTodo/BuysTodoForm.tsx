@@ -82,22 +82,14 @@ const BuysTodoForm: FC<Props> = ({ todos, setTodos, content, setContent }) => {
   return (
     <div>
       <form style={{ width: "100%", display: "flex" }}>
-        <div style={{ width: "70%" }}>
-          <CustomInput
-            value={content}
-            onChange={(e) => {
-              setContent(e.target.value);
-            }}
-            type={"text"}
-          />
-        </div>
-        <div
-          style={{
-            width: "45%",
-            display: "flex",
-            justifyContent: "space-around",
+        <CustomInput
+          value={content}
+          onChange={(e) => {
+            setContent(e.target.value);
           }}
-        >
+          type={"text"}
+        />
+        <div className="w-1/4 flex justify-around">
           <button
             onClick={addTodo}
             className="text-teal-500 far fa-edit text-2xl"

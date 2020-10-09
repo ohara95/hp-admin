@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../../config/firebese";
 
+type DbProps = {
+  detail: string;
+  price: number;
+  title: string;
+};
+
 const Banquet = () => {
-  const [banquetMenu, setBanquetMenu] = useState([]);
+  const [banquetMenu, setBanquetMenu] = useState<DbProps[]>([]);
 
   useEffect(() => {
     db.collection("banquetMenu").onSnapshot((snap) => {
-      const data = snap.docs.map((doc) => {
+      const menu = snap.docs.map((doc) => {
         return {
           ...doc.data(),
         };
       });
-      setBanquetMenu(data);
+      setBanquetMenu(menu as DbProps[]);
     });
   }, []);
 

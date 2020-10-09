@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../../config/firebese";
+import firebase, { db } from "../../config/firebese";
 import { CustomLabel, CustomSelect } from "../../atoms";
 
+type DBDATA = {
+  amount: number;
+  price: number;
+  title: string;
+};
+
 const BanquetEdit = () => {
-  const [dbMenu, setDbMenu] = useState([]);
+  const [dbMenu, setDbMenu] = useState<DBDATA[]>([]);
   const [operation, setOperation] = useState("");
   const [detail, setDetail] = useState("");
   const [menuTitle, setMenuTitle] = useState("");
@@ -14,7 +20,7 @@ const BanquetEdit = () => {
   useEffect(() => {
     db.collection("banquetMenu").onSnapshot((snap) => {
       const data = snap.docs.map((doc) => doc.data());
-      setDbMenu(data);
+      setDbMenu(data as DBDATA[]);
     });
   }, []);
 
@@ -25,7 +31,7 @@ const BanquetEdit = () => {
     });
   };
 
-  const editMenu = (e) => {
+  const editMenu = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setMenuTitle("");
@@ -37,7 +43,7 @@ const BanquetEdit = () => {
     if (operation === "add") {
       banquetRef.doc().set({
         title: menuTitle,
-        price: menuPrice,
+        price: parseInt(menuPrice),
         detail,
       });
     } else if (operation === "edit") {
@@ -48,8 +54,8 @@ const BanquetEdit = () => {
           res.docs.map((doc) => {
             doc.ref.update({
               title: menuTitle,
-              price: menuPrice,
-              detail,
+              price: parseInt(menuPrice),
+              detail: firebase.firestore.FieldValue.arrayUnion(detail),
             });
           });
         });
@@ -77,7 +83,7 @@ const BanquetEdit = () => {
               <div
                 className="pt-8"
                 onClick={(e) => {
-                  setOperation(e.target.value);
+                  setOperation((e.target as HTMLInputElement).value);
                 }}
               >
                 <button
@@ -132,12 +138,11 @@ const BanquetEdit = () => {
             <>
               <div className="md:flex mb-6">
                 <div className="md:w-1/3">
-                  <CustomLabel text="メニュー名" />
+                  <CustomLabel text="コース名" />
                 </div>
                 <div className="md:w-2/3 ">
                   <input
-                    className="form-textarea block w-full border-gray-400 border-2 rounded py-3 px-3"
-                    rows="4"
+                    className="block w-full border-gray-400 border-2 rounded py-3 px-3"
                     type="text"
                     value={menuTitle}
                     onChange={(e) => {
@@ -152,8 +157,7 @@ const BanquetEdit = () => {
                 </div>
                 <div className="md:w-2/3">
                   <input
-                    className="form-textarea block w-full border-gray-400 border-2 rounded py-3 px-3"
-                    rows={4}
+                    className="block w-full border-gray-400 border-2 rounded py-3 px-3"
                     type="number"
                     value={menuPrice}
                     onChange={(e) => {
@@ -169,8 +173,7 @@ const BanquetEdit = () => {
                   </div>
                   <div className="md:w-2/3">
                     <textarea
-                      type="textarea"
-                      className="form-textarea block w-full focus:bg-white border-gray-400 border-2 rounded px-3 py-3"
+                      className="block w-full focus:bg-white border-gray-400 border-2 rounded px-3 py-3"
                       rows={6}
                       value={detail}
                       onChange={(e) => {

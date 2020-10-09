@@ -4,8 +4,8 @@ import { CustomLabel, CustomButton, CustomInput } from "../../atoms";
 type Props = {
   salesDate: string;
   setSalesDate: (param: string) => void;
-  salesPrice: number;
-  setSalesPrice: (param: number | string) => void;
+  salesPrice: string;
+  setSalesPrice: (param: string) => void;
 };
 
 const SalesInput: FC<Props> = ({

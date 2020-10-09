@@ -1,11 +1,15 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, FC } from "react";
 import { useForm } from "react-hook-form";
 import { auth } from "../../config/firebese";
 import { AuthContext } from "../../AuthProvider";
 import { Redirect } from "react-router-dom";
 import * as H from "history";
 
-const SignIn = ({ history }: { history: H.History }) => {
+type Props = {
+  history: H.History;
+};
+
+const SignIn: FC<Props> = ({ history }) => {
   const { user } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,7 +34,7 @@ const SignIn = ({ history }: { history: H.History }) => {
     <>
       <div>
         <div>
-          <div className="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
+          <div className="flex flex-col justify-center md:justify-start my-auto pt-6 md:pt-0 px-6 md:px-24 lg:px-32">
             <p className="text-center text-3xl">LogIn</p>
             <form
               className="flex flex-col pt-3 md:pt-8"
@@ -80,7 +84,7 @@ const SignIn = ({ history }: { history: H.History }) => {
             <div className="text-center pt-12 pb-12">
               <p>
                 forgot password?{" "}
-                <a href="register.html" className="underline font-semibold">
+                <a href="register.html" className="underline font-bold">
                   Resetting here.
                 </a>
               </p>

@@ -304,3 +304,14 @@
 
 // const [salesSelectMonth, setSalesSelectMonth] = useState("all");
 // const [buysSelectMonth, setBuysSelectMonth] = useState("all");
+
+{
+  /* <div style={{ width: "100%" }}> */
+}
+{
+  /* <img src={store} style={{ width: "50%", height: 400 }} />
+        <img src={counter} style={{ width: "50%", height: 415 }} /> */
+}
+{
+  /* </div> */
+}

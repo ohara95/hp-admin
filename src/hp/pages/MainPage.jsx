@@ -29,7 +29,7 @@ const MainPage = () => {
                 color: "white",
               }}
             >
-              <Menu />
+              <Top />
               {/* <Switch>
                 <Route path="/top" component={Top} />
                 <Route path="/menu" component={Menu} />

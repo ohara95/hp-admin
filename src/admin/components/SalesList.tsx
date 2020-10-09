@@ -1,10 +1,29 @@
-import React from "react";
+import React, { FC } from "react";
 import { db } from "../../config/firebese";
 import { format } from "date-fns";
 import { CustomInput } from "../../atoms";
 
+type DBDATA = {
+  salesPrice: number;
+  date: firebase.firestore.Timestamp;
+  detail: string;
+  type: string;
+  id: string;
+};
+
+type Props = {
+  dbSales: DBDATA[];
+  edit: boolean;
+  setEdit: (param: boolean) => void;
+  editId: string;
+  setEditId: (param: string) => void;
+  editSalesPrice: string;
+  setEditSalesPrice: (param: string) => void;
+  changeSalesDB: () => DBDATA[];
+};
+
 /** 売上一覧 */
-const SalesList = ({
+const SalesList: FC<Props> = ({
   dbSales,
   edit,
   setEdit,
@@ -15,7 +34,7 @@ const SalesList = ({
   changeSalesDB,
 }) => {
   /** 売上項目編集 */
-  const upDateSales = (e, id) => {
+  const upDateSales = (e: React.FormEvent<HTMLFormElement>, id: string) => {
     e.preventDefault();
     setEditSalesPrice("");
     setEdit(false);
@@ -34,7 +53,7 @@ const SalesList = ({
   };
 
   /** 押した編集ボタンのID取得(売上) */
-  const inputPossible = (id) => {
+  const inputPossible = (id: string) => {
     setEdit(!edit);
     return dbSales.map((db) => {
       if (id === db.id) {
@@ -44,7 +63,7 @@ const SalesList = ({
   };
 
   /** 売上削除 */
-  const deleteSales = (id) => {
+  const deleteSales = (id: string) => {
     db.collection("management")
       .doc("NcmaRejmRabdytHQfbKU")
       .collection("sales")
@@ -60,11 +79,11 @@ const SalesList = ({
       {changeSalesDB().map((db) => {
         return (
           <div>
-            <div style={{ display: "flex", marginTop: 10 }}>
+            <div className="flex mt-2">
               <button
                 id={db.id}
                 onClick={(e) => {
-                  inputPossible(e.target.id);
+                  inputPossible((e.target as HTMLInputElement).id);
                 }}
                 className="text-teal-500 far fa-edit"
               />
@@ -74,7 +93,7 @@ const SalesList = ({
                 }}
                 className="text-teal-500 py-1 px-2 far fa-trash-alt"
               />
-              <p>
+              <p className="text-xl mr-2">
                 {format(db.date.toDate(), "MM/dd")}
                 &nbsp;
               </p>
@@ -90,12 +109,12 @@ const SalesList = ({
                     onChange={(e) => {
                       setEditSalesPrice(e.target.value);
                     }}
-                    placeholder={db.salesPrice}
+                    placeholder={db.salesPrice.toString()}
                   />
                   <button type="submit" className="fas fa-check" />
                 </form>
               ) : (
-                <p>{db.salesPrice.toLocaleString()}円</p>
+                <p className="text-xl">{db.salesPrice.toLocaleString()}円</p>
               )}
             </div>
           </div>

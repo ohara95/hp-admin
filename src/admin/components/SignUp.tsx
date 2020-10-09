@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, FC } from "react";
 import { auth } from "../../config/firebese";
 import * as H from "history";
 
 type Props = {
+  history: H.History;
+};
+
+type useInputProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const SignUp = ({ history }: { history: H.History }) => {
-  const useInput = (initialValue: string): Props => {
+const SignUp: FC<Props> = ({ history }) => {
+  const useInput = (initialValue: string): useInputProps => {
     const [value, set] = useState(initialValue);
     return {
       value,
@@ -40,7 +44,7 @@ const SignUp = ({ history }: { history: H.History }) => {
     <>
       <div>
         <div>
-          <div className="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
+          <div className="flex flex-col justify-center md:justify-start my-auto pt-6 md:pt-0 px-6 md:px-24 lg:px-32">
             <p className="text-center text-3xl">Sign Up</p>
             <form className="flex flex-col pt-3 md:pt-8" onSubmit={onSubmit}>
               <div className="flex flex-col pt-4">
