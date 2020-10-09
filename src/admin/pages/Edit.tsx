@@ -4,6 +4,7 @@ import MenuEdit from "../components/MenuEdit";
 import NoticeEdit from "../components/NoticeEdit";
 import BanquetEdit from "../components/BanquetEdit";
 import * as H from "history";
+import ImageUpLoader from "../components/ImageUpLoader";
 
 type Props = {
   history: H.History;
@@ -89,6 +90,7 @@ const Edit: FC<Props> = ({ history }) => {
         <h1 className="flex items-center font-sans font-bold break-normal text-gray-700 px-2 text-xl mt-12 lg:mt-0 md:text-2xl">
           ホームページ編集
         </h1>
+        <ImageUpLoader />
         <MenuEdit />
         <hr className="bg-gray-300 my-12" />
         <BanquetEdit />

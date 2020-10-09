@@ -1,17 +1,13 @@
-import React, { FC } from "react";
-
-type Todo = {
-  content: string;
-  id: string;
-  isDone: boolean;
-};
+import React, { FC, Dispatch, SetStateAction } from "react";
+import { Todo } from "./type";
 
 type Props = {
   content: string;
   id: string;
   isDone: boolean;
   todos: Todo[];
-  setTodos: (param: Todo[]) => void;
+  // 型推論させてないから型指定
+  setTodos: Dispatch<SetStateAction<Todo[]>>;
 };
 
 const BuysTodoItem: FC<Props> = ({ content, id, isDone, todos, setTodos }) => {

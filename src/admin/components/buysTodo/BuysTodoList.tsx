@@ -1,34 +1,27 @@
 import React, { FC } from "react";
 import BuysTodoItem from "./BuysTodoItem";
-
-type Todo = {
-  content: string;
-  id: string;
-  isDone: boolean;
-};
+import { Todo } from "./type";
 
 type Props = {
   todos: Todo[];
-  setTodos: (param: Todo) => void;
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 };
 
-const BuysTodoList: FC<Props> = ({ todos, setTodos }) =>
-  //@ts-ignore
-  todos.map((todo) => {
-    return (
-      <>
-        <ul key={todo.id}>
-          <BuysTodoItem
-            content={todo.content}
-            id={todo.id}
-            isDone={todo.isDone}
-            todos={todos}
-            //@ts-ignore
-            setTodos={setTodos}
-          />
-        </ul>
-      </>
-    );
-  });
+const BuysTodoList: FC<Props> = ({ todos, setTodos }) => (
+  <ul>
+    {todos.map((todo) => {
+      return (
+        <BuysTodoItem
+          key={todo.id}
+          content={todo.content}
+          id={todo.id}
+          isDone={todo.isDone}
+          todos={todos}
+          setTodos={setTodos}
+        />
+      );
+    })}
+  </ul>
+);
 
 export default BuysTodoList;

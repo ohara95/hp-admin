@@ -1,0 +1,76 @@
+@charset "UTF-8";
+.box {
+  position: relative;
+  max-width: 400px;
+  height: 250px;
+  margin: auto;
+  overflow: hidden;
+}
+
+.box .bgImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  -webkit-animation: bgAnime 20s infinite;
+          animation: bgAnime 20s infinite;
+  /* 4画像 × 各5s = 20s */
+}
+
+.box .src1 {
+  background-image: url(/Users/erica/hp-admin/src/assets/img/store.jpeg);
+  /* 背景の画像を指定 */
+}
+
+.box .src2 {
+  background-image: url(/Users/erica/hp-admin/src/assets/img/inStore.jpg);
+  /* 背景の画像を指定 */
+  -webkit-animation-delay: 5s;
+          animation-delay: 5s;
+}
+
+.box .src3 {
+  background-image: url(/Users/erica/hp-admin/src/assets/img/counter.jpg);
+  /* 背景の画像を指定 */
+  -webkit-animation-delay: 10s;
+          animation-delay: 10s;
+}
+
+@-webkit-keyframes bgAnime {
+  0% {
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes bgAnime {
+  0% {
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/*# sourceMappingURL=main.css.map */

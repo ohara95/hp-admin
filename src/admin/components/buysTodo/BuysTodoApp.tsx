@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import BuysTodoForm from "./BuysTodoForm";
 import BuysTodoList from "./BuysTodoList";
-
-type Todo = {
-  content: string;
-  id: string;
-  isDone: boolean;
-};
+import { Todo } from "./type";
 
 const BuysTodoApp = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -20,7 +15,7 @@ const BuysTodoApp = () => {
         content={content}
         setContent={setContent}
       />
-      {/* <BuysTodoList todos={todos} setTodos={setTodos} /> */}
+      <BuysTodoList todos={todos} setTodos={setTodos} />
     </>
   );
 };

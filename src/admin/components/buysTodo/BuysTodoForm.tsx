@@ -1,16 +1,11 @@
 import React, { useEffect, FC } from "react";
 import { db } from "../../../config/firebese";
 import CustomInput from "../../../atoms/CustomInput";
-
-type Todo = {
-  content: string;
-  id: string;
-  isDone: boolean;
-};
+import { Todo } from "./type";
 
 type Props = {
   todos: Todo[];
-  setTodos: (param: Todo[]) => void;
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
   content: string;
   setContent: (param: string) => void;
 };
@@ -33,11 +28,10 @@ const BuysTodoForm: FC<Props> = ({ todos, setTodos, content, setContent }) => {
     db.collection("todos").onSnapshot((snap) => {
       const dbData = snap.docs.map((doc) => {
         return {
-          ...doc.data(),
+          ...(doc.data() as Todo),
           id: doc.id,
         };
       });
-      //@ts-ignore
       setTodos(dbData);
     });
   }, []);
@@ -79,12 +73,9 @@ const BuysTodoForm: FC<Props> = ({ todos, setTodos, content, setContent }) => {
           return todo;
         }
       } else {
-        return todos.map((todo) => {
-          return { ...todo, isDone: !todo.isDone };
-        });
+        return { ...todo, isDone: !todo.isDone };
       }
     });
-    //@ts-ignore
     setTodos(changeIsDone);
   };
 

@@ -9,6 +9,7 @@ import Notice from "./Notice";
 import Information from "./Information";
 import Top from "./Top";
 import { Route, Switch } from "react-router-dom";
+// import main from "./main.scss";
 
 const MainPage = () => {
   return (

@@ -3,8 +3,6 @@ import Banquet from "../components/menu/Banquet";
 import { Drink, Cuisine, Recommend } from "../components/menu/groundMenu";
 
 //画像
-import store from "../../assets/img/inStore.jpg";
-import counter from "../../assets/img/counter.jpg";
 import takokara from "../../assets/img/takokara.jpeg";
 import beer from "../../assets/img/beer.jpeg";
 import sarada from "../../assets/img/images.jpeg";
