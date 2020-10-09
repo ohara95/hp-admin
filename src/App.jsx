@@ -7,6 +7,10 @@ import Edit from "./admin/pages/Edit";
 import LoggedInRoute from "./LoggedInRoute";
 import "./App.css";
 import SignInUp from "./admin/pages/SignIn_SignUp";
+import Menu from "./hp/pages/Menu";
+import Notice from "./hp/pages/Notice";
+import Information from "./hp/pages/Information";
+import Top from "./hp/pages/Top";
 
 const App = () => {
   return (
@@ -15,6 +19,10 @@ const App = () => {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={MainPage} />
+            <Route path="/top" component={Top} />
+            <Route path="/menu" component={Menu} />
+            <Route path="/notice" component={Notice} />
+            <Route path="/information" component={Information} />
             <LoggedInRoute path="/management" component={Management} />
             <Route path="/edit" component={Edit} />
             <Route path="/login" component={SignInUp} />

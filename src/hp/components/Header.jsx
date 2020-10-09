@@ -2,10 +2,18 @@ import React, { useContext } from "react";
 import "./header.scss";
 import logo from "../../assets/img/logo.jpg";
 import { AuthContext } from "../../AuthProvider";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const Header = () => {
-  const { setCurrentPath } = useContext(AuthContext);
+  const { currentPath, setCurrentPath } = useContext(AuthContext);
+  const history = useHistory();
+  const clickPage = (path) => {
+    if (path === currentPath) return;
+    history.push(path);
+    setCurrentPath(path);
+  };
+  console.log(currentPath);
+
   return (
     <div className="on">
       <div className="title">
@@ -22,28 +30,28 @@ const Header = () => {
           />
         </div>
       </div>
-      <ul
+      <div
         className="content"
         onClick={(e) => {
-          setCurrentPath(e.target.value);
+          clickPage(e.target.id);
         }}
       >
-        <li style={{ color: "white" }}>
-          <Link to="/top">TOP</Link>
-        </li>
-        <li style={{ color: "white" }}>
-          <Link to="/menu">MENU</Link>
-        </li>
-        <li style={{ color: "white" }}>
-          <Link to="/notice">NOTICE</Link>
-        </li>
-        <li>
+        <div style={{ color: "white" }} id="/top">
+          TOP
+        </div>
+        <div style={{ color: "white" }} id="/menu">
+          MENU
+        </div>
+        <div style={{ color: "white" }} id="notice">
+          NOTICE
+        </div>
+        <div>
           <a href="http://blog.sukemasa.net/">blog</a>
-        </li>
-        <li style={{ color: "white" }}>
-          <Link to="/information">INFORMATION</Link>
-        </li>
-      </ul>
+        </div>
+        <div style={{ color: "white" }} id="/information">
+          INFORMATION
+        </div>
+      </div>
     </div>
   );
 };

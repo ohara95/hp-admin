@@ -58,17 +58,17 @@ const Notice = () => {
     <div style={{ width: "100%" }}>
       <div style={{ width: "80%", margin: "10px auto" }}>
         <div>
-          <h2 className="itemLineBlue">今月のお休み</h2>
+          <h2 className="itemLineWhite">今月のお休み</h2>
           <p style={{ margin: "20px 0", paddingLeft: 10 }}>
             {displayItem("holiday")}
           </p>
-          <h2 className="itemLineBlue">その他お知らせ</h2>
+          <h2 className="itemLineWhite">その他お知らせ</h2>
           <p style={{ margin: "20px 0", paddingLeft: 10 }}>
             {displayItem("other")}
           </p>
         </div>
         <div style={{ lineHeight: 2 }}>
-          <h2 className="itemLineBlue">採用情報</h2>
+          <h2 className="itemLineWhite">採用情報</h2>
           <div className="rowItem">
             <div style={{ paddingLeft: 10 }}>
               <h3>仕事内容</h3>

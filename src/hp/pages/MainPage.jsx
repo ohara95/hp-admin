@@ -8,11 +8,9 @@ import Menu from "./Menu";
 import Notice from "./Notice";
 import Information from "./Information";
 import Top from "./Top";
-import { Route, Router } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 const MainPage = () => {
-  // console.log(props);//err
-  const { currentPath } = useContext(AuthContext);
   return (
     <div className="background">
       <img
@@ -20,25 +18,26 @@ const MainPage = () => {
         style={{ borderRadius: "50%", height: 600, width: 600 }}
       />
       <div style={{ width: "100%" }}>
-        <Router>
-          <div className="headerStyle">
-            <Header />
-            <div style={{ width: "80%", margin: "0 auto" }}>
-              <div
-                style={{
-                  height: "70vh",
-                  overflow: "scroll",
-                  color: "white",
-                }}
-              >
+        <div className="headerStyle">
+          <Header />
+          <div style={{ width: "80%", margin: "0 auto" }}>
+            <div
+              style={{
+                height: "70vh",
+                overflow: "scroll",
+                color: "white",
+              }}
+            >
+              <Menu />
+              {/* <Switch>
                 <Route path="/top" component={Top} />
                 <Route path="/menu" component={Menu} />
                 <Route path="/notice" component={Notice} />
                 <Route path="/information" component={Information} />
-              </div>
+              </Switch> */}
             </div>
           </div>
-        </Router>
+        </div>
       </div>
     </div>
   );
