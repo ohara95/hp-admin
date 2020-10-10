@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { db } from "../../config/firebese";
 import { format } from "date-fns";
-import { CustomInput } from "../../atoms";
 
 type DBDATA = {
   buysPrice: number;

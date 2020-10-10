@@ -1,25 +1,14 @@
 import React, { FC } from "react";
 
 type Props = {
-  type:
-    | "text"
-    | "number"
-    | "email"
-    | "password"
-    | "submit"
-    | "image"
-    | "date"
-    | "radio"
-    | "checkbox"
-    | "button"
-    | "file";
+  type: "text" | "number" | "date";
   onChange: (e: React.ChangeEvent<EventTarget & HTMLInputElement>) => void;
   value: string | number;
   placeholder?: string;
   plusStyle?: string;
 };
 
-const CustomInput: FC<Props> = ({
+const Input: FC<Props> = ({
   type,
   onChange,
   value,
@@ -35,4 +24,4 @@ const CustomInput: FC<Props> = ({
   />
 );
 
-export default CustomInput;
+export default Input;

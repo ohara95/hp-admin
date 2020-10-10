@@ -1,29 +1,29 @@
 import { db } from "../../config/firebese";
 
-export const editBanquetDb = (select, menuTitle, menuPrice, detail, id) => {
+export const editBanquetDb = (select, title, price, detail, id) => {
   const banquetRef = db.collection("banquetMenu");
 
   if (select === "add") {
-    if (!menuTitle || !menuPrice || !detail) {
+    if (!title || !price || !detail) {
       return alert("入力してください");
     }
     banquetRef.doc().set({
-      title: menuTitle,
-      price: parseInt(menuPrice),
+      title: title,
+      price: parseInt(price),
       detail,
     });
   } else if (select === "edit") {
-    if (!menuTitle && !menuPrice && !detail) {
+    if (!title && !price && !detail) {
       return alert("入力漏れがあります");
     }
-    if (menuTitle) {
+    if (title) {
       banquetRef.doc(id).update({
-        title: menuTitle,
+        title: title,
       });
     }
-    if (menuPrice) {
+    if (price) {
       banquetRef.doc(id).update({
-        price: parseInt(menuPrice),
+        price: parseInt(price),
       });
     }
     if (detail) {

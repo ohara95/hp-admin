@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { db } from "../../config/firebese";
-import { CustomLabel, CustomSelect, CustomTextarea } from "../../atoms";
+import { Label, Select, Textarea } from "../atoms";
 
 type selectedProps = "holiday" | "other" | "none";
 
@@ -74,16 +74,16 @@ const NoticeEdit: FC = () => {
         <form>
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <CustomLabel text="休日・その他" size="xl" />
+              <Label text="休日・その他" size="xl" />
             </div>
           </div>
 
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <CustomLabel text="投稿内容" />
+              <Label text="投稿内容" />
             </div>
             <div className="md:w-2/3 border-gray-400 border-2 rounded">
-              <CustomSelect
+              <Select
                 onChange={(e) => {
                   setSelected(e.target.value as selectedProps);
                 }}
@@ -91,16 +91,16 @@ const NoticeEdit: FC = () => {
                 <option value="none">選択して下さい</option>
                 <option value="holiday">休日</option>
                 <option value="other">その他</option>
-              </CustomSelect>
+              </Select>
             </div>
           </div>
 
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <CustomLabel text="入力欄" />
+              <Label text="入力欄" />
             </div>
             <div className="md:w-2/3">
-              <CustomTextarea
+              <Textarea
                 onChange={(e) => {
                   selectChange(e.target.value);
                 }}

@@ -1,8 +1,8 @@
 import React from "react";
-import { CustomSelect } from "../../atoms";
+import { Select } from "../atoms";
 
 const MiddleCategory = ({ setState, optionData }) => (
-  <CustomSelect
+  <Select
     onChange={(e) => {
       setState(e.target.value);
     }}
@@ -14,7 +14,7 @@ const MiddleCategory = ({ setState, optionData }) => (
         </option>
       );
     })}
-  </CustomSelect>
+  </Select>
 );
 
 export default MiddleCategory;

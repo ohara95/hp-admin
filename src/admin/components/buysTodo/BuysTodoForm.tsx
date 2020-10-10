@@ -1,6 +1,6 @@
 import React, { useEffect, FC } from "react";
 import { db } from "../../../config/firebese";
-import CustomInput from "../../../atoms/CustomInput";
+import CustomInput from "../../atoms/Input";
 import { Todo } from "./type";
 
 type Props = {

@@ -2,7 +2,7 @@ import { db } from "../../config/firebese";
 
 const editMenuDb = (
   item,
-  amount,
+  price,
   selectMethod,
   selectCategory,
   name,
@@ -14,27 +14,27 @@ const editMenuDb = (
     .collection(name);
 
   if (selectMethod === "add") {
-    if (!item || !amount) {
+    if (!item || !price) {
       return alert("入力漏れがあります");
     }
     Ref.add({
       item,
-      amount: parseInt(amount),
+      price: parseInt(price),
       category: selectCategory,
     });
   } else if (selectMethod === "edit") {
     Ref.doc(id)
       .get()
       .then((res) => {
-        if (!item && !amount) {
+        if (!item && !price) {
           return alert("入力してください");
-        } else if (!amount) {
+        } else if (!price) {
           res.ref.update({
             item,
           });
         } else if (!item) {
           res.ref.update({
-            amount: parseInt(amount),
+            price: parseInt(price),
           });
         }
       });

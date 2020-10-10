@@ -5,7 +5,7 @@ type Props = {
   onClick?: (e: React.MouseEvent<HTMLSelectElement, MouseEvent>) => void;
 };
 
-const CustomSelect: FC<Props> = ({ children, onChange, onClick }) => {
+const Select: FC<Props> = ({ children, onChange, onClick }) => {
   return (
     <select
       className="form-select block w-full focus:bg-white rounded py-3 pl-3"
@@ -17,4 +17,4 @@ const CustomSelect: FC<Props> = ({ children, onChange, onClick }) => {
   );
 };
 
-export default CustomSelect;
+export default Select;

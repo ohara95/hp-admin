@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import SignIn from "../components/SignIn";
-import SignUp from "../components/SignUp";
+import SignIn from "../template/SignIn";
+import SignUp from "../template/SignUp";
 import * as H from "history";
 
 type Props = {

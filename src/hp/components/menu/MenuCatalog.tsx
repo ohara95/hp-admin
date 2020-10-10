@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { db } from "../../../config/firebese";
 
 type DbProps = {
-  amount: number;
+  price: number;
   category: string;
   item: string;
 };
@@ -31,7 +31,7 @@ const MenuCatalog = ({ menuItem, state, setState, item }: Props) => {
   return category.map((el) => {
     return (
       <option>
-        {el.item} ¥{el.amount}
+        {el.item} ¥{el.price}
       </option>
     );
   });

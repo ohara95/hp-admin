@@ -69,7 +69,8 @@ const SalesList: FC<Props> = ({
       .get()
       .then((res) => {
         res.ref.delete();
-      });
+      })
+      .catch((e) => console.log(e));
   };
 
   return (

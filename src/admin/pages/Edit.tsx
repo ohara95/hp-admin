@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import RecruitEdit from "../components/RecruitEdit";
+import RecruitEdit from "../template/RecruitEdit";
 import MenuEdit from "../components/MenuEdit";
-import NoticeEdit from "../components/NoticeEdit";
+import NoticeEdit from "../template/NoticeEdit";
 import BanquetEdit from "../components/BanquetEdit";
 import * as H from "history";
 import ImageUpLoader from "../components/ImageUpLoader";

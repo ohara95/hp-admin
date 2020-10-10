@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebese";
-import { CustomLabel, CustomSelect, CustomTextarea } from "../../atoms";
-import SelectButton from "../utils/SelectButton";
+import { Label, Select, Textarea } from "../atoms";
+import SelectButton from "../molecules/SelectButton";
+import ToggleButton from "../molecules/ToggleButton";
 import { editBanquetDb } from "../utils/editBanquetDb";
 
 type DBDATA = {
@@ -11,14 +12,15 @@ type DBDATA = {
   id: string;
 };
 
-// memo ボタンクリックを促す機能必要
+type MethodProps = "add" | "edit" | "delete" | "none" | "";
+
 // 一個でも間違ってると全部消えるの修正必要
 const BanquetEdit = () => {
-  const [dbMenu, setDbMenu] = useState<DBDATA[]>([]);
-  const [operation, setOperation] = useState("");
+  const [dbData, setDbData] = useState<DBDATA[]>([]);
+  const [method, setMethod] = useState("");
   const [detail, setDetail] = useState("");
-  const [menuTitle, setMenuTitle] = useState("");
-  const [menuPrice, setMenuPrice] = useState("");
+  const [course, setCourse] = useState("");
+  const [price, setPrice] = useState("");
   const [selectId, setSelectId] = useState("");
 
   /** DBデータ取得 */
@@ -30,13 +32,13 @@ const BanquetEdit = () => {
           id: doc.id,
         };
       });
-      setDbMenu(data as DBDATA[]);
+      setDbData(data as DBDATA[]);
     });
   }, []);
 
   /** 金額一覧をセレクタに表示 */
   const selectMenu = () => {
-    return dbMenu.map((select) => {
+    return dbData.map((select) => {
       return (
         <option key={select.id} value={select.id}>
           {select.title}
@@ -47,10 +49,13 @@ const BanquetEdit = () => {
 
   const editMenu = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    setMenuTitle("");
-    setMenuPrice("");
+    setCourse("");
+    setPrice("");
     setDetail("");
-    editBanquetDb(operation, menuTitle, menuPrice, detail, selectId);
+    if (method !== "add" && selectId === "") {
+      return alert("コースを選択してください");
+    }
+    editBanquetDb(method, course, price, detail, selectId);
   };
 
   return (
@@ -59,97 +64,85 @@ const BanquetEdit = () => {
         <form>
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <CustomLabel text="コースメニュー" size="xl" />
+              <Label text="コースメニュー" size="xl" />
             </div>
-            <SelectButton setState={setOperation} select={operation} />
+            <SelectButton setState={setMethod} select={method as MethodProps} />
           </div>
 
-          {operation !== "add" && (
-            <div className="md:flex mb-6">
-              <div className="md:w-1/3">
-                <CustomLabel text="コース選択" />
-              </div>
-              <div className="md:w-2/3 border-gray-400 border-2 rounded">
-                <CustomSelect
-                  onChange={(e) => {
-                    setSelectId(e.target.value);
-                  }}
-                >
-                  <option value="none">選択して下さい</option>
-                  {selectMenu()}
-                </CustomSelect>
-              </div>
-            </div>
-          )}
-          {operation !== "delete" && (
+          {method !== "" && (
             <>
-              <div className="md:flex mb-6">
-                <div className="md:w-1/3">
-                  <CustomLabel text="コース名" />
-                </div>
-                <div className="md:w-2/3 ">
-                  <input
-                    className="w-full border-gray-400 border-2 rounded py-3 px-3"
-                    type="text"
-                    value={menuTitle}
-                    onChange={(e) => {
-                      setMenuTitle(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="md:flex mb-6">
-                <div className="md:w-1/3">
-                  <CustomLabel text="金額" />
-                </div>
-                <div className="md:w-2/3">
-                  <input
-                    className="w-full border-gray-400 border-2 rounded py-3 px-3"
-                    type="number"
-                    value={menuPrice}
-                    onChange={(e) => {
-                      setMenuPrice(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-              <div>
+              {method !== "add" && (
                 <div className="md:flex mb-6">
                   <div className="md:w-1/3">
-                    <CustomLabel text="入力欄" />
+                    <Label text="コース選択" />
                   </div>
-                  <div className="md:w-2/3">
-                    <CustomTextarea
-                      value={detail}
+                  <div className="md:w-2/3 border-gray-400 border-2 rounded">
+                    <Select
                       onChange={(e) => {
-                        setDetail(e.target.value);
+                        setSelectId(e.target.value);
                       }}
-                    />
+                    >
+                      <option value="none">選択して下さい</option>
+                      {selectMenu()}
+                    </Select>
                   </div>
                 </div>
+              )}
+              {method !== "delete" && (
+                <>
+                  <div className="md:flex mb-6">
+                    <div className="md:w-1/3">
+                      <Label text="コース名" />
+                    </div>
+                    <div className="md:w-2/3 ">
+                      <input
+                        className="w-full border-gray-400 border-2 rounded py-3 px-3"
+                        type="text"
+                        value={course}
+                        onChange={(e) => {
+                          setCourse(e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="md:flex mb-6">
+                    <div className="md:w-1/3">
+                      <Label text="金額" />
+                    </div>
+                    <div className="md:w-2/3">
+                      <input
+                        className="w-full border-gray-400 border-2 rounded py-3 px-3"
+                        type="number"
+                        value={price}
+                        onChange={(e) => {
+                          setPrice(e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="md:flex mb-6">
+                      <div className="md:w-1/3">
+                        <Label text="入力欄" />
+                      </div>
+                      <div className="md:w-2/3">
+                        <Textarea
+                          value={detail}
+                          onChange={(e) => {
+                            setDetail(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+              <div className="md:flex md:items-center">
+                <div className="md:w-1/3" />
+                <ToggleButton select={method as MethodProps} func={editMenu} />
               </div>
             </>
           )}
-          <div className="md:flex md:items-center">
-            <div className="md:w-1/3"></div>
-            <div className="md:w-2/3">
-              {operation === "delete" ? (
-                <button
-                  onClick={editMenu}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  削除
-                </button>
-              ) : (
-                <button
-                  onClick={editMenu}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  送信
-                </button>
-              )}
-            </div>
-          </div>
         </form>
       </div>
     </>

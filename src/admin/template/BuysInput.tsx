@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { CustomButton, CustomInput, CustomLabel } from "../../atoms";
+import { Button, Input, Label } from "../atoms";
 
 type Props = {
   buysPrice: string;
@@ -20,31 +20,31 @@ const BuysInput: FC<Props> = ({
 }) => (
   <>
     <div className="mb-4">
-      <CustomLabel text="出費日" />
-      <CustomInput
+      <Label text="出費日" />
+      <Input
         type="date"
         value={buysDate}
         onChange={(e) => setBuysDate(e.target.value)}
       />
     </div>
     <div className="mb-4">
-      <CustomLabel text="出費額" />
-      <CustomInput
+      <Label text="出費額" />
+      <Input
         type="number"
         value={buysPrice}
         onChange={(e) => setBuysPrice(e.target.value)}
       />
     </div>
     <div className="mb-4">
-      <CustomLabel text="出費明細" />
-      <CustomInput
+      <Label text="出費明細" />
+      <Input
         type="text"
         value={buysDetail}
         onChange={(e) => setBuysDetail(e.target.value)}
       />
     </div>
     <div>
-      <CustomButton text="計上" />
+      <Button text="計上" />
     </div>
   </>
 );

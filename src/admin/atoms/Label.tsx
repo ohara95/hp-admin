@@ -5,7 +5,7 @@ type Props = {
   size?: string;
   color?: string;
 };
-const CustomLabel: FC<Props> = ({ text, size = "l", color = "gray" }) => {
+const Label: FC<Props> = ({ text, size = "l", color = "gray" }) => {
   return (
     <>
       <label className={`block text-${color}-700 text-${size} font-bold mb-2`}>
@@ -15,4 +15,4 @@ const CustomLabel: FC<Props> = ({ text, size = "l", color = "gray" }) => {
   );
 };
 
-export default CustomLabel;
+export default Label;

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { db } from "../../config/firebese";
-import { CustomLabel, CustomSelect, CustomTextarea } from "../../atoms";
+import { Label, Select, Textarea } from "../atoms";
 import { recruitCategory } from "../utils/optionData";
 
 const RecruitEdit = () => {
@@ -8,7 +8,7 @@ const RecruitEdit = () => {
 
   const [work, setWork] = useState("");
   const [wont, setWont] = useState("");
-  const [conditions, setConditions] = useState("");
+  const [terms, setTerms] = useState("");
   const [time, setTime] = useState("");
   const [welfare, setWelfare] = useState("");
 
@@ -24,9 +24,9 @@ const RecruitEdit = () => {
       case "wont":
         key = "wont";
         value = wont;
-      case "conditions":
-        key = "conditions";
-        value = conditions;
+      case "terms":
+        key = "terms";
+        value = terms;
       case "time":
         key = "time";
         value = time;
@@ -53,8 +53,8 @@ const RecruitEdit = () => {
         return work;
       case "wont":
         return wont;
-      case "conditions":
-        return conditions;
+      case "terms":
+        return terms;
       case "time":
         return time;
       case "welfare":
@@ -69,8 +69,8 @@ const RecruitEdit = () => {
         return setWork(value);
       case "wont":
         return setWont(value);
-      case "conditions":
-        return setConditions(value);
+      case "terms":
+        return setTerms(value);
       case "time":
         return setTime(value);
       case "welfare":
@@ -87,7 +87,7 @@ const RecruitEdit = () => {
 
     setWork("");
     setWont("");
-    setConditions("");
+    setTerms("");
     setTime("");
     setWelfare("");
   };
@@ -98,16 +98,16 @@ const RecruitEdit = () => {
         <form>
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <CustomLabel text="求人" size="xl" />
+              <Label text="求人" size="xl" />
             </div>
           </div>
 
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <CustomLabel text="投稿内容" />
+              <Label text="投稿内容" />
             </div>
             <div className="md:w-2/3 border-gray-400 border-2 rounded">
-              <CustomSelect
+              <Select
                 onChange={(e) => {
                   setSelected(e.target.value);
                 }}
@@ -119,16 +119,16 @@ const RecruitEdit = () => {
                     </option>
                   );
                 })}
-              </CustomSelect>
+              </Select>
             </div>
           </div>
 
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <CustomLabel text="入力欄" />
+              <Label text="入力欄" />
             </div>
             <div className="md:w-2/3">
-              <CustomTextarea
+              <Textarea
                 value={chooseItem() as string}
                 onChange={(e) => {
                   selectChange(e.target.value);
