@@ -30,6 +30,8 @@
 //   return monthDataCalc[monthDataCalc.length - 1];
 // };
 
+import { cuisineCategory } from "../utils/optionData";
+
 // switch (monthCorrect) {
 //   case "01":
 //     calcSalesPrice = sumPrice(key.salesPrice);

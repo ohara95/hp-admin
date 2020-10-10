@@ -1,25 +1,35 @@
 import React, { useState, useEffect } from "react";
-import firebase, { db } from "../../config/firebese";
-import { CustomLabel, CustomSelect } from "../../atoms";
+import { db } from "../../config/firebese";
+import { CustomLabel, CustomSelect, CustomTextarea } from "../../atoms";
+import SelectButton from "../utils/SelectButton";
+import { editBanquetDb } from "../utils/editBanquetDb";
 
 type DBDATA = {
   amount: number;
   price: number;
   title: string;
+  id: string;
 };
 
+// memo ボタンクリックを促す機能必要
+// 一個でも間違ってると全部消えるの修正必要
 const BanquetEdit = () => {
   const [dbMenu, setDbMenu] = useState<DBDATA[]>([]);
   const [operation, setOperation] = useState("");
   const [detail, setDetail] = useState("");
   const [menuTitle, setMenuTitle] = useState("");
   const [menuPrice, setMenuPrice] = useState("");
-  const [selectItem, setSelectItem] = useState("");
+  const [selectId, setSelectId] = useState("");
 
   /** DBデータ取得 */
   useEffect(() => {
     db.collection("banquetMenu").onSnapshot((snap) => {
-      const data = snap.docs.map((doc) => doc.data());
+      const data = snap.docs.map((doc) => {
+        return {
+          ...doc.data(),
+          id: doc.id,
+        };
+      });
       setDbMenu(data as DBDATA[]);
     });
   }, []);
@@ -27,108 +37,45 @@ const BanquetEdit = () => {
   /** 金額一覧をセレクタに表示 */
   const selectMenu = () => {
     return dbMenu.map((select) => {
-      return <option value={select.title}>{select.title}</option>;
+      return (
+        <option key={select.id} value={select.id}>
+          {select.title}
+        </option>
+      );
     });
   };
 
-  const editMenu = (e: React.FormEvent<HTMLFormElement>) => {
+  const editMenu = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-
     setMenuTitle("");
     setMenuPrice("");
     setDetail("");
-
-    const banquetRef = db.collection("banquetMenu");
-
-    if (operation === "add") {
-      banquetRef.doc().set({
-        title: menuTitle,
-        price: parseInt(menuPrice),
-        detail,
-      });
-    } else if (operation === "edit") {
-      banquetRef
-        .where("title", "==", selectItem)
-        .get()
-        .then((res) => {
-          res.docs.map((doc) => {
-            doc.ref.update({
-              title: menuTitle,
-              price: parseInt(menuPrice),
-              detail: firebase.firestore.FieldValue.arrayUnion(detail),
-            });
-          });
-        });
-    } else {
-      banquetRef
-        .where("title", "==", selectItem)
-        .get()
-        .then((res) => {
-          res.docs.map((doc) => {
-            doc.ref.delete();
-          });
-        });
-    }
+    editBanquetDb(operation, menuTitle, menuPrice, detail, selectId);
   };
 
   return (
     <>
       <div id="section2" className="p-8 mt-6 lg:mt-0 rounded">
-        <form onSubmit={editMenu}>
+        <form>
           <div className="md:flex mb-6">
             <div className="md:w-1/3">
-              <CustomLabel text="宴会メニュー" size="xl" />
+              <CustomLabel text="コースメニュー" size="xl" />
             </div>
-            <div className="md:w-2/3">
-              <div
-                className="pt-8"
-                onClick={(e) => {
-                  setOperation((e.target as HTMLInputElement).value);
-                }}
-              >
-                <button
-                  className={`shadow hover:bg-gray-400 text-gray-800 ${
-                    operation === "add" ? "bg-gray-400 " : "bg-gray-100"
-                  } font-bold py-2 px-4 rounded mr-4`}
-                  type="button"
-                  value="add"
-                >
-                  追加
-                </button>
-                <button
-                  className={`shadow hover:bg-gray-400 text-gray-800 ${
-                    operation === "edit" ? "bg-gray-400 " : "bg-gray-100"
-                  } font-bold py-2 px-4 rounded mr-4`}
-                  type="button"
-                  value="edit"
-                >
-                  変更
-                </button>
-                <button
-                  className={`shadow hover:bg-gray-400 text-gray-800 ${
-                    operation === "delete" ? "bg-gray-400 " : "bg-gray-100"
-                  } font-bold py-2 px-4 rounded mr-4`}
-                  type="button"
-                  value="delete"
-                >
-                  削除
-                </button>
-              </div>
-            </div>
+            <SelectButton setState={setOperation} select={operation} />
           </div>
 
           {operation !== "add" && (
             <div className="md:flex mb-6">
               <div className="md:w-1/3">
-                <CustomLabel text="投稿内容" />
+                <CustomLabel text="コース選択" />
               </div>
               <div className="md:w-2/3 border-gray-400 border-2 rounded">
                 <CustomSelect
                   onChange={(e) => {
-                    setSelectItem(e.target.value);
+                    setSelectId(e.target.value);
                   }}
                 >
-                  <option>選択して下さい</option>
+                  <option value="none">選択して下さい</option>
                   {selectMenu()}
                 </CustomSelect>
               </div>
@@ -142,7 +89,7 @@ const BanquetEdit = () => {
                 </div>
                 <div className="md:w-2/3 ">
                   <input
-                    className="block w-full border-gray-400 border-2 rounded py-3 px-3"
+                    className="w-full border-gray-400 border-2 rounded py-3 px-3"
                     type="text"
                     value={menuTitle}
                     onChange={(e) => {
@@ -157,7 +104,7 @@ const BanquetEdit = () => {
                 </div>
                 <div className="md:w-2/3">
                   <input
-                    className="block w-full border-gray-400 border-2 rounded py-3 px-3"
+                    className="w-full border-gray-400 border-2 rounded py-3 px-3"
                     type="number"
                     value={menuPrice}
                     onChange={(e) => {
@@ -172,9 +119,7 @@ const BanquetEdit = () => {
                     <CustomLabel text="入力欄" />
                   </div>
                   <div className="md:w-2/3">
-                    <textarea
-                      className="block w-full focus:bg-white border-gray-400 border-2 rounded px-3 py-3"
-                      rows={6}
+                    <CustomTextarea
                       value={detail}
                       onChange={(e) => {
                         setDetail(e.target.value);
@@ -189,11 +134,17 @@ const BanquetEdit = () => {
             <div className="md:w-1/3"></div>
             <div className="md:w-2/3">
               {operation === "delete" ? (
-                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                <button
+                  onClick={editMenu}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                >
                   削除
                 </button>
               ) : (
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button
+                  onClick={editMenu}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
                   送信
                 </button>
               )}

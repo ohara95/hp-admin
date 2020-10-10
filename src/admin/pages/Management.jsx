@@ -12,6 +12,8 @@ import BuysInput from "../components/BuysInput";
 import CustomLabel from "../../atoms/CustomLabel";
 import IconPop from "../../atoms/IconPop";
 import sumData from "../utils/sameDaysCalc";
+import { month } from "../utils/month";
+import { sumPrice } from "../utils/arrCalc";
 // import * as H from "history";
 
 // type Props = {
@@ -183,17 +185,6 @@ const Management = ({ history }) => {
       });
   }, []);
 
-  /** 配列内の合算 */
-  const sumPrice = (price) => {
-    if (price) {
-      let sum = 0;
-      for (let i = 0; i < price.length; i++) {
-        sum += price[i];
-      }
-      return sum;
-    }
-  };
-
   /** 差額表示 */
   const difference = totalSales(dbSales) - totalBuys(dbBuys);
 
@@ -208,7 +199,7 @@ const Management = ({ history }) => {
 
   /** 表用のデータ(今月) */
   const graphData = sumData(sortSetData)
-    .filter((data) => Number(format(data.date.toDate(), "MM")) === toMonth)
+    .filter((data) => parseInt(format(data.date.toDate(), "MM")) === toMonth)
     .map((data) => {
       return {
         日付: format(data.date.toDate(), "MM/dd"),
@@ -273,16 +264,6 @@ const Management = ({ history }) => {
       default:
         return;
     }
-  };
-
-  // 12ヶ月
-  const months = () => {
-    let monthArr = [];
-    for (let i = 1; i <= 12; i++) {
-      const formatDate = ("0" + i).slice(-2);
-      monthArr.push(<option value={formatDate}>{formatDate}月</option>);
-    }
-    return monthArr;
   };
 
   // 選択毎に売上一覧の表示を切替
@@ -370,7 +351,7 @@ const Management = ({ history }) => {
             >
               未選択
             </option>
-            {months()}
+            {month()}
           </select>
           <button
             className="bg-teal-500 text-white py-1 px-3 rounded-r"

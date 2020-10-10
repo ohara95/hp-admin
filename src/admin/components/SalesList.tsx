@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { db } from "../../config/firebese";
 import { format } from "date-fns";
-import { CustomInput } from "../../atoms";
 
 type DBDATA = {
   salesPrice: number;
@@ -33,15 +32,18 @@ const SalesList: FC<Props> = ({
   setEditSalesPrice,
   changeSalesDB,
 }) => {
+  const salesRef = db
+    .collection("management")
+    .doc("NcmaRejmRabdytHQfbKU")
+    .collection("sales");
+
   /** 売上項目編集 */
   const upDateSales = (e: React.FormEvent<HTMLFormElement>, id: string) => {
     e.preventDefault();
     setEditSalesPrice("");
     setEdit(false);
     if (editSalesPrice) {
-      db.collection("management")
-        .doc("NcmaRejmRabdytHQfbKU")
-        .collection("sales")
+      salesRef
         .doc(id)
         .get()
         .then((res) => {
@@ -56,17 +58,13 @@ const SalesList: FC<Props> = ({
   const inputPossible = (id: string) => {
     setEdit(!edit);
     return dbSales.map((db) => {
-      if (id === db.id) {
-        setEditId(db.id);
-      }
+      if (id === db.id) setEditId(db.id);
     });
   };
 
   /** 売上削除 */
   const deleteSales = (id: string) => {
-    db.collection("management")
-      .doc("NcmaRejmRabdytHQfbKU")
-      .collection("sales")
+    salesRef
       .doc(id)
       .get()
       .then((res) => {
@@ -78,7 +76,7 @@ const SalesList: FC<Props> = ({
     <>
       {changeSalesDB().map((db) => {
         return (
-          <div>
+          <div key={db.id}>
             <div className="flex mt-2">
               <button
                 id={db.id}
@@ -103,7 +101,7 @@ const SalesList: FC<Props> = ({
                     upDateSales(e, db.id);
                   }}
                 >
-                  <CustomInput
+                  <input
                     type="number"
                     value={editSalesPrice}
                     onChange={(e) => {

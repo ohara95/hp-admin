@@ -16,7 +16,6 @@ type Props = {
   onChange: (e: React.ChangeEvent<EventTarget & HTMLInputElement>) => void;
   value: string | number;
   placeholder?: string;
-  // style?: { [param: string]: string | number };
   plusStyle?: string;
 };
 

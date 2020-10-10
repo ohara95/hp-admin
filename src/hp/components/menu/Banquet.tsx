@@ -26,7 +26,12 @@ const Banquet = () => {
       <>
         <div>
           <h3 className="categoryItem">{menu.title}</h3>
-          <p>{menu.detail}</p>
+          <p>
+            {menu.detail
+              .split(/\s/g)
+              .reduce((cum: any, x) => [...cum, x, <br />], [])
+              .slice(0, -1)}
+          </p>
         </div>
       </>
     );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebese";
-import { CustomLabel, CustomSelect } from "../../atoms";
+import { CustomLabel, CustomSelect, CustomTextarea } from "../../atoms";
+import { recruitCategory } from "../utils/optionData";
 
 const RecruitEdit = () => {
   const [selected, setSelected] = useState("none");
@@ -111,12 +112,13 @@ const RecruitEdit = () => {
                   setSelected(e.target.value);
                 }}
               >
-                <option value="none">選択して下さい</option>
-                <option value="work">仕事内容</option>
-                <option value="wont">求める人材</option>
-                <option value="conditions">応募資格</option>
-                <option value="time">勤務時間・休日</option>
-                <option value="welfare">福利厚生</option>
+                {recruitCategory.map((category) => {
+                  return (
+                    <option key={category.value} value={category.value}>
+                      {category.name}
+                    </option>
+                  );
+                })}
               </CustomSelect>
             </div>
           </div>
@@ -126,13 +128,11 @@ const RecruitEdit = () => {
               <CustomLabel text="入力欄" />
             </div>
             <div className="md:w-2/3">
-              <textarea
-                className="block w-full border-gray-400 border-2 rounded px-3 py-3"
-                value={chooseItem()}
+              <CustomTextarea
+                value={chooseItem() as string}
                 onChange={(e) => {
                   selectChange(e.target.value);
                 }}
-                rows={6}
               />
             </div>
           </div>

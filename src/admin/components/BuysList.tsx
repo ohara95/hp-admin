@@ -97,7 +97,7 @@ const BuysList: FC<Props> = ({
     <>
       {changeBuysDB().map((db) => {
         return (
-          <div>
+          <div key={db.id}>
             <div className="flex mt-2">
               <button
                 id={db.id}
@@ -121,23 +121,23 @@ const BuysList: FC<Props> = ({
                   }}
                 >
                   <div className="flex">
-                    <CustomInput
+                    <input
                       type="number"
                       value={editBuysPrice}
                       onChange={(e) => {
                         setEditBuysPrice(e.target.value);
                       }}
                       placeholder={db.buysPrice.toString()}
-                      plusStyle="w-24"
+                      className="w-24"
                     />
-                    <CustomInput
+                    <input
                       type="text"
                       value={editBuysDetail.toString()}
                       onChange={(e) => {
                         setEditBuysDetail(e.target.value);
                       }}
                       placeholder={db.detail}
-                      plusStyle="w-24"
+                      className="w-24"
                     />
                     <button type="submit" className="fas fa-check" />
                   </div>

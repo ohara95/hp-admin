@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { db } from "../../config/firebese";
-import { CustomLabel, CustomSelect } from "../../atoms";
+import { CustomLabel, CustomSelect, CustomTextarea } from "../../atoms";
 
 type selectedProps = "holiday" | "other" | "none";
 
@@ -100,13 +100,11 @@ const NoticeEdit: FC = () => {
               <CustomLabel text="入力欄" />
             </div>
             <div className="md:w-2/3">
-              <textarea
-                className="block w-full border-gray-400 border-2 rounded px-3 py-3"
-                rows={6}
+              <CustomTextarea
                 onChange={(e) => {
                   selectChange(e.target.value);
                 }}
-                value={chooseItem()}
+                value={chooseItem() as string}
               />
             </div>
           </div>
