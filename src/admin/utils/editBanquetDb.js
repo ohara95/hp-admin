@@ -1,36 +1,59 @@
 import { db } from "../../config/firebese";
 
-export const editBanquetDb = (select, title, price, detail, id) => {
+export const editBanquetDb = (
+  select,
+  title,
+  price,
+  detail,
+  id,
+  clearTitle,
+  clearPrice,
+  clearDetail
+) => {
   const banquetRef = db.collection("banquetMenu");
 
   if (select === "add") {
     if (!title || !price || !detail) {
-      return alert("入力してください");
-    }
-    banquetRef.doc().set({
-      title: title,
-      price: parseInt(price),
-      detail,
-    });
-  } else if (select === "edit") {
-    if (!title && !price && !detail) {
       return alert("入力漏れがあります");
     }
-    if (title) {
-      banquetRef.doc(id).update({
+    banquetRef
+      .add({
         title: title,
-      });
-    }
-    if (price) {
-      banquetRef.doc(id).update({
         price: parseInt(price),
-      });
-    }
-    if (detail) {
-      banquetRef.doc(id).update({
         detail,
+      })
+      .then(() => {
+        clearTitle("");
+        clearPrice("");
+        clearDetail("");
       });
-    }
+  } else if (select === "edit") {
+    banquetRef
+      .doc(id)
+      .get()
+      .then((res) => {
+        if (!title && !price && !detail) {
+          return alert("入力してください");
+        } else if (title) {
+          res.ref
+            .update({
+              title,
+            })
+            .then(() => clearTitle(""));
+        } else if (price) {
+          res.ref
+            .update({
+              price: parseInt(price),
+            })
+            .then(() => clearPrice(""));
+        } else if (detail) {
+          res.ref
+            .update({
+              detail,
+            })
+            .then(() => clearDetail(""));
+        }
+      });
   } else if (select === "delete") {
     banquetRef.doc(id).delete();
   }

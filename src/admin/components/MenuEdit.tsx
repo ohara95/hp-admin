@@ -13,7 +13,7 @@ import MiddleCategory from "./MiddleCategory";
 import ToggleButton from "../molecules/ToggleButton";
 
 type DBDATA = {
-  amount: number;
+  price: number;
   category: string;
   item: string;
   id: string;
@@ -21,7 +21,6 @@ type DBDATA = {
 
 type MethodProps = "add" | "edit" | "delete" | "none" | "";
 
-//memo 一個でも間違ってると全部消えるの修正必要
 const MenuEdit = () => {
   const [cuisine, setCuisine] = useState("");
   const [drink, setDrink] = useState("");
@@ -51,41 +50,66 @@ const MenuEdit = () => {
     });
   }, [selectCategory]);
 
+  useEffect(() => {
+    if (method === "add") {
+      setSelectId("");
+    }
+  }, [method]);
+
   /** 値セット&DBに追加関数発火 */
   const onMenuSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
+    //---バリデーション---//
     if (selectCategory === "none") {
-      return alert("カテゴリーを選択してください");
+      return alert("カテゴリーを選択してください(大)");
+    } else if (
+      selectCuisine === "none" &&
+      selectDrink === "none" &&
+      selectRecommend === "none"
+    ) {
+      return alert("カテゴリーを選択してください(中)");
+    } else if (selectId === "" && method !== "add") {
+      return alert("カテゴリーを選択してください(小)");
     }
+    //----バリデーション---//
+
+    //memo 短くしたい...
     switch (selectCategory) {
       case "cuisine":
-        setCuisine("");
-        setPrice("");
         editMenuDb(
           cuisine,
           price,
           method,
           selectCuisine,
           selectCategory,
-          selectId
+          selectId,
+          setCuisine,
+          setPrice
         );
         break;
       case "drink":
-        setDrink("");
-        setPrice("");
-        editMenuDb(drink, price, method, selectDrink, selectCategory, selectId);
+        editMenuDb(
+          drink,
+          price,
+          method,
+          selectDrink,
+          selectCategory,
+          selectId,
+          setDrink,
+          setPrice
+        );
         break;
       case "recommend":
-        setRecommend("");
-        setPrice("");
         editMenuDb(
           recommend,
           price,
           method,
           selectRecommend,
           selectCategory,
-          selectId
+          selectId,
+          setRecommend,
+          setPrice
         );
         break;
       default:
@@ -143,7 +167,7 @@ const MenuEdit = () => {
     }
   };
 
-  /** 変更だったらメニュー名と金額をみれるようにする */
+  /** 変更か削除だったらメニュー名と金額をみれるようにする */
   const editOption = () => {
     let item = "";
     switch (selectCategory) {
@@ -164,7 +188,7 @@ const MenuEdit = () => {
       return category.map((el) => {
         return (
           <option key={el.id} value={el.id}>
-            {el.item} ¥{el.amount}
+            {el.item} ¥{el.price}
           </option>
         );
       });
@@ -203,6 +227,7 @@ const MenuEdit = () => {
                   </Select>
                 </div>
               </div>
+
               {selectCategory !== "none" && (
                 <div className="md:flex mb-6">
                   <div className="md:w-1/3">
@@ -213,7 +238,10 @@ const MenuEdit = () => {
                   </div>
                 </div>
               )}
-              {(selectCuisine || selectDrink || selectRecommend) !== "none" &&
+
+              {(selectDrink !== "none" ||
+                selectCuisine !== "none" ||
+                selectRecommend !== "none") &&
                 method !== "add" && (
                   <div className="md:flex mb-6">
                     <div className="md:w-1/3">
@@ -227,6 +255,7 @@ const MenuEdit = () => {
                     </div>
                   </div>
                 )}
+
               {method !== "delete" && (
                 <>
                   <div className="md:flex mb-6">

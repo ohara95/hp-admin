@@ -6,7 +6,9 @@ const editMenuDb = (
   selectMethod,
   selectCategory,
   name,
-  id = ""
+  id,
+  clearItem,
+  clearPrice
 ) => {
   const Ref = db
     .collection("menu")
@@ -21,6 +23,9 @@ const editMenuDb = (
       item,
       price: parseInt(price),
       category: selectCategory,
+    }).then(() => {
+      clearItem("");
+      clearPrice("");
     });
   } else if (selectMethod === "edit") {
     Ref.doc(id)
@@ -37,12 +42,20 @@ const editMenuDb = (
             price: parseInt(price),
           });
         }
+      })
+      .then(() => {
+        clearItem("");
+        clearPrice("");
       });
   } else if (selectMethod === "delete") {
     Ref.doc(id)
       .get()
       .then((res) => {
         res.ref.delete();
+      })
+      .then(() => {
+        clearItem("");
+        clearPrice("");
       });
   }
 };

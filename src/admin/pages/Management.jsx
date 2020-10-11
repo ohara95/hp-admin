@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { format } from "date-fns";
+
 import { auth, db } from "../../config/firebese";
 import BuysTodo from "../components/buysTodo";
-import Alert from "../../atoms/Alert";
-import { useEffect } from "react";
-import { format } from "date-fns";
 import ManagementGraph from "../components/ManagementGraph";
+
 import SalesList from "../template/SalesList";
 import BuysList from "../template/BuysList";
 import SalesInput from "../template/SalesInput";
 import BuysInput from "../template/BuysInput";
-import CustomLabel from "../../atoms/Label";
-import IconPop from "../../atoms/IconPop";
+
+import { Label, IconPop, Alert } from "../atoms/";
 import sumData from "../utils/sameDaysCalc";
 import { month } from "../utils/month";
 import { sumPrice } from "../utils/arrCalc";
@@ -395,7 +395,7 @@ const Management = ({ history }) => {
       </div>
       <div className="flex justify-around mx-auto w-11/12 my-5 bg-white px-8 mt-10">
         <div className="w-2/6">
-          <CustomLabel text="売上表" />
+          <Label text="売上表" />
           <div className="h-64 overflow-y-scroll">
             <SalesList
               dbSales={dbSales}
@@ -410,7 +410,7 @@ const Management = ({ history }) => {
           </div>
         </div>
         <div className="w-2/6">
-          <CustomLabel text="経費表" />
+          <Label text="経費表" />
           <div className="h-64 overflow-y-scroll">
             <BuysList
               dbBuys={dbBuys}
@@ -428,7 +428,7 @@ const Management = ({ history }) => {
           </div>
         </div>
         <div className="w-2/6">
-          <CustomLabel text="買い物リスト" />
+          <Label text="買い物リスト" />
           <div className="h-64 overflow-y-scroll">
             <BuysTodo />
           </div>

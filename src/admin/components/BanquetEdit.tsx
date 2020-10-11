@@ -6,7 +6,7 @@ import ToggleButton from "../molecules/ToggleButton";
 import { editBanquetDb } from "../utils/editBanquetDb";
 
 type DBDATA = {
-  amount: number;
+  detail: string;
   price: number;
   title: string;
   id: string;
@@ -17,7 +17,7 @@ type MethodProps = "add" | "edit" | "delete" | "none" | "";
 // 一個でも間違ってると全部消えるの修正必要
 const BanquetEdit = () => {
   const [dbData, setDbData] = useState<DBDATA[]>([]);
-  const [method, setMethod] = useState("");
+  const [method, setMethod] = useState<MethodProps>("");
   const [detail, setDetail] = useState("");
   const [course, setCourse] = useState("");
   const [price, setPrice] = useState("");
@@ -41,21 +41,33 @@ const BanquetEdit = () => {
     return dbData.map((select) => {
       return (
         <option key={select.id} value={select.id}>
-          {select.title}
+          {select.title} ¥{select.price}
         </option>
       );
     });
   };
 
+  const displayPlaceholder = () => {
+    if (method === "edit") {
+      return dbData.find((select) => select.id === selectId)?.detail;
+    }
+  };
+
   const editMenu = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    setCourse("");
-    setPrice("");
-    setDetail("");
     if (method !== "add" && selectId === "") {
       return alert("コースを選択してください");
     }
-    editBanquetDb(method, course, price, detail, selectId);
+    editBanquetDb(
+      method,
+      course,
+      price,
+      detail,
+      selectId,
+      setCourse,
+      setPrice,
+      setDetail
+    );
   };
 
   return (
@@ -131,6 +143,10 @@ const BanquetEdit = () => {
                           onChange={(e) => {
                             setDetail(e.target.value);
                           }}
+                          //memo falseが入るかもって怒られる
+                          // placeholder={
+                          //   method !== "edit" && displayPlaceholder()
+                          // }
                         />
                       </div>
                     </div>

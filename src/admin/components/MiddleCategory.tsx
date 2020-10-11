@@ -1,7 +1,12 @@
-import React from "react";
+import React, { FC } from "react";
 import { Select } from "../atoms";
 
-const MiddleCategory = ({ setState, optionData }) => (
+type Props = {
+  setState: (param: string) => void;
+  optionData: { value: string; name: string }[];
+};
+
+const MiddleCategory: FC<Props> = ({ setState, optionData }) => (
   <Select
     onChange={(e) => {
       setState(e.target.value);
