@@ -9,7 +9,7 @@ type Props = {
 
 const SignIn_up: FC<Props> = ({ history }) => {
   return (
-    <div className="flex justify justify-around">
+    <div className="flex justify-center">
       <SignIn history={history} />
       <SignUp history={history} />
     </div>

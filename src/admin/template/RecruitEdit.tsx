@@ -36,15 +36,19 @@ const RecruitEdit = () => {
       default:
     }
 
-    db.collection("recruit")
-      .doc("eTLykSLZuPvi6iJ48vNB")
-      .update({
-        [key]: value,
-      })
-      .then()
-      .catch((err) => {
-        console.log(err);
-      });
+    if (!value) {
+      return alert("入力してください");
+    } else {
+      db.collection("recruit")
+        .doc("eTLykSLZuPvi6iJ48vNB")
+        .update({
+          [key]: value,
+        })
+        .then()
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const chooseItem = () => {
@@ -83,13 +87,16 @@ const RecruitEdit = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    addDBRecruit(selected);
-
-    setWork("");
-    setWont("");
-    setTerms("");
-    setTime("");
-    setWelfare("");
+    if (selected === "none") {
+      return alert("選択してください");
+    } else {
+      addDBRecruit(selected);
+      setWork("");
+      setWont("");
+      setTerms("");
+      setTime("");
+      setWelfare("");
+    }
   };
 
   return (

@@ -171,14 +171,19 @@ const Management: FC<Props> = ({ history }) => {
     }
   };
 
+  //memo  他のボタン選択時に未選択に変えたい
+  // const choiceBtn = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   if (toggleTable !== "chooseMonth") {
+  //     setChooseBtn("none");
+  //   } else {
+  //     setChooseBtn(e.target.value);
+  //   }
+  // };
+
   return (
     <>
       {inputErr && (
-        <Alert
-          title="注意！"
-          text="入力してください"
-          icon="fas fa-exclamation-circle"
-        />
+        <Alert text="入力してください" icon="fas fa-exclamation-circle" />
       )}
       <button
         className="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400"
@@ -212,15 +217,7 @@ const Management: FC<Props> = ({ history }) => {
               setChooseBtn(e.target.value);
             }}
           >
-            {/** memo  他のボタン選択時に未選択に変えたい */}
-            <option
-              value="none"
-              // selected={() => {
-              //   (toggleTable === "months" || "year") && setChooseBtn("none");
-              // }}
-            >
-              未選択
-            </option>
+            <option value="none">未選択</option>
             {month()}
           </select>
           <button

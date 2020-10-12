@@ -30,6 +30,7 @@ const BuysTodoItem: FC<Props> = ({ content, id, isDone, todos, setTodos }) => {
           type="checkbox"
           checked={isDone}
           onClick={(e) => checkedItem((e.target as HTMLInputElement).value)}
+          className="form-checkbox"
         />
         {content}
       </li>

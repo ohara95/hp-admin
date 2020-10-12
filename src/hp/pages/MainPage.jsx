@@ -16,9 +16,10 @@ const MainPage = () => {
     <div className="background">
       <img
         src={store}
-        style={{ borderRadius: "50%", height: 600, width: 600 }}
+        className="rounded-full"
+        style={{ height: 600, width: 600 }}
       />
-      <div style={{ width: "100%" }}>
+      <div className="w-full">
         <div className="headerStyle">
           <Header />
           <div style={{ width: "80%", margin: "0 auto" }}>

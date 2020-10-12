@@ -17,9 +17,10 @@ const Menu = () => {
   const [cuisine, setCuisine] = useState([]);
   const [drink, setDrink] = useState([]);
   const [recommend, setRecommend] = useState([]);
+  console.log(cuisine);
   return (
-    <div style={{ width: "100%" }}>
-      <div style={{ width: "80%", margin: "10px auto" }}>
+    <div className="w-full">
+      <div className="w-10/12 my-4 mx-auto">
         <div>
           <h2 className="itemLineWhite">本日のおすすめ</h2>
           <div>
@@ -42,9 +43,9 @@ const Menu = () => {
 
         <div>
           <h2 className="itemLineWhite">FOOD</h2>
-          <div className="rowItem" style={{ marginTop: 20 }}>
+          <div className="rowItem mt-10">
             <img src={edamame} className="menuImage" />
-            <div style={{ width: "50%" }}>
+            <div className="w-3/6">
               <h3 className="categoryItem">おつまみ</h3>
               <MenuCatalog
                 state={cuisine}
@@ -55,8 +56,8 @@ const Menu = () => {
             </div>
           </div>
 
-          <div className="rowItem" style={{ marginTop: 20 }}>
-            <div style={{ width: "50%" }}>
+          <div className="rowItem mt-10">
+            <div className="w-3/6">
               <h3 className="categoryItem">サラダ</h3>
               <MenuCatalog
                 state={cuisine}
@@ -68,9 +69,9 @@ const Menu = () => {
             <img src={sarada} className="menuImage" />
           </div>
 
-          <div className="rowItem" style={{ marginTop: 20 }}>
+          <div className="rowItem mt-10">
             <img src={takokara} className="menuImage" />
-            <div style={{ width: "50%" }}>
+            <div className="w-3/6">
               <h3 className="categoryItem">揚げ物</h3>
               <MenuCatalog
                 state={cuisine}
@@ -81,8 +82,8 @@ const Menu = () => {
             </div>
           </div>
 
-          <div className="rowItem" style={{ marginTop: 20 }}>
-            <div style={{ width: "50%" }}>
+          <div className="rowItem mt-10">
+            <div className="w-3/6">
               <h3 className="categoryItem">焼き物</h3>
               <MenuCatalog
                 state={cuisine}
@@ -94,9 +95,9 @@ const Menu = () => {
             <img src={yasai} className="menuImage" />
           </div>
 
-          <div className="rowItem" style={{ marginTop: 20 }}>
+          <div className="rowItem mt-10">
             <img src={otyaduke} className="menuImage" />
-            <div style={{ width: "50%" }}>
+            <div className="w-3/6">
               <h3 className="categoryItem">〆</h3>
               <MenuCatalog
                 state={cuisine}
@@ -107,8 +108,8 @@ const Menu = () => {
             </div>
           </div>
 
-          <div className="rowItem" style={{ marginTop: 20 }}>
-            <div style={{ width: "50%" }}>
+          <div className="rowItem mt-10">
+            <div className="w-3/6">
               <h3 className="categoryItem">デザート</h3>
               <MenuCatalog
                 state={cuisine}
@@ -123,9 +124,9 @@ const Menu = () => {
 
         <div>
           <h2 className="itemLineWhite">DRINK</h2>
-          <div className="rowItem" style={{ marginTop: 20 }}>
+          <div className="rowItem mt-10">
             <img src={beer} className="menuImage" />
-            <div style={{ width: "50%" }}>
+            <div className="w-3/6">
               <h3 className="categoryItem">ビール</h3>
               <MenuCatalog
                 state={drink}
@@ -157,8 +158,8 @@ const Menu = () => {
             </div>
           </div>
 
-          <div className="rowItem" style={{ marginTop: 20 }}>
-            <div style={{ width: "50%" }}>
+          <div className="rowItem mt-8">
+            <div className="w-3/6">
               <h3 className="categoryItem">カクテル</h3>
               <MenuCatalog
                 state={drink}
@@ -186,9 +187,9 @@ const Menu = () => {
         </div>
 
         <h2 className="itemLineWhite">COURSE</h2>
-        <div className="rowItem" style={{ marginTop: 20 }}>
+        <div className="rowItem mt-8">
           <img src={enkai} className="menuImage" />
-          <div style={{ width: "50%" }}>
+          <div className="w-3/6">
             <Banquet />
           </div>
         </div>

@@ -1,23 +1,21 @@
 import React, { FC } from "react";
 
 type Props = {
-  title: "注意！" | "確認！";
   text: string;
   icon: "fas fa-exclamation-circle" | "fas fa-question-circle";
 };
-const Alert: FC<Props> = ({ title, text, icon }) => {
+const Alert: FC<Props> = ({ text, icon }) => {
   return (
     <>
-      <div className="shadow" role="alert">
-        <div className="flex">
-          <div className="bg-blue-500 w-16 text-center p-2">
+      <div role="alert">
+        <div className="flex h-8">
+          <div className="bg-blue-500 w-10 text-center p-2 ">
             <div className="flex justify-center h-full items-center">
-              <i className={`text-white text-3xl ${icon}`}></i>
+              <i className={`text-white text-xl ${icon}`}></i>
             </div>
           </div>
-          <div className="bg-white border-r-4 border-blue-400 w-full p-4">
+          <div className="bg-white border-r-4 border-blue-400 p-1">
             <div>
-              <p className="text-gray-600 font-bold">{title}</p>
               <p className="text-gray-600 text-sm">{text}</p>
             </div>
           </div>

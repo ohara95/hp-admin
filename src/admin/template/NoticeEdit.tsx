@@ -7,13 +7,13 @@ type selectedProps = "holiday" | "other" | "none";
 const NoticeEdit: FC = () => {
   const [holiday, setHoliday] = useState("");
   const [other, setOther] = useState("");
-  const [selected, setSelected] = useState<selectedProps>("holiday");
+  const [selected, setSelected] = useState<selectedProps>("none");
 
-  const addDBNotice = (selectItem: selectedProps) => {
+  const addDBNotice = () => {
     let key = "";
     let value = "";
 
-    switch (selectItem) {
+    switch (selected) {
       case "holiday":
         key = "holiday";
         value = holiday;
@@ -23,12 +23,19 @@ const NoticeEdit: FC = () => {
         value = other;
       default:
     }
-
-    db.collection("notice")
-      .doc("f3068OjZY4BqCj3QiLjO")
-      .update({
-        [key]: value,
-      });
+    if (!value) {
+      return alert("入力してください");
+    } else {
+      db.collection("notice")
+        .doc("f3068OjZY4BqCj3QiLjO")
+        .update({
+          [key]: value,
+        })
+        .then()
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const chooseItem = () => {
@@ -55,6 +62,9 @@ const NoticeEdit: FC = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+    if (selected === "none") {
+      return alert("選択して下さい");
+    }
     switch (selected) {
       case "holiday":
         setHoliday("");
@@ -63,9 +73,9 @@ const NoticeEdit: FC = () => {
         setOther("");
         break;
       default:
-        alert("選択して下さい");
+        break;
     }
-    addDBNotice(selected);
+    addDBNotice();
   };
 
   return (

@@ -9,7 +9,6 @@ import ImageUpLoader from "../components/ImageUpLoader";
 type Props = {
   history: H.History;
 };
-
 const Edit: FC<Props> = ({ history }) => {
   return (
     <>

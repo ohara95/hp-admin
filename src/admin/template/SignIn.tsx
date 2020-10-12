@@ -34,7 +34,7 @@ const SignIn: FC<Props> = ({ history }) => {
     <>
       <div>
         <div>
-          <div className="flex flex-col justify-center md:justify-start my-auto pt-6 md:pt-0 px-6 md:px-24 lg:px-32">
+          <div className="my-auto pt-6 md:pt-0 px-6 md:px-24 lg:px-32">
             <p className="text-center text-3xl">LogIn</p>
             <form
               className="flex flex-col pt-3 md:pt-8"
