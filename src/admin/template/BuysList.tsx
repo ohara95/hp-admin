@@ -106,7 +106,7 @@ const BuysList: FC<Props> = ({
                 }}
                 className="text-teal-500 py-1 px-2 far fa-trash-alt"
               />
-              <p className="text-xl mr-2">
+              <p className="text-l mr-2">
                 {format(db.date.toDate(), "MM/dd")}
                 &nbsp;
               </p>
@@ -132,7 +132,6 @@ const BuysList: FC<Props> = ({
                       onChange={(e) => {
                         setEditBuysDetail(e.target.value);
                       }}
-                      //@ts-ignore
                       placeholder={db.detail}
                       className="w-24"
                     />
@@ -140,7 +139,7 @@ const BuysList: FC<Props> = ({
                   </div>
                 </form>
               ) : (
-                <p className="text-xl">
+                <p className="text-l">
                   {db.buysPrice.toLocaleString()}
                   円 &nbsp;
                   <i className="fas fa-caret-right" />

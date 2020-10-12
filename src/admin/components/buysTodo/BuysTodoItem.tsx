@@ -32,7 +32,7 @@ const BuysTodoItem: FC<Props> = ({ content, id, isDone, todos, setTodos }) => {
           onClick={(e) => checkedItem((e.target as HTMLInputElement).value)}
           className="form-checkbox"
         />
-        {content}
+        <span className="ml-2 text-l">{content}</span>
       </li>
     </>
   );

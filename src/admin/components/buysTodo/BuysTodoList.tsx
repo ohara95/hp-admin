@@ -8,7 +8,7 @@ type Props = {
 };
 
 const BuysTodoList: FC<Props> = ({ todos, setTodos }) => (
-  <ul>
+  <ul className="ml-1">
     {todos.map((todo) => {
       return (
         <BuysTodoItem

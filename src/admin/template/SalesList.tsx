@@ -88,7 +88,7 @@ const SalesList: FC<Props> = ({
                 }}
                 className="text-teal-500 py-1 px-2 far fa-trash-alt"
               />
-              <p className="text-xl mr-2">
+              <p className="text-l mr-2">
                 {format(db.date.toDate(), "MM/dd")}
                 &nbsp;
               </p>
@@ -109,7 +109,7 @@ const SalesList: FC<Props> = ({
                   <button type="submit" className="fas fa-check" />
                 </form>
               ) : (
-                <p className="text-xl">{db.salesPrice?.toLocaleString()}円</p>
+                <p className="text-l">{db.salesPrice?.toLocaleString()}円</p>
               )}
             </div>
           </div>
