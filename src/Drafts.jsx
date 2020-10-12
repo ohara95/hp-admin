@@ -317,3 +317,30 @@ import { cuisineCategory } from "../utils/optionData";
 {
   /* </div> */
 }
+
+// const category =
+//   selectCategory === "cuisine"
+//     ? cuisine
+//     : selectCategory === "drink"
+//     ? drink
+//     : selectCategory === "recommend"
+//     ? recommend
+//     : "";
+
+// const categoryName =
+//   selectCategory === "cuisine"
+//     ? selectCuisine
+//     : selectCategory === "drink"
+//     ? selectDrink
+//     : selectCategory === "recommend"
+//     ? selectRecommend
+//     : "";
+
+// const setCategoryName =
+//   selectCategory === "cuisine"
+//     ? setSelectCuisine
+//     : selectCategory === "drink"
+//     ? setSelectDrink
+//     : selectCategory === "recommend"
+//     ? setSelectRecommend
+//     : "";

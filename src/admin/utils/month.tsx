@@ -12,3 +12,7 @@ export const month = () => {
   }
   return monthArr;
 };
+
+// const today = new Date().toISOString().slice(0, 10);
+const today = new Date();
+export const toMonth = today.getMonth() + 1;

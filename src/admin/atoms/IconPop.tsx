@@ -15,7 +15,7 @@ const IconPop: FC<Props> = ({ color, icon, text, children }) => (
         </div>
       </div>
       <div className="flex-1 md:text-center">
-        <h5 className="block text-gray-700 text-sm font-bold mb-2">{text}</h5>
+        <h5 className="block text-gray-700 text-l font-bold mb-2">{text}</h5>
         <h3 className="font-bold text-3xl">{children}</h3>
       </div>
     </div>

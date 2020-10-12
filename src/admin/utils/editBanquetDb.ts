@@ -1,14 +1,14 @@
 import { db } from "../../config/firebese";
 
 export const editBanquetDb = (
-  select,
-  title,
-  price,
-  detail,
-  id,
-  clearTitle,
-  clearPrice,
-  clearDetail
+  select: "add" | "edit" | "delete" | "none" | "",
+  title: string,
+  price: string,
+  detail: string,
+  id: string,
+  clearTitle: (param: string) => void,
+  clearPrice: (param: string) => void,
+  clearDetail: (param: string) => void
 ) => {
   const banquetRef = db.collection("banquetMenu");
 

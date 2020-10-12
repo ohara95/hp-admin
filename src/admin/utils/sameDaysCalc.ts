@@ -1,5 +1,17 @@
+type SalesProps = {
+  date: firebase.firestore.Timestamp;
+  salesPrice?: number;
+  id: string;
+};
+type BuysProps = {
+  detail?: string;
+  buysPrice?: number;
+  date: firebase.firestore.Timestamp;
+  id: string;
+};
+
 /** 同じ日付の金額足し算 */
-const sumData = (selectData) => {
+export const sumData = (selectData: (SalesProps & BuysProps)[]) => {
   const res = [];
   for (const key of selectData) {
     const item = res.find((item) => key.date.seconds === item.date.seconds);
@@ -43,5 +55,3 @@ const sumData = (selectData) => {
   }
   return res;
 };
-
-export default sumData;

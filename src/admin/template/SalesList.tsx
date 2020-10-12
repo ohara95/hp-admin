@@ -1,24 +1,19 @@
 import React, { FC } from "react";
 import { db } from "../../config/firebese";
 import { format } from "date-fns";
-
-type DBDATA = {
-  salesPrice: number;
-  date: firebase.firestore.Timestamp;
-  detail: string;
-  type: string;
-  id: string;
-};
+import { changeDisplayList } from "../utils";
+import { Sales } from "../../types";
 
 type Props = {
-  dbSales: DBDATA[];
+  dbSales: Sales[];
   edit: boolean;
   setEdit: (param: boolean) => void;
   editId: string;
   setEditId: (param: string) => void;
   editSalesPrice: string;
   setEditSalesPrice: (param: string) => void;
-  changeSalesDB: () => DBDATA[];
+  toggleTable: "chooseMonth" | "months" | "year" | "";
+  chooseBtn: string;
 };
 
 /** 売上一覧 */
@@ -30,7 +25,8 @@ const SalesList: FC<Props> = ({
   setEditId,
   editSalesPrice,
   setEditSalesPrice,
-  changeSalesDB,
+  toggleTable,
+  chooseBtn,
 }) => {
   const salesRef = db
     .collection("management")
@@ -75,7 +71,7 @@ const SalesList: FC<Props> = ({
 
   return (
     <>
-      {changeSalesDB().map((db) => {
+      {changeDisplayList(toggleTable, dbSales, chooseBtn).map((db: any) => {
         return (
           <div key={db.id}>
             <div className="flex mt-2">
@@ -108,12 +104,12 @@ const SalesList: FC<Props> = ({
                     onChange={(e) => {
                       setEditSalesPrice(e.target.value);
                     }}
-                    placeholder={db.salesPrice.toString()}
+                    placeholder={db.salesPrice?.toString()}
                   />
                   <button type="submit" className="fas fa-check" />
                 </form>
               ) : (
-                <p className="text-xl">{db.salesPrice.toLocaleString()}円</p>
+                <p className="text-xl">{db.salesPrice?.toLocaleString()}円</p>
               )}
             </div>
           </div>

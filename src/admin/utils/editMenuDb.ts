@@ -1,14 +1,14 @@
 import { db } from "../../config/firebese";
 
-const editMenuDb = (
-  item,
-  price,
-  selectMethod,
-  selectCategory,
-  name,
-  id,
-  clearItem,
-  clearPrice
+export const editMenuDb = (
+  item: string,
+  price: string,
+  selectMethod: "add" | "edit" | "delete" | "none" | "",
+  selectCategory: string,
+  name: string,
+  id: string,
+  clearItem: (param: string) => void,
+  clearPrice: (param: string) => void
 ) => {
   const Ref = db
     .collection("menu")
@@ -59,5 +59,3 @@ const editMenuDb = (
       });
   }
 };
-
-export default editMenuDb;

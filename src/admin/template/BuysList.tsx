@@ -1,17 +1,11 @@
 import React, { FC } from "react";
 import { db } from "../../config/firebese";
 import { format } from "date-fns";
-
-type DBDATA = {
-  buysPrice: number;
-  date: firebase.firestore.Timestamp;
-  detail: string;
-  type: string;
-  id: string;
-};
+import { changeDisplayList } from "../utils";
+import { Buys } from "../../types";
 
 type Props = {
-  dbBuys: DBDATA[];
+  dbBuys: Buys[];
   buysEdit: boolean;
   setBuysEdit: (param: boolean) => void;
   buysEditId: string;
@@ -20,7 +14,8 @@ type Props = {
   setEditBuysDetail: (param: string) => void;
   editBuysPrice: string;
   setEditBuysPrice: (param: string) => void;
-  changeBuysDB: () => DBDATA[];
+  toggleTable: "chooseMonth" | "months" | "year" | "";
+  chooseBtn: string;
 };
 
 /** 経費一覧 */
@@ -34,7 +29,8 @@ const BuysList: FC<Props> = ({
   setBuysEdit,
   editBuysPrice,
   buysEditId,
-  changeBuysDB,
+  toggleTable,
+  chooseBtn,
 }) => {
   const buysRef = db
     .collection("management")
@@ -92,9 +88,10 @@ const BuysList: FC<Props> = ({
         res.ref.delete();
       });
   };
+
   return (
     <>
-      {changeBuysDB().map((db) => {
+      {changeDisplayList(toggleTable, dbBuys, chooseBtn).map((db: any) => {
         return (
           <div key={db.id}>
             <div className="flex mt-2">
@@ -135,6 +132,7 @@ const BuysList: FC<Props> = ({
                       onChange={(e) => {
                         setEditBuysDetail(e.target.value);
                       }}
+                      //@ts-ignore
                       placeholder={db.detail}
                       className="w-24"
                     />
@@ -143,7 +141,8 @@ const BuysList: FC<Props> = ({
                 </form>
               ) : (
                 <p className="text-xl">
-                  {db.buysPrice.toLocaleString()}円 &nbsp;
+                  {db.buysPrice.toLocaleString()}
+                  円 &nbsp;
                   <i className="fas fa-caret-right" />
                   &nbsp;
                   {db.detail}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebese";
 import { Label, Select } from "../atoms";
-import editMenuDb from "../utils/editMenuDb";
+import { editMenuDb } from "../utils";
 import SelectButton from "../molecules/SelectButton";
 import {
   category,
