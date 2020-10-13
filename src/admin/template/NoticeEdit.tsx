@@ -1,13 +1,24 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { db } from "../../config/firebese";
 import { Label, Select, Textarea } from "../atoms";
 
 type selectedProps = "holiday" | "other" | "none";
+type Notice = {
+  holiday: string;
+  other: string;
+  [param: string]: string;
+};
 
 const NoticeEdit: FC = () => {
   const [holiday, setHoliday] = useState("");
   const [other, setOther] = useState("");
   const [selected, setSelected] = useState<selectedProps>("none");
+  const [dbData, setDbData] = useState<Notice>();
+
+  const noticeRef = db.collection("notice").doc("f3068OjZY4BqCj3QiLjO");
+  useEffect(() => {
+    noticeRef.onSnapshot((snap) => setDbData(snap.data() as Notice));
+  }, []);
 
   const addDBNotice = () => {
     let key = "";
@@ -26,8 +37,7 @@ const NoticeEdit: FC = () => {
     if (!value) {
       return alert("入力してください");
     } else {
-      db.collection("notice")
-        .doc("f3068OjZY4BqCj3QiLjO")
+      noticeRef
         .update({
           [key]: value,
         })
@@ -78,6 +88,12 @@ const NoticeEdit: FC = () => {
     addDBNotice();
   };
 
+  const displayPlaceholder = () => {
+    if (dbData) {
+      return dbData[selected];
+    } else return;
+  };
+
   return (
     <>
       <div id="section4" className="p-8 mt-6 lg:mt-0 rounded">
@@ -115,6 +131,7 @@ const NoticeEdit: FC = () => {
                   selectChange(e.target.value);
                 }}
                 value={chooseItem() as string}
+                placeholder={displayPlaceholder()}
               />
             </div>
           </div>

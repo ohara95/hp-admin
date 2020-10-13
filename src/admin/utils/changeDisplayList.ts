@@ -1,14 +1,12 @@
 import { toMonth } from "./month";
 import { format } from "date-fns";
-import { Sales, Buys } from "../../types";
-
-type ToggleTable = "chooseMonth" | "months" | "year" | "";
+import { Sales, Buys, ToggleTable } from "../../types";
 
 // 選択毎に一覧の表示を切替
 export const changeDisplayList = (
   toggleTable: ToggleTable,
   DB: (Sales | Buys)[],
-  chooseBtn: string
+  choiceMonth: string
 ) => {
   switch (toggleTable) {
     case "months":
@@ -19,7 +17,7 @@ export const changeDisplayList = (
       return DB;
     case "chooseMonth":
       return DB.filter(
-        (data) => format(data.date.toDate(), "MM") === chooseBtn
+        (data) => format(data.date.toDate(), "MM") === choiceMonth
       );
     default:
       return DB;

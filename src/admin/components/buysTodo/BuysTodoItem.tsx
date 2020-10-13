@@ -1,5 +1,6 @@
 import React, { FC, Dispatch, SetStateAction } from "react";
 import { Todo } from "./type";
+import { db } from "../../../config/firebese";
 
 type Props = {
   content: string;
@@ -12,15 +13,25 @@ type Props = {
 
 const BuysTodoItem: FC<Props> = ({ content, id, isDone, todos, setTodos }) => {
   const checkedItem = (itemId: string) => {
-    const checkIsDone = todos.map((todo) => {
+    //memo 最後の押してからじゃないと動いてくれない
+    todos.map((todo) => {
       if (itemId === todo.id) {
-        return { ...todo, isDone: !todo.isDone };
+        db.collection("todos").doc(id).update({ isDone: !todo.isDone });
       } else {
-        return todo;
+        db.collection("todos").doc(id).update({ isDone: todo.isDone });
       }
     });
-    setTodos(checkIsDone);
   };
+  //  const checkedItem = (itemId: string) => {
+  //    const checkIsDone = todos.map((todo) => {
+  //      if (itemId === todo.id) {
+  //        return { ...todo, isDone: !todo.isDone };
+  //      } else {
+  //        return todo;
+  //      }
+  //    });
+  //    setTodos(checkIsDone);
+  //  };
 
   return (
     <>

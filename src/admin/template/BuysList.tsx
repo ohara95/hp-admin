@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { db } from "../../config/firebese";
 import { format } from "date-fns";
 import { changeDisplayList } from "../utils";
-import { Buys } from "../../types";
+import { Buys, ToggleTable } from "../../types";
 
 type Props = {
   dbBuys: Buys[];
@@ -10,12 +10,12 @@ type Props = {
   setBuysEdit: (param: boolean) => void;
   buysEditId: string;
   setBuysEditId: (param: string) => void;
-  editBuysDetail: string;
-  setEditBuysDetail: (param: string) => void;
-  editBuysPrice: string;
-  setEditBuysPrice: (param: string) => void;
-  toggleTable: "chooseMonth" | "months" | "year" | "";
-  chooseBtn: string;
+  buysDetail: string;
+  setBuysDetail: (param: string) => void;
+  buysPrice: string;
+  setBuysPrice: (param: string) => void;
+  toggleTable: ToggleTable;
+  choiceMonth: string;
 };
 
 /** 経費一覧 */
@@ -23,14 +23,14 @@ const BuysList: FC<Props> = ({
   dbBuys,
   buysEdit,
   setBuysEditId,
-  setEditBuysDetail,
-  setEditBuysPrice,
-  editBuysDetail,
+  setBuysDetail,
+  setBuysPrice,
+  buysDetail,
   setBuysEdit,
-  editBuysPrice,
+  buysPrice,
   buysEditId,
   toggleTable,
-  chooseBtn,
+  choiceMonth,
 }) => {
   const buysRef = db
     .collection("management")
@@ -40,28 +40,28 @@ const BuysList: FC<Props> = ({
   /** 経費項目編集 */
   const upDateBuys = (e: React.FormEvent<HTMLFormElement>, id: string) => {
     e.preventDefault();
-    setEditBuysPrice("");
-    setEditBuysDetail("");
+    setBuysPrice("");
+    setBuysDetail("");
     setBuysEdit(false);
 
-    if (editBuysPrice) {
+    if (buysPrice) {
       buysRef
         .doc(id)
         .get()
         .then((res) => {
           res.ref.update({
-            buysPrice: parseInt(editBuysPrice),
+            buysPrice: parseInt(buysPrice),
           });
         });
     }
 
-    if (editBuysDetail) {
+    if (buysDetail) {
       buysRef
         .doc(id)
         .get()
         .then((res) => {
           res.ref.update({
-            detail: editBuysDetail,
+            detail: buysDetail,
           });
         });
     }
@@ -91,7 +91,7 @@ const BuysList: FC<Props> = ({
 
   return (
     <>
-      {changeDisplayList(toggleTable, dbBuys, chooseBtn).map((db: any) => {
+      {changeDisplayList(toggleTable, dbBuys, choiceMonth).map((db: any) => {
         return (
           <div key={db.id}>
             <div className="flex mt-2">
@@ -119,18 +119,18 @@ const BuysList: FC<Props> = ({
                   <div className="flex">
                     <input
                       type="number"
-                      value={editBuysPrice}
+                      value={buysPrice}
                       onChange={(e) => {
-                        setEditBuysPrice(e.target.value);
+                        setBuysPrice(e.target.value);
                       }}
-                      placeholder={db.buysPrice.toString()}
+                      placeholder={db.buysPrice}
                       className="w-24"
                     />
                     <input
                       type="text"
-                      value={editBuysDetail.toString()}
+                      value={buysDetail}
                       onChange={(e) => {
-                        setEditBuysDetail(e.target.value);
+                        setBuysDetail(e.target.value);
                       }}
                       placeholder={db.detail}
                       className="w-24"

@@ -1,18 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebese";
 import { Label, Select, Textarea } from "../atoms";
 import { recruitCategory } from "../utils/optionData";
 
+type Recruit = {
+  work: string;
+  wont: string;
+  terms: string;
+  time: string;
+  welfare: string;
+  [param: string]: string;
+};
+
+type Select = "work" | "wont" | "terms" | "time" | "welfare" | "none";
+
 const RecruitEdit = () => {
-  const [selected, setSelected] = useState("none");
+  const [selected, setSelected] = useState<Select>("none");
 
   const [work, setWork] = useState("");
   const [wont, setWont] = useState("");
   const [terms, setTerms] = useState("");
   const [time, setTime] = useState("");
   const [welfare, setWelfare] = useState("");
+  const [dbData, setDbData] = useState<Recruit>();
 
-  const addDBRecruit = (selectItem: string) => {
+  const recruitRef = db.collection("recruit").doc("eTLykSLZuPvi6iJ48vNB");
+  useEffect(() => {
+    recruitRef.onSnapshot((snap) => setDbData(snap.data() as Recruit));
+  }, []);
+
+  const addDBRecruit = (selectItem: Select) => {
     let key = "";
     let value = "";
 
@@ -67,7 +84,7 @@ const RecruitEdit = () => {
     }
   };
 
-  const selectChange = (value: string) => {
+  const selectChange = (value: Select) => {
     switch (selected) {
       case "work":
         return setWork(value);
@@ -99,6 +116,12 @@ const RecruitEdit = () => {
     }
   };
 
+  const displayPlaceholder = () => {
+    if (dbData) {
+      return dbData[selected];
+    } else return;
+  };
+
   return (
     <>
       <div id="section4" className="p-8 mt-6 lg:mt-0 rounded">
@@ -116,7 +139,7 @@ const RecruitEdit = () => {
             <div className="md:w-2/3 border-gray-400 border-2 rounded">
               <Select
                 onChange={(e) => {
-                  setSelected(e.target.value);
+                  setSelected(e.target.value as Select);
                 }}
               >
                 {recruitCategory.map((category) => {
@@ -138,8 +161,9 @@ const RecruitEdit = () => {
               <Textarea
                 value={chooseItem() as string}
                 onChange={(e) => {
-                  selectChange(e.target.value);
+                  selectChange(e.target.value as Select);
                 }}
+                placeholder={displayPlaceholder()}
               />
             </div>
           </div>

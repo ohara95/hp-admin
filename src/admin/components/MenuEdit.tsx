@@ -12,7 +12,7 @@ import {
 import MiddleCategory from "./MiddleCategory";
 import ToggleButton from "../molecules/ToggleButton";
 
-type DBDATA = {
+type SalesDetail = {
   price: number;
   category: string;
   item: string;
@@ -28,7 +28,7 @@ const MenuEdit = () => {
   const [price, setPrice] = useState("");
   const [method, setMethod] = useState<MethodProps>("");
 
-  const [dbData, setDbData] = useState<DBDATA[]>([]);
+  const [dbData, setDbData] = useState<SalesDetail[]>([]);
   const [selectCuisine, setSelectCuisine] = useState("none");
   const [selectDrink, setSelectDrink] = useState("none");
   const [selectRecommend, setSelectRecommend] = useState("none");
@@ -46,7 +46,7 @@ const MenuEdit = () => {
           id: doc.id,
         };
       });
-      setDbData(menu as DBDATA[]);
+      setDbData(menu as SalesDetail[]);
     });
   }, [selectCategory]);
 

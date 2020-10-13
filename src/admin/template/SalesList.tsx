@@ -6,27 +6,27 @@ import { Sales } from "../../types";
 
 type Props = {
   dbSales: Sales[];
-  edit: boolean;
-  setEdit: (param: boolean) => void;
-  editId: string;
-  setEditId: (param: string) => void;
-  editSalesPrice: string;
-  setEditSalesPrice: (param: string) => void;
-  toggleTable: "chooseMonth" | "months" | "year" | "";
-  chooseBtn: string;
+  salesEdit: boolean;
+  setSalesEdit: (param: boolean) => void;
+  salesEditId: string;
+  setSalesEditId: (param: string) => void;
+  salesPrice: string;
+  setSalesPrice: (param: string) => void;
+  toggleTable: "chooseMonth" | "months" | "year" | "none";
+  choiceMonth: string;
 };
 
 /** 売上一覧 */
 const SalesList: FC<Props> = ({
   dbSales,
-  edit,
-  setEdit,
-  editId,
-  setEditId,
-  editSalesPrice,
-  setEditSalesPrice,
+  salesEdit,
+  setSalesEdit,
+  salesEditId,
+  setSalesEditId,
+  salesPrice,
+  setSalesPrice,
   toggleTable,
-  chooseBtn,
+  choiceMonth,
 }) => {
   const salesRef = db
     .collection("management")
@@ -36,15 +36,15 @@ const SalesList: FC<Props> = ({
   /** 売上項目編集 */
   const upDateSales = (e: React.FormEvent<HTMLFormElement>, id: string) => {
     e.preventDefault();
-    setEditSalesPrice("");
-    setEdit(false);
-    if (editSalesPrice) {
+    setSalesPrice("");
+    setSalesEdit(false);
+    if (salesPrice) {
       salesRef
         .doc(id)
         .get()
         .then((res) => {
           res.ref.update({
-            salesPrice: parseInt(editSalesPrice),
+            salesPrice: parseInt(salesPrice),
           });
         });
     }
@@ -52,9 +52,9 @@ const SalesList: FC<Props> = ({
 
   /** 押した編集ボタンのID取得(売上) */
   const inputPossible = (id: string) => {
-    setEdit(!edit);
+    setSalesEdit(!salesEdit);
     return dbSales.map((db) => {
-      if (id === db.id) setEditId(db.id);
+      if (id === db.id) setSalesEditId(db.id);
     });
   };
 
@@ -71,7 +71,7 @@ const SalesList: FC<Props> = ({
 
   return (
     <>
-      {changeDisplayList(toggleTable, dbSales, chooseBtn).map((db: any) => {
+      {changeDisplayList(toggleTable, dbSales, choiceMonth).map((db: any) => {
         return (
           <div key={db.id}>
             <div className="flex mt-2">
@@ -92,7 +92,7 @@ const SalesList: FC<Props> = ({
                 {format(db.date.toDate(), "MM/dd")}
                 &nbsp;
               </p>
-              {edit && editId === db.id ? (
+              {salesEdit && salesEditId === db.id ? (
                 <form
                   onSubmit={(e) => {
                     upDateSales(e, db.id);
@@ -100,16 +100,16 @@ const SalesList: FC<Props> = ({
                 >
                   <input
                     type="number"
-                    value={editSalesPrice}
+                    value={salesPrice}
                     onChange={(e) => {
-                      setEditSalesPrice(e.target.value);
+                      setSalesPrice(e.target.value);
                     }}
-                    placeholder={db.salesPrice?.toString()}
+                    placeholder={db.salesPrice}
                   />
                   <button type="submit" className="fas fa-check" />
                 </form>
               ) : (
-                <p className="text-l">{db.salesPrice?.toLocaleString()}円</p>
+                <p className="text-l">{db.salesPrice.toLocaleString()}円</p>
               )}
             </div>
           </div>

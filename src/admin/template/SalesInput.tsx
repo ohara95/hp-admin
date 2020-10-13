@@ -1,11 +1,12 @@
 import React, { FC } from "react";
-import { Label, Button, Input } from "../atoms";
+import { Label, Button, Input, Alert } from "../atoms";
 
 type Props = {
   salesDate: string;
   setSalesDate: (param: string) => void;
   salesPrice: string;
   setSalesPrice: (param: string) => void;
+  inputErr: boolean;
 };
 
 const SalesInput: FC<Props> = ({
@@ -13,8 +14,15 @@ const SalesInput: FC<Props> = ({
   salesPrice,
   setSalesPrice,
   salesDate,
+  inputErr,
 }) => (
   <>
+    <div>
+      {inputErr && (
+        <Alert text="入力してください" icon="fas fa-exclamation-circle" />
+      )}
+    </div>
+
     <div className="mb-4">
       <Label text="売上日" />
       <Input

@@ -11,13 +11,15 @@ type Props = {
 };
 
 const BuysTodoForm: FC<Props> = ({ todos, setTodos, content, setContent }) => {
+  const todoRef = db.collection("todos");
+
   const addTodo = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (content === "") {
       return;
     } else {
       setContent("");
-      db.collection("todos").add({
+      todoRef.add({
         content,
         isDone: false,
       });
@@ -25,7 +27,7 @@ const BuysTodoForm: FC<Props> = ({ todos, setTodos, content, setContent }) => {
   };
 
   useEffect(() => {
-    db.collection("todos").onSnapshot((snap) => {
+    todoRef.onSnapshot((snap) => {
       const dbData = snap.docs.map((doc) => {
         return {
           ...(doc.data() as Todo),
@@ -40,43 +42,42 @@ const BuysTodoForm: FC<Props> = ({ todos, setTodos, content, setContent }) => {
     e.preventDefault();
     const deleteItem = todos.filter((todo) => todo.isDone);
     for (const key of deleteItem) {
-      db.collection("todos")
-        .doc(key.id)
-        .onSnapshot((snap) => {
-          snap.ref.delete();
-        });
+      todoRef.doc(key.id).onSnapshot((snap) => {
+        snap.ref.delete();
+      });
     }
   };
-
+  /** 全選択 */
   const allCheck = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
     const isDoneTrue = todos.filter((todo) => todo.isDone === true);
     const isDoneFalse = todos.filter((todo) => todo.isDone === false);
-    const changeIsDone = todos.map((todo) => {
-      if (isDoneTrue.length < todos.length) {
-        if (!todo.isDone) {
-          return {
-            ...todo,
-            isDone: true,
-          };
-        } else {
-          return todo;
-        }
-      } else if (isDoneFalse.length < todos.length) {
-        if (todo.isDone) {
-          return {
-            ...todo,
-            isDone: false,
-          };
-        } else {
-          return todo;
-        }
-      } else {
-        return { ...todo, isDone: !todo.isDone };
-      }
+
+    todos.map((todo) => {
+      todoRef
+        .where("isDone", "==", todo.isDone)
+        .get()
+        .then((res) =>
+          res.docs.map((doc) => {
+            if (isDoneTrue.length < todos.length) {
+              if (!doc.data().isDone) {
+                doc.ref.update({ isDone: true });
+              } else {
+                doc.ref.update({ isDone: todo.isDone });
+              }
+            } else if (isDoneFalse.length < todos.length) {
+              if (doc.data().isDone) {
+                doc.ref.update({ isDone: false });
+              } else {
+                doc.ref.update({ isDone: todo.isDone });
+              }
+            } else {
+              doc.ref.update({ isDone: !todo.isDone });
+            }
+          })
+        );
     });
-    setTodos(changeIsDone);
   };
 
   return (

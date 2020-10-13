@@ -16,7 +16,7 @@ const Input: FC<Props> = ({
   plusStyle,
 }) => (
   <input
-    className={`appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none ${plusStyle}`}
+    className={`appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none bg-white ${plusStyle}`}
     type={type}
     value={value}
     onChange={onChange}

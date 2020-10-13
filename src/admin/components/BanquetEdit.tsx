@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { isNullishCoalesce } from "typescript";
 import { db } from "../../config/firebese";
 import { Label, Select, Textarea } from "../atoms";
 import SelectButton from "../molecules/SelectButton";
 import ToggleButton from "../molecules/ToggleButton";
 import { editBanquetDb } from "../utils/editBanquetDb";
 
-type DBDATA = {
+type Detail = {
   detail: string;
   price: number;
   title: string;
@@ -14,9 +15,8 @@ type DBDATA = {
 
 type MethodProps = "add" | "edit" | "delete" | "none" | "";
 
-// 一個でも間違ってると全部消えるの修正必要
 const BanquetEdit = () => {
-  const [dbData, setDbData] = useState<DBDATA[]>([]);
+  const [dbData, setDbData] = useState<Detail[]>([]);
   const [method, setMethod] = useState<MethodProps>("");
   const [detail, setDetail] = useState("");
   const [course, setCourse] = useState("");
@@ -32,7 +32,7 @@ const BanquetEdit = () => {
           id: doc.id,
         };
       });
-      setDbData(data as DBDATA[]);
+      setDbData(data as Detail[]);
     });
   }, []);
 
@@ -48,8 +48,11 @@ const BanquetEdit = () => {
   };
 
   const displayPlaceholder = () => {
-    if (method === "edit") {
-      return dbData.find((select) => select.id === selectId)?.detail;
+    const findData = dbData.find((select) => select.id === selectId)?.detail;
+    if (findData === undefined) {
+      return;
+    } else {
+      return findData;
     }
   };
 
@@ -143,10 +146,7 @@ const BanquetEdit = () => {
                           onChange={(e) => {
                             setDetail(e.target.value);
                           }}
-                          //memo falseが入るかもって怒られる
-                          // placeholder={
-                          //   method !== "edit" && displayPlaceholder()
-                          // }
+                          placeholder={displayPlaceholder()}
                         />
                       </div>
                     </div>

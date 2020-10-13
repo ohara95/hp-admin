@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
 import * as H from "history";
-import { Sales, Buys } from "../../types";
+import { Sales, Buys, ToggleTable } from "../../types";
 
 import { auth, db } from "../../config/firebese";
 import BuysTodo from "../components/buysTodo";
@@ -9,7 +9,7 @@ import SalesList from "../template/SalesList";
 import BuysList from "../template/BuysList";
 import SalesInput from "../template/SalesInput";
 import BuysInput from "../template/BuysInput";
-import { Label, IconPop, Alert } from "../atoms";
+import { Label, IconPop } from "../atoms";
 import {
   month,
   dbSumCalc,
@@ -23,23 +23,21 @@ type Props = {
   history: H.History;
 };
 
-type ToggleTable = "chooseMonth" | "months" | "year" | "";
-
 const Management: FC<Props> = ({ history }) => {
   const [salesDate, setSalesDate] = useState("");
   const [buysDate, setBuysDate] = useState("");
   const [salesPrice, setSalesPrice] = useState("");
   const [buysPrice, setBuysPrice] = useState("");
   const [buysDetail, setBuysDetail] = useState("");
-  const [edit, setEdit] = useState(false);
-  const [editId, setEditId] = useState("");
-  const [editSalesPrice, setEditSalesPrice] = useState("");
+
+  //親が持つべきなのか？
+  const [salesEdit, setSalesEdit] = useState(false);
+  const [salesEditId, setSalesEditId] = useState("");
   const [buysEdit, setBuysEdit] = useState(false);
   const [buysEditId, setBuysEditId] = useState("");
-  const [editBuysPrice, setEditBuysPrice] = useState("");
-  const [editBuysDetail, setEditBuysDetail] = useState("");
+
   const [toggleTable, setToggleTable] = useState<ToggleTable>("months");
-  const [chooseBtn, setChooseBtn] = useState("");
+  const [choiceMonth, setChoiceMonth] = useState("none");
   const [inputErr, setInputErr] = useState(false);
 
   const [dbSales, setDbSales] = useState<Sales[]>([]);
@@ -79,13 +77,14 @@ const Management: FC<Props> = ({ history }) => {
   const minusSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!buysPrice || !buysDate || !buysDetail) {
-      alert("入力してください");
+      setInputErr(true);
       return;
     } else {
       setBuysPrice("");
       setBuysDate("");
       setBuysDetail("");
       buysDB(buysDate, buysPrice, buysDetail);
+      setInputErr(false);
     }
   };
 
@@ -152,8 +151,8 @@ const Management: FC<Props> = ({ history }) => {
 
   /** 差額表示 */
   const difference =
-    dbSumCalc(toggleTable, salesPriceArr, chooseBtn) -
-    dbSumCalc(toggleTable, buysPriceArr, chooseBtn);
+    dbSumCalc(toggleTable, salesPriceArr, choiceMonth) -
+    dbSumCalc(toggleTable, buysPriceArr, choiceMonth);
 
   /** グラフ種類選択 */
   const chooseGraph = () => {
@@ -165,26 +164,27 @@ const Management: FC<Props> = ({ history }) => {
         return allMonthData(setData);
       case "chooseMonth":
         //@ts-ignore
-        return chooseGraphData(sort(setData), chooseBtn);
+        return chooseGraphData(sort(setData), choiceMonth);
       default:
         return;
     }
   };
 
-  //memo  他のボタン選択時に未選択に変えたい
-  // const choiceBtn = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   if (toggleTable !== "chooseMonth") {
-  //     setChooseBtn("none");
-  //   } else {
-  //     setChooseBtn(e.target.value);
-  //   }
-  // };
+  //memo  他のボタン選択時に未選択(none)に変えたい
+  //今はセレクト->表示でnoneに
+  //その他表示セレクト選択->noneに
+  //表示は未選択にはならない しかもデータ表示されない
+  const choiceBtn = (value: string) => {
+    setChoiceMonth(value);
+    console.log(toggleTable); //selectを押すとtoggleTableがnoneになる(そういう設定してない...)
+
+    if (toggleTable !== "none") {
+      setChoiceMonth("none");
+    }
+  };
 
   return (
     <>
-      {inputErr && (
-        <Alert text="入力してください" icon="fas fa-exclamation-circle" />
-      )}
       <button
         className="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400"
         onClick={() => {
@@ -201,31 +201,40 @@ const Management: FC<Props> = ({ history }) => {
           onClick={(e) => {
             setToggleTable((e.target as HTMLInputElement).value as ToggleTable);
           }}
-          className="mx-auto my-2 w-2/12"
+          className="mx-auto my-2 w-2/12 flex"
         >
           <button
             value="months"
-            className="bg-teal-500 text-white py-1 px-3 rounded-l"
+            className="bg-teal-500 text-white px-3 rounded-l"
           >
             月間
           </button>
-          <button value="year" className="bg-teal-500 text-white py-1 px-3">
+          <button
+            value="year"
+            className="bg-teal-500 text-white px-3 rounded-r"
+          >
             年間
           </button>
           <select
             onChange={(e) => {
-              setChooseBtn(e.target.value);
+              choiceBtn(e.target.value);
             }}
+            className="bg-white"
           >
             <option value="none">未選択</option>
             {month()}
           </select>
-          <button
-            className="bg-teal-500 text-white py-1 px-3 rounded-r"
-            value="chooseMonth"
-          >
-            表示
-          </button>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {choiceMonth !== "none" && (
+              <span className="text-xs">クリック！</span>
+            )}
+            <button
+              className="bg-teal-500 text-white py-1 px-3 rounded"
+              value="chooseMonth"
+            >
+              表示
+            </button>
+          </div>
         </div>
         <ManagementGraph chooseGraph={chooseGraph} />
       </div>
@@ -233,7 +242,13 @@ const Management: FC<Props> = ({ history }) => {
       <div className="flex w-11/12 my-0 mx-auto bg-white shadow-md rounded">
         <form className="px-8 pt-6 pb-8 mb-4" onSubmit={plusSubmit}>
           <SalesInput
-            {...{ setSalesDate, salesPrice, setSalesPrice, salesDate }}
+            {...{
+              setSalesDate,
+              salesPrice,
+              setSalesPrice,
+              salesDate,
+              inputErr,
+            }}
           />
         </form>
         <form className="px-8 pt-6 pb-8 mb-4" onSubmit={minusSubmit}>
@@ -245,6 +260,7 @@ const Management: FC<Props> = ({ history }) => {
               buysDate,
               setBuysDate,
               buysPrice,
+              inputErr,
             }}
           />
         </form>
@@ -254,14 +270,14 @@ const Management: FC<Props> = ({ history }) => {
             {`${dbSumCalc(
               toggleTable,
               salesPriceArr,
-              chooseBtn
+              choiceMonth
             ).toLocaleString()}円`}
           </IconPop>
           <IconPop text="経費計" color="red" icon="fas fa-minus">
             {`${dbSumCalc(
               toggleTable,
               buysPriceArr,
-              chooseBtn
+              choiceMonth
             ).toLocaleString()}円`}
           </IconPop>
           <IconPop text="差額" color="green" icon="fas fa-hand-holding-usd">
@@ -277,14 +293,14 @@ const Management: FC<Props> = ({ history }) => {
             <SalesList
               {...{
                 dbSales,
-                edit,
-                setEdit,
-                editId,
-                setEditId,
-                editSalesPrice,
-                setEditSalesPrice,
+                salesEdit,
+                setSalesEdit,
+                salesEditId,
+                setSalesEditId,
+                salesPrice,
+                setSalesPrice,
                 toggleTable,
-                chooseBtn,
+                choiceMonth,
               }}
             />
           </div>
@@ -297,14 +313,14 @@ const Management: FC<Props> = ({ history }) => {
                 dbBuys,
                 buysEdit,
                 setBuysEditId,
-                setEditBuysPrice,
-                editBuysDetail,
-                setEditBuysDetail,
+                setBuysPrice,
+                buysDetail,
+                setBuysDetail,
                 setBuysEdit,
-                editBuysPrice,
+                buysPrice,
                 buysEditId,
                 toggleTable,
-                chooseBtn,
+                choiceMonth,
               }}
             />
           </div>
