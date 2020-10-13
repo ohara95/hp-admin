@@ -11,41 +11,28 @@ type Props = {
   setTodos: Dispatch<SetStateAction<Todo[]>>;
 };
 
-const BuysTodoItem: FC<Props> = ({ content, id, isDone, todos, setTodos }) => {
+const BuysTodoItem: FC<Props> = ({ content, id, isDone, todos }) => {
   const checkedItem = (itemId: string) => {
-    //memo 最後の押してからじゃないと動いてくれない
     todos.map((todo) => {
       if (itemId === todo.id) {
         db.collection("todos").doc(id).update({ isDone: !todo.isDone });
       } else {
-        db.collection("todos").doc(id).update({ isDone: todo.isDone });
+        return;
       }
     });
   };
-  //  const checkedItem = (itemId: string) => {
-  //    const checkIsDone = todos.map((todo) => {
-  //      if (itemId === todo.id) {
-  //        return { ...todo, isDone: !todo.isDone };
-  //      } else {
-  //        return todo;
-  //      }
-  //    });
-  //    setTodos(checkIsDone);
-  //  };
 
   return (
-    <>
-      <li>
-        <input
-          value={id}
-          type="checkbox"
-          checked={isDone}
-          onClick={(e) => checkedItem((e.target as HTMLInputElement).value)}
-          className="form-checkbox"
-        />
-        <span className="ml-2 text-l">{content}</span>
-      </li>
-    </>
+    <li>
+      <input
+        value={id}
+        type="checkbox"
+        checked={isDone}
+        onClick={(e) => checkedItem((e.target as HTMLInputElement).value)}
+        className="form-checkbox"
+      />
+      <span className="ml-2 text-l">{content}</span>
+    </li>
   );
 };
 

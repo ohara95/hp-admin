@@ -1,6 +1,8 @@
 import React from "react";
 import Header from "../components/Header";
 import store from "../../assets/img/store.jpeg";
+import inStore from "../../assets/img/inStore.jpg";
+import counter from "../../assets/img/counter.jpg";
 import "../../App.css";
 import { AuthContext } from "../../AuthProvider";
 import { useContext } from "react";
@@ -14,11 +16,10 @@ import { Route, Switch } from "react-router-dom";
 const MainPage = () => {
   return (
     <div className="background">
-      <img
-        src={store}
-        className="rounded-full"
-        style={{ height: 600, width: 600 }}
-      />
+      <div className="topImg">
+        <img className="img1" src={store} alt="store" />
+        <img className="img2" src={counter} alt="counter" />
+      </div>
       <div className="w-full">
         <div className="headerStyle">
           <Header />

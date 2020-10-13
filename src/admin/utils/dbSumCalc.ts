@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { toMonth } from "./month";
 import { sumPrice } from "./arrCalc";
 import firebase from "../../config/firebese";
+import { ToggleTable } from "../../types";
 
 type PriceArr = {
   date: firebase.firestore.Timestamp;
@@ -9,7 +10,7 @@ type PriceArr = {
 };
 
 export const dbSumCalc = (
-  toggleTable: string,
+  toggleTable: ToggleTable,
   priceArr: PriceArr[],
   chooseBtn: string
 ) => {

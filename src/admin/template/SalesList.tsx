@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { db } from "../../config/firebese";
 import { format } from "date-fns";
 import { changeDisplayList } from "../utils";
-import { Sales } from "../../types";
+import { Sales, ToggleTable } from "../../types";
 
 type Props = {
   dbSales: Sales[];
@@ -12,7 +12,7 @@ type Props = {
   setSalesEditId: (param: string) => void;
   salesPrice: string;
   setSalesPrice: (param: string) => void;
-  toggleTable: "chooseMonth" | "months" | "year" | "none";
+  toggleTable: ToggleTable;
   choiceMonth: string;
 };
 

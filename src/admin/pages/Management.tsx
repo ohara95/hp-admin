@@ -158,12 +158,12 @@ const Management: FC<Props> = ({ history }) => {
   const chooseGraph = () => {
     switch (toggleTable) {
       case "months":
-        //@ts-ignore
+        //@ts-ignore sortの返り値がnumberの為error
         return graphData(sort(setData));
       case "year":
         return allMonthData(setData);
       case "chooseMonth":
-        //@ts-ignore
+        //@ts-ignore sortの返り値がnumberの為error
         return chooseGraphData(sort(setData), choiceMonth);
       default:
         return;
@@ -174,14 +174,15 @@ const Management: FC<Props> = ({ history }) => {
   //今はセレクト->表示でnoneに
   //その他表示セレクト選択->noneに
   //表示は未選択にはならない しかもデータ表示されない
-  const choiceBtn = (value: string) => {
-    setChoiceMonth(value);
-    console.log(toggleTable); //selectを押すとtoggleTableがnoneになる(そういう設定してない...)
+  // const choiceBtn = (value: string) => {
+  //   setChoiceMonth(value);
+  //   console.log(toggleTable); //selectを押すとtoggleTableがnoneになる(そういう設定してない...)
 
-    if (toggleTable !== "none") {
-      setChoiceMonth("none");
-    }
-  };
+  //   if (toggleTable !== "none") {
+  //     setChoiceMonth("none");
+  //   }
+  // };
+  console.log(choiceMonth, toggleTable);
 
   return (
     <>
@@ -217,29 +218,29 @@ const Management: FC<Props> = ({ history }) => {
           </button>
           <select
             onChange={(e) => {
-              choiceBtn(e.target.value);
+              setChoiceMonth(e.target.value);
             }}
             className="bg-white"
           >
             <option value="none">未選択</option>
             {month()}
           </select>
-          <div style={{ display: "flex", flexDirection: "column" }}>
+          {/* <div style={{ display: "flex", flexDirection: "column" }}>
             {choiceMonth !== "none" && (
               <span className="text-xs">クリック！</span>
-            )}
-            <button
-              className="bg-teal-500 text-white py-1 px-3 rounded"
-              value="chooseMonth"
-            >
-              表示
-            </button>
-          </div>
+            )} */}
+          <button
+            className="bg-teal-500 text-white py-1 px-3 rounded"
+            value="chooseMonth"
+          >
+            表示
+          </button>
+          {/* </div> */}
         </div>
         <ManagementGraph chooseGraph={chooseGraph} />
       </div>
 
-      <div className="flex w-11/12 my-0 mx-auto bg-white shadow-md rounded">
+      <div className="flex w-11/12 mt-20 mx-auto bg-white rounded justify-between">
         <form className="px-8 pt-6 pb-8 mb-4" onSubmit={plusSubmit}>
           <SalesInput
             {...{
@@ -265,7 +266,7 @@ const Management: FC<Props> = ({ history }) => {
           />
         </form>
 
-        <div className="md:w-1/2 p-3">
+        <div className="md:w-5/12 p-3">
           <IconPop text="売上計" color="blue" icon="fas fa-plus">
             {`${dbSumCalc(
               toggleTable,

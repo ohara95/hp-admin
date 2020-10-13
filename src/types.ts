@@ -22,4 +22,4 @@ export type Buys = {
   id: string;
 };
 
-export type ToggleTable = "chooseMonth" | "months" | "year" | "none";
+export type ToggleTable = "chooseMonth" | "months" | "year" | "";
