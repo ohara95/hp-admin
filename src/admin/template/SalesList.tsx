@@ -80,13 +80,13 @@ const SalesList: FC<Props> = ({
                 onClick={(e) => {
                   inputPossible((e.target as HTMLInputElement).id);
                 }}
-                className="text-teal-500 far fa-edit"
+                className="text-teal-500 far fa-edit focus:outline-none"
               />
               <button
                 onClick={() => {
                   deleteSales(db.id);
                 }}
-                className="text-teal-500 py-1 px-2 far fa-trash-alt"
+                className="text-teal-500 py-1 px-2 far fa-trash-alt focus:outline-none"
               />
               <p className="text-l mr-2">
                 {format(db.date.toDate(), "MM/dd")}
@@ -106,7 +106,10 @@ const SalesList: FC<Props> = ({
                     }}
                     placeholder={db.salesPrice}
                   />
-                  <button type="submit" className="fas fa-check" />
+                  <button
+                    type="submit"
+                    className="fas fa-check focus:outline-none"
+                  />
                 </form>
               ) : (
                 <p className="text-l">{db.salesPrice.toLocaleString()}円</p>

@@ -93,15 +93,15 @@ const BuysTodoForm: FC<Props> = ({ todos, setTodos, content, setContent }) => {
         <div className="w-1/4 flex justify-around">
           <button
             onClick={addTodo}
-            className="text-teal-500 far fa-edit text-2xl"
+            className="text-teal-500 far fa-edit text-xl focus:outline-none"
           />
           <button
             onClick={deleteTodo}
-            className="text-teal-500 far fa-trash-alt text-2xl"
+            className="text-teal-500 far fa-trash-alt text-xl focus:outline-none"
           />
           <button
             onClick={allCheck}
-            className="text-teal-500 far fa-check-square text-2xl"
+            className="text-teal-500 far fa-check-square text-xl focus:outline-none"
           />
         </div>
       </form>

@@ -206,13 +206,17 @@ const Management: FC<Props> = ({ history }) => {
         >
           <button
             value="months"
-            className="bg-teal-500 text-white px-3 rounded-l"
+            className={`${
+              toggleTable === "months" ? "bg-teal-600" : "bg-teal-500"
+            } text-white px-3 rounded-l`}
           >
             月間
           </button>
           <button
             value="year"
-            className="bg-teal-500 text-white px-3 rounded-r"
+            className={`${
+              toggleTable === "year" ? "bg-teal-600" : "bg-teal-500"
+            } text-white px-3 rounded-r`}
           >
             年間
           </button>
@@ -230,8 +234,10 @@ const Management: FC<Props> = ({ history }) => {
               <span className="text-xs">クリック！</span>
             )} */}
           <button
-            className="bg-teal-500 text-white py-1 px-3 rounded"
             value="chooseMonth"
+            className={`${
+              toggleTable === "chooseMonth" ? "bg-teal-600" : "bg-teal-500"
+            } text-white py-1 px-3 rounded`}
           >
             表示
           </button>

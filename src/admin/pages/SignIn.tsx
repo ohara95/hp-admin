@@ -1,5 +1,5 @@
-import React, { useState, useContext, FC } from "react";
-import { useForm } from "react-hook-form";
+import React, { useContext, FC } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { auth } from "../../config/firebese";
 import { AuthContext } from "../../AuthProvider";
 import { Redirect, Link } from "react-router-dom";
@@ -9,15 +9,18 @@ type Props = {
   history: H.History;
 };
 
+type UseFrom = {
+  email: string;
+  password: string;
+};
+
 const SignIn: FC<Props> = ({ history }) => {
   const { user } = useContext(AuthContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const { register, handleSubmit, errors } = useForm();
-  const onSubmit = () => {
+  const { control, handleSubmit, errors } = useForm();
+  const onSubmit = (data: UseFrom) => {
     auth
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(data.email, data.password)
       .then(() => {
         history.push("/management");
       })
@@ -52,37 +55,46 @@ const SignIn: FC<Props> = ({ history }) => {
               <label className="block text-gray-700 text-base font-bold mb-2 ml-3">
                 メールアドレス
               </label>
-              <input
-                type="email"
+              <Controller
                 name="email"
-                autoComplete="on"
-                value={email}
-                ref={register({
-                  required: "※必須です",
-                })}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                defaultValue=""
+                control={control}
+                rules={{ required: true }}
+                as={
+                  <input
+                    type="email"
+                    name="email"
+                    className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-teal-600 transition duration-500 px-3 pb-3"
+                  />
+                }
               />
             </div>
-            {errors.email && <span>{errors.email.message}</span>}
+            {errors.email && (
+              <span className="text-sm text-red-500">※入力してください</span>
+            )}
             <div className="mb-6 pt-3 rounded bg-white">
               <label className="block text-gray-700 text-base font-bold mb-2 ml-3">
                 パスワード
               </label>
-              <input
-                type="password"
+              <Controller
                 name="password"
-                autoComplete="on"
-                value={password}
-                ref={register({
-                  required: "※必須です",
-                })}
-                onChange={(e) => setPassword(e.target.value)}
-                className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                defaultValue=""
+                control={control}
+                rules={{ required: true }}
+                as={
+                  <input
+                    type="password"
+                    name="password"
+                    className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-teal-600 transition duration-500 px-3 pb-3"
+                  />
+                }
               />
+              {errors.password && (
+                <span className="text-sm text-red-500">※入力してください</span>
+              )}
             </div>
             <button
-              className="mt-8 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
+              className="mt-8 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
               type="submit"
             >
               ログイン

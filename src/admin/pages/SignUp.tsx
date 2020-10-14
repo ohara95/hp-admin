@@ -78,7 +78,7 @@ const SignUp: FC<Props> = ({ history }) => {
                   <input
                     type="password"
                     name="password"
-                    className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                    className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-teal-600 transition duration-500 px-3 pb-3"
                   />
                 }
               />
@@ -107,7 +107,7 @@ const SignUp: FC<Props> = ({ history }) => {
                   <input
                     type="password"
                     name="confirmPassword"
-                    className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                    className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-teal-600 transition duration-500 px-3 pb-3"
                   />
                 }
               />
@@ -118,7 +118,7 @@ const SignUp: FC<Props> = ({ history }) => {
               )}
             </div>
             <button
-              className="mt-8 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
+              className="mt-8 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
               type="submit"
             >
               登録

@@ -98,13 +98,13 @@ const BuysList: FC<Props> = ({
               <button
                 id={db.id}
                 onClick={inputPossibleBuys}
-                className="text-teal-500 far fa-edit"
+                className="text-teal-500 far fa-edit focus:outline-none"
               />
               <button
                 onClick={() => {
                   deleteBuys(db.id);
                 }}
-                className="text-teal-500 py-1 px-2 far fa-trash-alt"
+                className="text-teal-500 py-1 px-2 far fa-trash-alt focus:outline-none"
               />
               <p className="text-l mr-2">
                 {format(db.date.toDate(), "MM/dd")}
@@ -135,14 +135,17 @@ const BuysList: FC<Props> = ({
                       placeholder={db.detail}
                       className="w-24"
                     />
-                    <button type="submit" className="fas fa-check" />
+                    <button
+                      type="submit"
+                      className="fas fa-check focus:outline-none"
+                    />
                   </div>
                 </form>
               ) : (
                 <p className="text-l">
                   {db.buysPrice.toLocaleString()}
                   円 &nbsp;
-                  <i className="fas fa-caret-right" />
+                  <i className="fas fa-caret-right " />
                   &nbsp;
                   {db.detail}
                 </p>

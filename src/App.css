@@ -147,19 +147,19 @@ body {
   opacity: 0;
 }
 
-.album .img1 {
+.topImg .img1 {
   display: block;
   margin: 0 auto;
 }
 
-.album .img2 {
+.topImg .img2 {
   animation-delay: 5s;
   -webkit-animation-delay: 5s;
   position: absolute;
   top: 0;
 }
 
-@keyframes album {
+@keyframes topImg {
   0% {
     opacity: 0;
   }
@@ -176,7 +176,7 @@ body {
   }
 }
 
-@-webkit-keyframes album {
+@-webkit-keyframes TopImg {
   0% {
     opacity: 0;
   }
