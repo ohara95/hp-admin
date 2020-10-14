@@ -22,7 +22,12 @@ const SignIn: FC<Props> = ({ history }) => {
         history.push("/management");
       })
       .catch((err) => {
-        console.log(err);
+        if (err.code === "auth/wrong-password") {
+          return alert("パスワードが無効です");
+        }
+        if (err.code === "auth/invalid-email") {
+          return alert("メールアドレスが無効です");
+        }
       });
   };
 

@@ -1,33 +1,24 @@
-import React, { useState, FC } from "react";
+import React, { FC } from "react";
 import { auth } from "../../config/firebese";
 import * as H from "history";
+import { useForm, Controller } from "react-hook-form";
 
 type Props = {
   history: H.History;
 };
 
-type useInputProps = {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+type UseForm = {
+  email: string;
+  password: string;
+  confirmPassword: string;
 };
 
 const SignUp: FC<Props> = ({ history }) => {
-  const useInput = (initialValue: string): useInputProps => {
-    const [value, set] = useState(initialValue);
-    return {
-      value,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) => set(e.target.value),
-    };
-  };
+  const { handleSubmit, errors, control, getValues } = useForm<UseForm>();
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (password.value !== confirmPassword.value) {
-      alert("パスワード不一致");
-      return;
-    }
+  const onSubmit = (data: UseForm) => {
     auth
-      .createUserWithEmailAndPassword(email.value, password.value)
+      .createUserWithEmailAndPassword(data.email, data.confirmPassword)
       .then(() => {
         history.push("/management");
       })
@@ -35,10 +26,6 @@ const SignUp: FC<Props> = ({ history }) => {
         console.log(err);
       });
   };
-
-  const email = useInput("");
-  const password = useInput("");
-  const confirmPassword = useInput("");
 
   return (
     <>
@@ -48,48 +35,93 @@ const SignUp: FC<Props> = ({ history }) => {
         </section>
 
         <section className="mt-10">
-          <form onSubmit={onSubmit} className="flex flex-col" action="#">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col"
+            action="#"
+          >
             <div className="mb-6 pt-3 rounded bg-white">
               <label className="block text-gray-700 text-base font-bold mb-2 ml-3">
                 メールアドレス
               </label>
-              <input
-                value={email.value}
-                onChange={email.onChange}
-                type="text"
-                id="email"
-                className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+              <Controller
+                name="email"
+                defaultValue=""
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                as={
+                  <input
+                    type="text"
+                    name="email"
+                    className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                  />
+                }
               />
+              {errors.email && (
+                <span className="text-sm text-red-500">※入力してください</span>
+              )}
             </div>
             <div className="mb-6 pt-3 rounded bg-white">
               <label className="block text-gray-700 text-base font-bold mb-2 ml-3">
                 パスワード
               </label>
-              <input
-                type="password"
-                value={password.value}
-                onChange={password.onChange}
-                id="password"
-                className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+              <Controller
+                name="password"
+                defaultValue=""
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                as={
+                  <input
+                    type="password"
+                    name="password"
+                    className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                  />
+                }
               />
+              {errors.password && (
+                <span className="text-sm text-red-500">※入力してください</span>
+              )}
             </div>
             <div className="mb-6 pt-3 rounded bg-white">
               <label className="block text-gray-700 text-base font-bold mb-2 ml-3">
                 パスワード(確認用)
               </label>
-              <input
-                type="password"
-                value={confirmPassword.value}
-                onChange={confirmPassword.onChange}
-                id="password"
-                className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+              <Controller
+                name="confirmPassword"
+                defaultValue=""
+                control={control}
+                rules={{
+                  validate: (value) => {
+                    if (value === getValues().password) {
+                      return true;
+                    } else {
+                      return "パスワードが一致しません";
+                    }
+                  },
+                }}
+                as={
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    className="bg-white rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                  />
+                }
               />
+              {errors.confirmPassword && (
+                <span className="text-sm text-red-500">
+                  {errors.confirmPassword?.message}
+                </span>
+              )}
             </div>
             <button
               className="mt-8 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
               type="submit"
             >
-              送信
+              登録
             </button>
           </form>
         </section>
