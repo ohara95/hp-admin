@@ -1,7 +1,6 @@
 import React from "react";
 import Header from "../components/Header";
 import store from "../../assets/img/store.jpeg";
-import inStore from "../../assets/img/inStore.jpg";
 import counter from "../../assets/img/counter.jpg";
 import "../../App.css";
 import { AuthContext } from "../../AuthProvider";
@@ -10,10 +9,25 @@ import Menu from "./Menu";
 import Notice from "./Notice";
 import Information from "./Information";
 import Top from "./Top";
-import { Route, Switch } from "react-router-dom";
+import { useParams } from "react-router-dom";
 // import main from "./main.scss";
 
 const MainPage = () => {
+  let p = useParams();
+  const movePage = () => {
+    switch (p.param) {
+      case "top":
+        return <Top />;
+      case "menu":
+        return <Menu />;
+      case "information":
+        return <Information />;
+      case "notice":
+        return <Notice />;
+      default:
+        return <Top />;
+    }
+  };
   return (
     <div className="background">
       <div className="topImg">
@@ -31,13 +45,7 @@ const MainPage = () => {
                 color: "white",
               }}
             >
-              <Top />
-              {/* <Switch>
-                <Route path="/top" component={Top} />
-                <Route path="/menu" component={Menu} />
-                <Route path="/notice" component={Notice} />
-                <Route path="/information" component={Information} />
-              </Switch> */}
+              {movePage()}
             </div>
           </div>
         </div>

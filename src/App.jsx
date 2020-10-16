@@ -20,16 +20,13 @@ const App = () => {
       <AuthProvider>
         <BrowserRouter>
           <Switch>
-            <Route exact path="/" component={MainPage} />
             <Route path="/signup" component={SignUp} />
             <Route path="/confirm" component={ResetPassword} />
             <Route path="/login" component={SignIn} />
             <LoggedInRoute path="/management" component={Management} />
-            <Route path="/top" component={Top} />
-            <Route path="/menu" component={Menu} />
-            <Route path="/notice" component={Notice} />
-            <Route path="/information" component={Information} />
             <Route path="/edit" component={Edit} />
+            <Route exact path="/:param" component={MainPage} />
+            <Route path="/" component={MainPage} />
           </Switch>
         </BrowserRouter>
       </AuthProvider>
