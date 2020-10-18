@@ -31,7 +31,7 @@ const Header = () => {
               }}
             >
               <svg
-                class="sm:hidden h-6 w-6 fill-current text-white"
+                className="sm:hidden h-6 w-6 fill-current text-white"
                 viewBox="0 0 24 24"
               >
                 {open ? (

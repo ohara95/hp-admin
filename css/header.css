@@ -16,8 +16,8 @@
   width: 80%;
   margin: 20px auto;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 
 .title {
@@ -26,4 +26,3 @@
   font-family: "Syncopate", sans-serif;
   margin-left: 80px;
 }
-/*# sourceMappingURL=header.css.map */

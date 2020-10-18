@@ -17,7 +17,6 @@ const Menu = () => {
   const [cuisine, setCuisine] = useState([]);
   const [drink, setDrink] = useState([]);
   const [recommend, setRecommend] = useState([]);
-  console.log(cuisine);
   return (
     <div className="w-full">
       <div className="w-11/12 sm:w-8/12 sm:my-4 mx-auto ">

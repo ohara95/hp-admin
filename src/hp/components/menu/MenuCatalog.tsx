@@ -30,7 +30,7 @@ const MenuCatalog = ({ menuItem, state, setState, item }: Props) => {
   const category = state.filter((el) => el.category === menuItem);
   return category.map((el) => {
     return (
-      <option>
+      <option key={el.item}>
         {el.item} ¥{el.price}
       </option>
     );

@@ -147,7 +147,7 @@ const Management: FC<Props> = ({ history }) => {
         });
         setDbBuys(data as Buys[]);
       });
-  }, []);
+  }, [managementRef]);
 
   /** 差額表示 */
   const difference =

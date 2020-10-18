@@ -15,7 +15,7 @@
   right: 0;
   opacity: 0;
   -webkit-animation: bgAnime 20s infinite;
-          animation: bgAnime 20s infinite;
+  animation: bgAnime 20s infinite;
   /* 4画像 × 各5s = 20s */
 }
 
@@ -28,14 +28,14 @@
   background-image: url(/Users/erica/hp-admin/src/assets/img/inStore.jpg);
   /* 背景の画像を指定 */
   -webkit-animation-delay: 5s;
-          animation-delay: 5s;
+  animation-delay: 5s;
 }
 
 .box .src3 {
   background-image: url(/Users/erica/hp-admin/src/assets/img/counter.jpg);
   /* 背景の画像を指定 */
   -webkit-animation-delay: 10s;
-          animation-delay: 10s;
+  animation-delay: 10s;
 }
 
 @-webkit-keyframes bgAnime {
@@ -73,4 +73,3 @@
     opacity: 0;
   }
 }
-/*# sourceMappingURL=main.css.map */
