@@ -42,11 +42,11 @@ const MenuEdit = () => {
     menuRef.collection(selectCategory).onSnapshot((snap) => {
       const menu = snap.docs.map((doc) => {
         return {
-          ...doc.data(),
+          ...(doc.data() as SalesDetail),
           id: doc.id,
         };
       });
-      setDbData(menu as SalesDetail[]);
+      setDbData(menu);
     });
   }, [selectCategory]);
 

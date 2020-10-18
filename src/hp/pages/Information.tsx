@@ -1,7 +1,7 @@
 import React from "react";
 
 const Information = () => (
-  <div style={{ width: "50%", margin: "0 auto", height: "100%" }}>
+  <div className="w-10/12 h-full my-0 mx-auto sm:w-6/12 ">
     <div
       style={{
         height: "90%",

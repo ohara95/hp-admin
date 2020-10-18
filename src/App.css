@@ -21,15 +21,6 @@ body {
   height: 100vh;
 }
 
-.background {
-  display: grid;
-  place-items: center;
-  height: 100vh;
-  background-color: black;
-  margin: 0;
-  display: flex;
-}
-
 .slow-1 {
   animation-name: fadein;
   animation-duration: 2s;

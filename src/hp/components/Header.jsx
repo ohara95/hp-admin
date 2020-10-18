@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./header.scss";
 import logo from "../../assets/img/logo.jpg";
 import { AuthContext } from "../../AuthProvider";
@@ -6,51 +6,102 @@ import { useHistory } from "react-router-dom";
 
 const Header = () => {
   const { currentPath, setCurrentPath } = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
   const history = useHistory();
   const clickPage = (path) => {
     if (path === currentPath) return;
-    history.push(path);
-    setCurrentPath(path);
+    if (path) {
+      history.push(path);
+      setCurrentPath(path);
+    }
   };
-  console.log(currentPath);
 
   return (
     <div className="on">
-      <div className="title">
-        <div style={{ display: "flex" }}>
-          <h1>Sukemasa</h1>
-          <img
-            src={logo}
-            style={{
-              height: 50,
-              width: 50,
-              borderStyle: "none",
-              marginLeft: 10,
-            }}
-          />
+      <div className="title text-3xl sm:text-4xl mx-auto sm:ml-20">
+        <div className="flex justify-around">
+          <div className="flex">
+            <h1>Sukemasa</h1>
+            <img src={logo} className="h-12 w-12 border-none ml-0 sm:ml-4" />
+          </div>
+          <div>
+            <button
+              onClick={() => {
+                setOpen(!open);
+              }}
+            >
+              <svg
+                class="sm:hidden h-6 w-6 fill-current text-white"
+                viewBox="0 0 24 24"
+              >
+                {open ? (
+                  <path
+                    v-show="isOpen"
+                    d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"
+                  />
+                ) : (
+                  <path d="M24 6h-24v-4h24v4zm0 4h-24v4h24v-4zm0 8h-24v4h24v-4z" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
+        {open && (
+          <div
+            onClick={(e) => {
+              clickPage(e.target.id);
+            }}
+            className="text-lg flex flex-col w-full fixed bg-black z-10 sm:flex sm:my-6 sm:mx-auto sm:justify-between sm:w-10/12 sm:text-xl"
+          >
+            <button className="text-white py-2 hover:bg-gray-600" id="/top">
+              T0P
+            </button>
+            <button className="text-white py-2 hover:bg-gray-600" id="/menu">
+              MENU
+            </button>
+            <button className="text-white  py-2 hover:bg-gray-600" id="/notice">
+              <a href="#">NOTICE</a>
+            </button>
+            <button
+              className="py-2 hover:bg-gray-600"
+              href="http://blog.sukemasa.net/"
+            >
+              <a>BLOG</a>
+            </button>
+            <button
+              className="text-white py-2 hover:bg-gray-600"
+              id="information"
+            >
+              INFORMATION
+            </button>
+          </div>
+        )}
       </div>
+
       <div
-        className="content"
+        className="sm:flex sm:my-6 sm:mx-auto sm:justify-between sm:w-10/12 sm:text-xl "
         onClick={(e) => {
           clickPage(e.target.id);
         }}
       >
-        <div style={{ color: "white" }} id="/top">
+        <button className="sm:text-white sm:hover:bg-gray-600" id="/top">
           TOP
-        </div>
-        <div style={{ color: "white" }} id="/menu">
+        </button>
+        <button className="sm:text-white sm:hover:bg-gray-600" id="/menu">
           MENU
-        </div>
-        <div style={{ color: "white" }} id="notice">
+        </button>
+        <button className="sm:text-white sm:hover:bg-gray-600" id="notice">
           NOTICE
-        </div>
-        <div>
-          <a href="http://blog.sukemasa.net/">blog</a>
-        </div>
-        <div style={{ color: "white" }} id="/information">
+        </button>
+        <button className="sm:text-white sm:hover:bg-gray-600">
+          <a href="http://blog.sukemasa.net/"></a>blog
+        </button>
+        <button
+          className="sm:text-white sm:hover:bg-gray-600"
+          id="/information"
+        >
           INFORMATION
-        </div>
+        </button>
       </div>
     </div>
   );

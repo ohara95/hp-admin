@@ -3,17 +3,15 @@ import Header from "../components/Header";
 import store from "../../assets/img/store.jpeg";
 import counter from "../../assets/img/counter.jpg";
 import "../../App.css";
-import { AuthContext } from "../../AuthProvider";
-import { useContext } from "react";
 import Menu from "./Menu";
 import Notice from "./Notice";
 import Information from "./Information";
 import Top from "./Top";
 import { useParams } from "react-router-dom";
-// import main from "./main.scss";
 
 const MainPage = () => {
   let p = useParams();
+
   const movePage = () => {
     switch (p.param) {
       case "top":
@@ -28,22 +26,20 @@ const MainPage = () => {
         return <Top />;
     }
   };
+
   return (
-    <div className="background">
+    <div className="bg-black flex flex-col  h-hull sm:h-screen sm:flex-row sm:place-items-center sm:m-0 ">
       <div className="topImg">
         <img className="img1" src={store} alt="store" />
         <img className="img2" src={counter} alt="counter" />
       </div>
       <div className="w-full">
-        <div className="headerStyle">
+        <div className="w-full h-hull">
           <Header />
-          <div style={{ width: "80%", margin: "0 auto" }}>
+          <div className="w-full my-0 container mx-auto sm:w-10/12">
             <div
-              style={{
-                height: "70vh",
-                overflow: "scroll",
-                color: "white",
-              }}
+              className="text-white overflow-scroll"
+              style={{ height: "70vh" }}
             >
               {movePage()}
             </div>

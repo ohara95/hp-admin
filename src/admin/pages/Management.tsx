@@ -1,8 +1,8 @@
 import React, { FC, useState, useEffect } from "react";
 import * as H from "history";
 import { Sales, Buys, ToggleTable } from "../../types";
-
 import { auth, db } from "../../config/firebese";
+
 import BuysTodo from "../components/buysTodo";
 import ManagementGraph from "../components/ManagementGraph";
 import SalesList from "../template/SalesList";

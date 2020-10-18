@@ -20,7 +20,7 @@ const Menu = () => {
   console.log(cuisine);
   return (
     <div className="w-full">
-      <div className="w-10/12 my-4 mx-auto">
+      <div className="w-11/12 sm:w-8/12 sm:my-4 mx-auto ">
         <div>
           <h2 className="itemLineWhite">本日のおすすめ</h2>
           <div>
