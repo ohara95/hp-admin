@@ -1,6 +1,6 @@
 import React, { useEffect, FC } from "react";
-import { db } from "../../../config/firebese";
-import { MenuData } from "../../../types";
+import { db } from "../../config/firebese";
+import { MenuData } from "../../types";
 
 type Props = {
   menuItem: string;

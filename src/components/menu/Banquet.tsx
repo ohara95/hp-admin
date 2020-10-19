@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../../../config/firebese";
-import { BanquetData } from "../../../types";
+import { db } from "../../config/firebese";
+import { BanquetData } from "../../types";
 
 const Banquet = () => {
   const [banquetMenu, setBanquetMenu] = useState<BanquetData[]>([]);

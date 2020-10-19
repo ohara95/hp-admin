@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { AuthProvider } from "./AuthProvider";
-import MainPage from "./hp/pages/MainPage";
+import MainPage from "./components/pages/MainPage";
 import "./App.css";
 
 const App = () => {

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import "./header.scss";
-import logo from "../../assets/img/logo.jpg";
-import { AuthContext } from "../../AuthProvider";
+import logo from "../assets/img/logo.jpg";
+import { AuthContext } from "../AuthProvider";
 import { useHistory } from "react-router-dom";
 
 const Header = () => {

@@ -8,10 +8,6 @@ body {
   font-family: "游ゴシック体", "YuGothic";
 }
 
-.minus {
-  color: red;
-}
-
 .activeBtn {
   background-color: gray;
 }
@@ -83,7 +79,7 @@ body {
 
 .rowItem {
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
 }
 
 .menuImage {

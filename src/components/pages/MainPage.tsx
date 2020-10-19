@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../components/Header";
+import Header from "../Header";
 import store from "../../assets/img/store.jpeg";
 import counter from "../../assets/img/counter.jpg";
 import "../../App.css";
