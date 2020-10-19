@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, FC } from "react";
 import Banquet from "../components/menu/Banquet";
 import MenuCatalog from "../components/menu/MenuCatalog";
+import { MenuData } from "../../types";
 
 //画像
 import takokara from "../../assets/img/takokara.jpeg";
@@ -13,10 +14,10 @@ import yasai from "../../assets/img/yasai.jpg";
 import cocktail from "../../assets/img/cocktail.jpg";
 import edamame from "../../assets/img/edamame.jpeg";
 
-const Menu = () => {
-  const [cuisine, setCuisine] = useState([]);
-  const [drink, setDrink] = useState([]);
-  const [recommend, setRecommend] = useState([]);
+const Menu: FC = () => {
+  const [cuisine, setCuisine] = useState<MenuData[]>([]);
+  const [drink, setDrink] = useState<MenuData[]>([]);
+  const [recommend, setRecommend] = useState<MenuData[]>([]);
   return (
     <div className="w-full">
       <div className="w-11/12 sm:w-8/12 sm:my-4 mx-auto ">

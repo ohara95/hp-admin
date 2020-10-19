@@ -10,10 +10,11 @@ import Top from "./Top";
 import { useParams } from "react-router-dom";
 
 const MainPage = () => {
-  let p = useParams();
+  let page = useParams();
 
   const movePage = () => {
-    switch (p.param) {
+    //@ts-ignore
+    switch (page.param) {
       case "top":
         return <Top />;
       case "menu":
@@ -38,7 +39,7 @@ const MainPage = () => {
           <Header />
           <div className="w-full my-0 container mx-auto sm:w-10/12">
             <div
-              className="text-white overflow-scroll"
+              className="text-white overflow-scroll "
               style={{ height: "70vh" }}
             >
               {movePage()}

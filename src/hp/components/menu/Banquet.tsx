@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../../config/firebese";
-
-type DbProps = {
-  detail: string;
-  price: number;
-  title: string;
-};
+import { BanquetData } from "../../../types";
 
 const Banquet = () => {
-  const [banquetMenu, setBanquetMenu] = useState<DbProps[]>([]);
-
+  const [banquetMenu, setBanquetMenu] = useState<BanquetData[]>([]);
   useEffect(() => {
     db.collection("banquetMenu").onSnapshot((snap) => {
       const menu = snap.docs.map((doc) => {
@@ -17,25 +11,28 @@ const Banquet = () => {
           ...doc.data(),
         };
       });
-      setBanquetMenu(menu as DbProps[]);
+      setBanquetMenu(menu as BanquetData[]);
     });
   }, []);
-
-  return banquetMenu.map((menu) => {
-    return (
-      <>
-        <div>
-          <h3 className="categoryItem">{menu.title}</h3>
-          <p>
-            {menu.detail
-              .split(/\s/g)
-              .reduce((cum: any, x) => [...cum, x, <br />], [])
-              .slice(0, -1)}
-          </p>
-        </div>
-      </>
-    );
-  });
+  return (
+    <>
+      {banquetMenu.map((menu) => {
+        return (
+          <>
+            <div>
+              <h3 className="categoryItem">{menu.title}</h3>
+              <p>
+                {menu.detail
+                  .split(/\s/g)
+                  .reduce((cum: any, x) => [...cum, x, <br />], [])
+                  .slice(0, -1)}
+              </p>
+            </div>
+          </>
+        );
+      })}
+    </>
+  );
 };
 
 export default Banquet;

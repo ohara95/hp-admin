@@ -1,40 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, FC } from "react";
 import { db } from "../../../config/firebese";
-
-type DbProps = {
-  price: number;
-  category: string;
-  item: string;
-};
+import { MenuData } from "../../../types";
 
 type Props = {
   menuItem: string;
-  state: DbProps[];
-  setState: (param: DbProps[]) => void;
+  state: MenuData[];
+  setState: (param: MenuData[]) => void;
   item: string;
 };
 
-const MenuCatalog = ({ menuItem, state, setState, item }: Props) => {
+const MenuCatalog: FC<Props> = ({ menuItem, state, setState, item }) => {
   useEffect(() => {
     db.collection("menu")
       .doc("ya3NEbDICuOTwfUWcHQs")
       .collection(item)
       .onSnapshot((snap) => {
-        const menu = snap.docs.map((doc) => {
-          return doc.data();
-        });
-        setState(menu as DbProps[]);
+        const menu = snap.docs.map((doc) => doc.data());
+        setState(menu as MenuData[]);
       });
   }, []);
-
-  const category = state.filter((el) => el.category === menuItem);
-  return category.map((el) => {
-    return (
-      <option key={el.item}>
-        {el.item} ¥{el.price}
-      </option>
-    );
-  });
+  return (
+    <>
+      {state
+        .filter((el) => el.category === menuItem)
+        .map((el) => {
+          return (
+            <option key={el.item}>
+              {el.item} ¥{el.price}
+            </option>
+          );
+        })}
+    </>
+  );
 };
 
 export default MenuCatalog;

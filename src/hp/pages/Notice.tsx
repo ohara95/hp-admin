@@ -1,23 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebese";
 
+type NoticeData = {
+  holiday: string;
+  other: string;
+};
+
+type RecruitData = {
+  conditions: string;
+  time: string;
+  welfare: string;
+  wont: string;
+  work: string;
+  [param: string]: string;
+};
+
 const Notice = () => {
-  const [notice, setNotice] = useState([]);
-  const [recruit, setRecruit] = useState([]);
+  const [notice, setNotice] = useState<NoticeData[]>([]);
+  const [recruit, setRecruit] = useState<RecruitData[]>([]);
 
   useEffect(() => {
     db.collection("notice").onSnapshot((snap) => {
-      const notice = snap.docs.map((doc) => doc.data());
+      const notice = snap.docs.map((doc) => doc.data()) as NoticeData[];
       setNotice(notice);
     });
 
     db.collection("recruit").onSnapshot((snap) => {
-      const recruit = snap.docs.map((doc) => doc.data());
+      const recruit = snap.docs.map((doc) => doc.data()) as RecruitData[];
       setRecruit(recruit);
     });
   }, []);
 
-  const displayItem = (data) => {
+  const displayItem = (data: RecruitData[]) => {
     let content = [];
     for (const key in data[0]) {
       content.push(<p>{data[0][key]}</p>);
@@ -35,7 +49,7 @@ const Notice = () => {
             {notice.map((data) =>
               data.holiday
                 .split(/\s/g)
-                .reduce((cum, x) => [...cum, x, <br />], [])
+                .reduce((cum: any, x) => [...cum, x, <br />], [])
                 .slice(0, -1)
             )}
           </p>
@@ -44,7 +58,7 @@ const Notice = () => {
             {notice.map((data) =>
               data.other
                 .split(/\s/g)
-                .reduce((cum, x) => [...cum, x, <br />], [])
+                .reduce((cum: any, x) => [...cum, x, <br />], [])
                 .slice(0, -1)
             )}
           </p>

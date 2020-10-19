@@ -1,25 +1,13 @@
 import firebase from "./config/firebese";
 
-//memo まとめた方がいいのか別の方がいいのか？
-export type DBDATA = {
-  date: firebase.firestore.Timestamp;
-  buysPrice?: number[];
-  salesPrice?: number[];
-  detail?: string[];
-  id: string;
-}[];
-
-export type Sales = {
-  date: firebase.firestore.Timestamp;
-  salesPrice: number;
-  id: string;
+export type MenuData = {
+  category: string;
+  item: string;
+  price: number;
 };
 
-export type Buys = {
-  date: firebase.firestore.Timestamp;
-  buysPrice: number;
+export type BanquetData = {
   detail: string;
-  id: string;
+  price: number;
+  title: string;
 };
-
-export type ToggleTable = "chooseMonth" | "months" | "year" | "";
