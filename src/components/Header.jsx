@@ -30,20 +30,23 @@ const Header = () => {
                 setOpen(!open);
               }}
             >
+              {/* pcでは常に出る
+              smでは押したら出る
+              どうすれば... */}
               <svg
-                className="sm:hidden h-6 w-6 fill-current text-white"
+                // className={`${
+                //   !open ? "block" : "hidden"
+                // } sm:block h-6 w-6 fill-current text-white`}
+                className={`sm:hidden h-6 w-6 fill-current text-white`}
                 viewBox="0 0 24 24"
               >
                 {open ? (
-                  <path
-                    v-show="isOpen"
-                    d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"
-                  />
+                  <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z" />
                 ) : (
                   <path d="M24 6h-24v-4h24v4zm0 4h-24v4h24v-4zm0 8h-24v4h24v-4z" />
                 )}
               </svg>
-            </button>
+            </button>{" "}
           </div>
         </div>
         {open && (
@@ -51,34 +54,52 @@ const Header = () => {
             onClick={(e) => {
               clickPage(e.target.id);
             }}
-            className="text-lg flex flex-col w-full fixed bg-black z-10 sm:flex sm:my-6 sm:mx-auto sm:justify-between sm:w-10/12 sm:text-xl"
+            className="text-lg flex flex-col w-full fixed bg-black z-10 "
           >
-            <button className="text-white py-2 hover:bg-gray-600" id="/top">
-              T0P
-            </button>
-            <button className="text-white py-2 hover:bg-gray-600" id="/menu">
-              MENU
-            </button>
-            <button className="text-white  py-2 hover:bg-gray-600" id="/notice">
-              <a href="#">NOTICE</a>
-            </button>
-            <button
-              className="py-2 hover:bg-gray-600"
-              href="http://blog.sukemasa.net/"
-            >
-              <a>BLOG</a>
-            </button>
-            <button
-              className="text-white py-2 hover:bg-gray-600"
-              id="information"
-            >
-              INFORMATION
-            </button>
+            <ul className="sm:flex sm:my-6 sm:justify-between sm:w-6/12 sm:text-xl text-center">
+              <li>
+                <button className="text-white py-2 hover:bg-gray-600" id="/top">
+                  T0P
+                </button>
+              </li>
+              <li>
+                <button
+                  className="text-white py-2 hover:bg-gray-600"
+                  id="/menu"
+                >
+                  MENU
+                </button>
+              </li>
+              <li>
+                <button
+                  className="text-white  py-2 hover:bg-gray-600"
+                  id="/notice"
+                >
+                  NOTICE
+                </button>
+              </li>
+              <li>
+                <button
+                  className="py-2 hover:bg-gray-600"
+                  href="http://blog.sukemasa.net/"
+                >
+                  BLOG
+                </button>
+              </li>
+              <li>
+                <button
+                  className="text-white py-2 hover:bg-gray-600"
+                  id="information"
+                >
+                  INFORMATION
+                </button>
+              </li>
+            </ul>
           </div>
         )}
       </div>
 
-      <div
+      {/* <div
         className="sm:flex sm:my-6 sm:mx-auto sm:justify-between sm:w-10/12 sm:text-xl "
         onClick={(e) => {
           clickPage(e.target.id);
@@ -102,7 +123,7 @@ const Header = () => {
         >
           INFORMATION
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

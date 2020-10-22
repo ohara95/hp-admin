@@ -30,14 +30,15 @@ const MainPage = () => {
 
   return (
     <div className="bg-black flex flex-col  h-hull sm:h-screen sm:flex-row sm:place-items-center sm:m-0 ">
+      {/* <div className="flex flex-col-reverse"> */}
       <div className="topImg">
         <img className="img1" src={store} alt="store" />
         <img className="img2" src={counter} alt="counter" />
       </div>
       <div className="w-full">
-        <div className="w-full h-hull">
+        <div className="w-full h-full">
           <Header />
-          <div className="w-full my-0 container mx-auto sm:w-10/12">
+          <div className="w-full my-0 container mx-auto sm:w-10/12 ">
             <div
               className="text-white overflow-scroll "
               style={{ height: "70vh" }}
@@ -47,6 +48,7 @@ const MainPage = () => {
           </div>
         </div>
       </div>
+      {/* </div> */}
     </div>
   );
 };
