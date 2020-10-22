@@ -1,6 +1,7 @@
 import React, { useEffect, FC } from "react";
 import { db } from "../../config/firebese";
 import { MenuData } from "../../types";
+import Skeleton from "../../atoms/Skeleton";
 
 type Props = {
   menuItem: string;
@@ -19,17 +20,22 @@ const MenuCatalog: FC<Props> = ({ menuItem, state, setState, item }) => {
         setState(menu as MenuData[]);
       });
   }, []);
+
   return (
     <>
-      {state
-        .filter((el) => el.category === menuItem)
-        .map((el) => {
-          return (
-            <option key={el.item}>
-              {el.item} ¥{el.price}
-            </option>
-          );
-        })}
+      {state.length ? (
+        state
+          .filter((el) => el.category === menuItem)
+          .map((el) => {
+            return (
+              <option key={el.item}>
+                {el.item} ¥{el.price}
+              </option>
+            );
+          })
+      ) : (
+        <Skeleton />
+      )}
     </>
   );
 };

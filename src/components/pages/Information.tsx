@@ -19,14 +19,26 @@ const Information = () => (
       </p>
       <p>〒390-1701</p>
       <p>松本市梓川倭84番地3</p>
-      <iframe
+      {/* memo スケルトン出てくれない */}
+      {<iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12871.991073171917!2d137.87687523194418!3d36.2395481810841!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601d12524c870001%3A0x95d13a987f13bf65!2z5Lqu5piMKO-9ve-9ue--j--9uyk!5e0!3m2!1sja!2sjp!4v1598400093670!5m2!1sja!2sjp"
         style={{
           width: "100%",
           height: "60%",
           marginTop: 20,
         }}
-      />
+      /> ? (
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12871.991073171917!2d137.87687523194418!3d36.2395481810841!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601d12524c870001%3A0x95d13a987f13bf65!2z5Lqu5piMKO-9ve-9ue--j--9uyk!5e0!3m2!1sja!2sjp!4v1598400093670!5m2!1sja!2sjp"
+          style={{
+            width: "100%",
+            height: "60%",
+            marginTop: 20,
+          }}
+        />
+      ) : (
+        <div className="border border-gray-300 shadow rounded-md p-4 max-w-sm w-full mx-auto animate-pulse bg-gray-400 h-full" />
+      )}
     </div>
   </div>
 );

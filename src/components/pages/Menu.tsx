@@ -19,12 +19,6 @@ const Menu: FC = () => {
   const [drink, setDrink] = useState<MenuData[]>([]);
   const [recommend, setRecommend] = useState<MenuData[]>([]);
 
-  //   .menuImage {
-  //   round-full w-1/4
-  //   height: 200px;
-  //   width: 200px;
-  // }
-
   return (
     <div className="w-full">
       <div className="w-11/12 sm:w-9/12 sm:my-4 mx-auto ">
@@ -51,10 +45,7 @@ const Menu: FC = () => {
         <div>
           <h2 className="itemLineWhite">FOOD</h2>
           <div className="rowItem mt-10">
-            <img
-              src={edamame}
-              className="rounded-full w-5/12 sm:h-1/4 sm:w-3/5"
-            />
+            <img src={edamame} className="rounded-full w-5/12" />
             <div className="w-3/6">
               <h3 className="categoryItem">おつまみ</h3>
               <MenuCatalog
