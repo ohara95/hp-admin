@@ -3,9 +3,11 @@ import "./header.scss";
 import logo from "../assets/img/logo.jpg";
 import { AuthContext } from "../AuthProvider";
 import { useHistory } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 
 const Header = () => {
   const { currentPath, setCurrentPath } = useContext(AuthContext);
+  const isNotMobile = useMediaQuery({ minWidth: "640px" });
   const [open, setOpen] = useState(false);
   const history = useHistory();
   const clickPage = (path) => {
@@ -25,31 +27,29 @@ const Header = () => {
             <img src={logo} className="h-12 w-12 border-none ml-0 sm:ml-4" />
           </div>
           <div>
-            <button
-              onClick={() => {
-                setOpen(!open);
-              }}
-            >
-              {/* pcでは常に出る
-              smでは押したら出る
-              どうすれば... */}
-              <svg
-                // className={`${
-                //   !open ? "block" : "hidden"
-                // } sm:block h-6 w-6 fill-current text-white`}
-                className={`sm:hidden h-6 w-6 fill-current text-white`}
-                viewBox="0 0 24 24"
+            {!isNotMobile && (
+              <button
+                onClick={() => {
+                  setOpen(!open);
+                }}
               >
-                {open ? (
-                  <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z" />
-                ) : (
-                  <path d="M24 6h-24v-4h24v4zm0 4h-24v4h24v-4zm0 8h-24v4h24v-4z" />
-                )}
-              </svg>
-            </button>{" "}
+                <svg
+                  className={`sm:hidden h-6 w-6 fill-current text-white`}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d={
+                      open
+                        ? "M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"
+                        : "M24 6h-24v-4h24v4zm0 4h-24v4h24v-4zm0 8h-24v4h24v-4z"
+                    }
+                  />
+                </svg>
+              </button>
+            )}
           </div>
         </div>
-        {open && (
+        {(open || isNotMobile) && (
           <div
             onClick={(e) => {
               clickPage(e.target.id);

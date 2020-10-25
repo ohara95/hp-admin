@@ -4,6 +4,7 @@ import { BanquetData } from "../../types";
 
 const Banquet = () => {
   const [banquetMenu, setBanquetMenu] = useState<BanquetData[]>([]);
+
   useEffect(() => {
     db.collection("banquetMenu").onSnapshot((snap) => {
       const menu = snap.docs.map((doc) => {

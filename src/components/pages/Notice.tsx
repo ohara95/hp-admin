@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebese";
 import NoticeData from "../../molecules/NoticeData";
 import Skeleton from "../../atoms/Skeleton";
+// import { useDocument } from "react-firebase-hooks/firestore";
 
 type NoticeData = {
   holiday: string;
@@ -21,6 +22,11 @@ const Notice = () => {
   const [notice, setNotice] = useState<NoticeData[]>([]);
   const [recruit, setRecruit] = useState<RecruitData[]>([]);
 
+  // const [values, loading, error] = useDocument(
+  //   db.collection("notice").doc("f3068OjZY4BqCj3QiLjO"),
+  //   {}
+  // );
+
   useEffect(() => {
     db.collection("notice").onSnapshot((snap) => {
       const notice = snap.docs.map((doc) => doc.data()) as NoticeData[];
@@ -34,16 +40,6 @@ const Notice = () => {
   }, []);
 
   const recruitData = recruit.find((db) => db);
-
-  // const displayItem = (data: RecruitData[]) => {
-  //   let content = [];
-  //   for (const key in data[0]) {
-  //     content.push(<p>{data[0][key]}</p>);
-  //   }
-  //   return content;
-  // };
-
-  console.log(recruitData?.work);
 
   return (
     <div className="w-full">
