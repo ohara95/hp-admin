@@ -40,7 +40,7 @@ const MainPage = () => {
           <Header />
           <div className="w-full my-0 container mx-auto sm:w-10/12 ">
             <div
-              className="text-white overflow-scroll "
+              className="text-white overflow-scroll h-4/5"
               style={{ height: "70vh" }}
             >
               {movePage()}
