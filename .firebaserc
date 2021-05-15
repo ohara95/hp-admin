@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "sukemasa-bc5a3"
+  },
+  "targets": {
+    "sukemasa-bc5a3": {
+      "hosting": {
+        "sukemasa-hp": [
+          "sukemasa"
+        ]
+      }
+    }
+  }
+}
